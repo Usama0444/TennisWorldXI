@@ -253,7 +253,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                             height: size.height * 0.52,
                             width: size.width,
                             child: ListView.builder(
-                                itemCount: 100,
+                                itemCount: _upComingMatches.length,
                                 itemBuilder: (context, int) {
                                   return GestureDetector(
                                     onTap: () {
@@ -262,12 +262,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           MaterialPageRoute(
                                               builder: (_) => CreateContestScreen(
                                                     country1Flag: 'assets/13.png',
-                                                    country1Name: 'Pakistan',
+                                                    country1Name: _upComingMatches[int].country1Name.toString(),
                                                     country2Flag: 'assets/17.png',
-                                                    country2Name: 'India',
+                                                    country2Name: _upComingMatches[int].country2Name.toString(),
                                                     price: '123',
                                                     time: '1h 46m',
-                                                    titel: 'My Title',
+                                                    titel: _upComingMatches[int].title.toString(),
                                                   )));
                                     },
                                     child: Card(
@@ -282,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text('FanCode ECS T10 Barcelona'),
+                                              Text(_upComingMatches[int].title.toString()),
                                               Icon(
                                                 FontAwesomeIcons.bell,
                                                 size: 20,
@@ -305,8 +305,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text('Hira Sabadell'),
-                                              Text('Bangladesh King'),
+                                              Text(_upComingMatches[int].country1Name.toString()),
+                                              Text(_upComingMatches[int].country2Name.toString()),
                                             ],
                                           ),
                                         ),
@@ -326,7 +326,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                                     width: 10,
                                                   ),
                                                   Text(
-                                                    'PAK',
+                                                    _upComingMatches[int].country1ShortName.toString(),
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.w800,
@@ -345,7 +345,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                               Row(
                                                 children: [
                                                   Text(
-                                                    'IND',
+                                                    _upComingMatches[int].country2ShortName.toString(),
                                                     style: TextStyle(
                                                       fontSize: 20,
                                                       fontWeight: FontWeight.w800,
@@ -587,6 +587,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           time: data['match_date_time'],
           country1Flag: 'assets/19.png',
           country2Flag: 'assets/25.png',
+          country1ShortName: data['team_1_short_name'],
+          country2ShortName: data['team_2_short_name'],
         ));
       }
       isLoginProsses = false;
@@ -660,6 +662,7 @@ class _MatchesListState extends State<MatchesList> {
         );
       },
       child: Card(
+        borderOnForeground: true,
         elevation: 6,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8),

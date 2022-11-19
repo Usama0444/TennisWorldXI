@@ -53,7 +53,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Stack(
         children: <Widget>[
           Container(
@@ -205,6 +205,8 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
       for (var data in _result['upcomingMatches']) {
         _upComingMatches.add(MatchShortInfo(
+          country1ShortName: '',
+          country2ShortName: '',
           id: data['id'],
           title: data['title'],
           country1Name: data['team_1_title'],
@@ -223,10 +225,14 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
           time: 'Live',
           country1Flag: 'assets/19.png',
           country2Flag: 'assets/25.png',
+          country1ShortName: '',
+          country2ShortName: '',
         ));
       }
       for (var data in _result['completedMatches']) {
         _completedMatches.add(MatchShortInfo(
+          country1ShortName: '',
+          country2ShortName: '',
           id: data['id'],
           title: data['title'],
           country1Name: data['team_1_title'],

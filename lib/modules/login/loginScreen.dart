@@ -60,18 +60,21 @@ class _LoginScreenState extends State<LoginScreen> {
                                 SizedBox(
                                   height: 50,
                                 ),
-                                Image.asset(
-                                  "assets/stump.png",
-                                  height: 70,
+                                ClipOval(
+                                  child: Image.asset(
+                                    'assets/cname/logo.jpeg',
+                                    height: 100,
+                                  ),
                                 ),
                                 SizedBox(
                                   height: 8,
                                 ),
                                 Text(
-                                  AppConstant.AppName,
+                                  AppConstant.AppName.toUpperCase(),
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
                                     fontSize: 40,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
                                 ),

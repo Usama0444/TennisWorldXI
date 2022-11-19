@@ -1,21 +1,22 @@
 import 'package:TennixWorldXI/bloc/bottom_nav_bar_provider.dart';
-import 'package:TennixWorldXI/modules/CustomImagePicker/camera.dart';
-import 'package:TennixWorldXI/utils/navigators.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:TennixWorldXI/bloc/phoneVerificationBloc.dart';
 import 'package:TennixWorldXI/constant/firsttime.dart';
 import 'package:TennixWorldXI/constant/global.dart';
-import 'package:bloc/bloc.dart';
 import 'package:TennixWorldXI/constant/routes.dart';
 import 'package:TennixWorldXI/constant/themes.dart';
+import 'package:TennixWorldXI/modules/CustomImagePicker/camera.dart';
 import 'package:TennixWorldXI/modules/home/tabScreen.dart';
 import 'package:TennixWorldXI/modules/login/loginScreen.dart';
 import 'package:TennixWorldXI/modules/login/otpValidationScreen.dart';
+import 'package:TennixWorldXI/modules/pymentOptions/WinningScreenTabViews/Contest.dart';
 import 'package:TennixWorldXI/modules/splash/SplashScreen.dart';
+import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+
 import 'constant/constants.dart';
-import 'constant/themes.dart';
 
 class SimpleBlocDelegate extends BlocObserver {
   @override
@@ -104,11 +105,12 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Container(
         color: AllCoustomTheme.getThemeData().primaryColor,
-        child: MaterialApp(
+        child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppConstant.AppName,
           theme: AllCoustomTheme.getThemeData(),
           routes: routes,
+          // home: Contest(),
         ),
       ),
     );

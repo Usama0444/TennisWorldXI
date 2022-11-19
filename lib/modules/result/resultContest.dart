@@ -15,8 +15,7 @@ class ResultContestScreen extends StatefulWidget {
   final String? time;
   final String? price;
 
-  const ResultContestScreen({Key? key, this.titel, this.country1Name, this.country1Flag, this.country2Name, this.country2Flag, this.time, this.price})
-      : super(key: key);
+  const ResultContestScreen({Key? key, this.titel, this.country1Name, this.country1Flag, this.country2Name, this.country2Flag, this.time, this.price}) : super(key: key);
   @override
   _ResultContestScreenState createState() => _ResultContestScreenState();
 }
@@ -552,7 +551,7 @@ class _ResultContestScreenState extends State<ResultContestScreen> with SingleTi
                       fontSize: AppConstant.SIZE_TITLE14,
                     ),
                   ),
-                )
+                ),
               ],
             ),
           ),

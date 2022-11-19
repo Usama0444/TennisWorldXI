@@ -1,17 +1,8 @@
-// ignore_for_file: unused_field, unnecessary_null_comparison, deprecated_member_use
-
+import 'package:TennixWorldXI/constant/constants.dart';
+import 'package:TennixWorldXI/constant/themes.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../utils/toast.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
-import 'package:TennixWorldXI/api/apiProvider.dart';
-import 'package:TennixWorldXI/constant/constants.dart';
-import 'package:TennixWorldXI/constant/themes.dart';
-import 'package:TennixWorldXI/models/scheduleResponseData.dart';
-import 'package:TennixWorldXI/models/userData.dart';
-import 'package:TennixWorldXI/modules/contests/contestsScreen.dart';
 
 class ManagePayment extends StatefulWidget {
   const ManagePayment({Key? key}) : super(key: key);
@@ -159,7 +150,12 @@ class _ManagePaymentState extends State<ManagePayment> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.payment),
+                              Image.asset(
+                                'assets/phonepe.png',
+                                width: 30,
+                                height: 40,
+                                fit: BoxFit.fitWidth,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
@@ -188,7 +184,12 @@ class _ManagePaymentState extends State<ManagePayment> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.payment),
+                              Image.asset(
+                                'assets/googlepay.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fitHeight,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
@@ -217,7 +218,12 @@ class _ManagePaymentState extends State<ManagePayment> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.payment),
+                              Image.asset(
+                                'assets/paytm.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fitWidth,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
@@ -246,7 +252,12 @@ class _ManagePaymentState extends State<ManagePayment> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.payment),
+                              Image.asset(
+                                'assets/amazonpay.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fitWidth,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
@@ -275,12 +286,51 @@ class _ManagePaymentState extends State<ManagePayment> {
                         children: [
                           Row(
                             children: [
-                              Icon(Icons.payment),
+                              Image.asset(
+                                'assets/bhimpay.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fitWidth,
+                              ),
                               SizedBox(
                                 width: 10,
                               ),
                               Text(
-                                'Mobikwik',
+                                'Bhim Pay',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Link Account',
+                            style: TextStyle(fontSize: 16, color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 60,
+                    margin: EdgeInsets.all(5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/netbank.png',
+                                width: 40,
+                                height: 40,
+                                fit: BoxFit.fitWidth,
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'NetBanking',
                                 style: TextStyle(fontSize: 18),
                               ),
                             ],

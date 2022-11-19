@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   void _loadNextScreen() async {
-    await Future.delayed(const Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 3000));
 
     Navigator.pushReplacementNamed(context, Routes.LOGIN);
   }
@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    AppConstant.AppName,
+                    AppConstant.AppName.toUpperCase(),
                     style: new TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 48.0,
@@ -53,6 +53,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  ClipOval(
+                    child: Image.asset(
+                      'assets/cname/logo.jpeg',
+                      height: 150,
+                    ),
+                  ),
                   new SizeTransition(
                     sizeFactor: new CurvedAnimation(parent: animationController, curve: Curves.fastOutSlowIn),
                     axis: Axis.vertical,
@@ -60,10 +66,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       height: 150.0,
                     ),
                   ),
-                  CircularProgressIndicator(
-                    strokeWidth: 2.0,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  ),
+                  // CircularProgressIndicator(
+                  //   strokeWidth: 2.0,
+                  //   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  // ),
                 ],
               ),
             ),

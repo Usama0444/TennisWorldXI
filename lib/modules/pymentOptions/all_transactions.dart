@@ -1,9 +1,11 @@
 // ignore_for_file: unused_field, unnecessary_null_comparison, deprecated_member_use
 
+import 'package:TennixWorldXI/modules/pymentOptions/Winning_screen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/manage_payment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import '../../../utils/toast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -273,29 +275,34 @@ class _AllTransactionsState extends State<AllTransactions> {
                                               )),
                                         ),
                                       ),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 60,
-                                        margin: EdgeInsets.all(5),
-                                        child: Card(
-                                            elevation: 5,
-                                            borderOnForeground: true,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    'Winning',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    size: 20,
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(WinningScreen());
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 60,
+                                          margin: EdgeInsets.all(5),
+                                          child: Card(
+                                              elevation: 5,
+                                              borderOnForeground: true,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(10),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'Winning',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ),
                                       ),
                                       Container(
                                         width: double.infinity,
