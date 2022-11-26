@@ -1,3 +1,4 @@
+import 'package:TennixWorldXI/modules/ScoreBoard/score_board.dart';
 import 'package:TennixWorldXI/modules/myProfile/myProfileScreen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/all_transactions.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +60,10 @@ class _AppDrawerState extends State<AppDrawer> {
                       height: 1,
                     ),
                     myBalance(),
+                    Divider(
+                      height: 1,
+                    ),
+                    score(),
                     Divider(
                       height: 1,
                     ),
@@ -441,6 +446,47 @@ class _AppDrawerState extends State<AppDrawer> {
                 child: Container(
                   child: Text(
                     'All Transactions',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: AllCoustomTheme.getThemeData().primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget score() {
+    return InkWell(
+      onTap: () {
+        Get.to(ScoreBoard());
+      },
+      child: Container(
+        height: 54,
+        child: Padding(
+          padding: EdgeInsets.only(left: 14, right: 14),
+          child: new Row(
+            children: <Widget>[
+              Container(
+                child: Icon(
+                  Icons.payment,
+                  color: AllCoustomTheme.getThemeData().primaryColor,
+                  size: 22,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  child: Text(
+                    'ScoreBoard',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'Poppins',

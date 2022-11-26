@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     AppConstant.AppName.toUpperCase(),
                     style: new TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 48.0,
+                      fontSize: 35.0,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),

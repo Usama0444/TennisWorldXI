@@ -2,6 +2,7 @@
 
 import 'dart:core';
 import 'dart:ui';
+import 'package:TennixWorldXI/models/contest_list_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -16,6 +17,9 @@ import 'package:TennixWorldXI/modules/contests/createTeamButtonView.dart';
 import 'package:TennixWorldXI/modules/createTeam/createTeamScreen.dart';
 import 'package:TennixWorldXI/validator/validator.dart';
 import 'package:sticky_headers/sticky_headers.dart';
+import '../../api/Api_Handler/api_call_Structure.dart';
+import '../../api/Api_Handler/api_constants.dart';
+import '../../api/Api_Handler/api_error_response.dart';
 import 'insideContest.dart';
 
 class ContestsScreen extends StatefulWidget {
@@ -26,6 +30,7 @@ class ContestsScreen extends StatefulWidget {
   final String? country2Flag;
   final String? time;
   final String? price;
+  final int? matchID;
 
   const ContestsScreen({
     Key? key,
@@ -36,6 +41,7 @@ class ContestsScreen extends StatefulWidget {
     this.country2Flag,
     this.time,
     this.price,
+    this.matchID,
   }) : super(key: key);
   @override
   _ContestsScreenState createState() => _ContestsScreenState();
@@ -54,6 +60,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
     categoryList.teamlist = [];
     categoryList.totalcontest = 0;
     super.initState();
+    _getContestList();
   }
 
   @override
@@ -340,26 +347,34 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                       fontSize: AppConstant.SIZE_TITLE12,
                                     ),
                                   ),
+                                  index != 0
+                                      ? Text('')
+                                      : Image.asset(
+                                          'assets/discount.png',
+                                          width: 100,
+                                          height: 20,
+                                        ),
                                 ],
                               ),
                             ),
                           ),
                           content: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 100),
-                            child: Column(
-                              children: <Widget>[
-                                contestnt('₹1000', '₹575', '2', '1 spot', "1", 0.2),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                contestnt('₹200', '₹225', '3', '', "2", 0.5),
-                                SizedBox(
-                                  height: 8,
-                                ),
-                                contestnt('₹100', '₹55', '1', '1 spot', "3", 0.8),
-                              ],
-                            ),
-                          ),
+                              padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 100),
+                              child: SizedBox(
+                                height: 600,
+                                child: ListView.builder(
+                                    itemCount: contestListModel.length,
+                                    itemBuilder: (context, index) {
+                                      return contestnt(
+                                        contestListModel[index].prizePool.toString(),
+                                        contestListModel[index].entryFee.toString(),
+                                        contestListModel[index].totalSpot.toString(),
+                                        contestListModel[index].currentSpot.toString(),
+                                        contestListModel[index].noOfWinner.toString(),
+                                        0.1,
+                                      );
+                                    }),
+                              )),
                         );
                       },
                     ),
@@ -895,11 +910,11 @@ class _ContestsScreenState extends State<ContestsScreen> {
   }
 
   Widget contestnt(
-    String txt1,
-    String txt2,
-    String txt3,
-    String txt4,
-    String txt5,
+    String prizPool,
+    String entryFee,
+    String totalSpot,
+    String currentSpot,
+    String winnerNo,
     double progress,
   ) {
     return InkWell(
@@ -938,7 +953,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                         height: 2,
                       ),
                       Text(
-                        txt1,
+                        prizPool,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
@@ -962,7 +977,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                         height: 2,
                       ),
                       Text(
-                        txt5,
+                        winnerNo,
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
@@ -989,27 +1004,54 @@ class _ContestsScreenState extends State<ContestsScreen> {
                       SizedBox(
                         height: 2,
                       ),
-                      InkWell(
-                        onTap: () {
-                          setshowDialog();
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 14, left: 14, top: 4, bottom: 4),
-                            child: Text(
-                              txt2,
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                color: Theme.of(context).canvasColor,
-                                fontSize: 14,
+                      Row(
+                        children: [
+                          winnerNo != '1'
+                              ? Text('')
+                              : InkWell(
+                                  onTap: () {
+                                    setshowDialog();
+                                  },
+                                  child: Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(right: 14, top: 4, bottom: 4),
+                                      child: Text(
+                                        '₹600',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          decoration: TextDecoration.lineThrough,
+                                          decorationThickness: 4.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                          InkWell(
+                            onTap: () {
+                              setshowDialog();
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 14, left: 14, top: 4, bottom: 4),
+                                child: Text(
+                                  entryFee,
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Theme.of(context).canvasColor,
+                                    fontSize: 14,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -1031,7 +1073,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    txt3 + 'spot left',
+                    totalSpot + 'spot left',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
@@ -1042,7 +1084,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                     child: SizedBox(),
                   ),
                   Text(
-                    txt4,
+                    currentSpot,
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
@@ -1718,6 +1760,34 @@ class _ContestsScreenState extends State<ContestsScreen> {
         )
       ],
     );
+  }
+
+  List<ContestListModel> contestListModel = [];
+  Future<void> _getContestList() async {
+    API_STRUCTURE apiObject = API_STRUCTURE(
+      context: context,
+      apiName: 'contest/1',
+      apiRequestMethod: API_REQUEST_METHOD.GET,
+      isWantSuccessMessage: false,
+    );
+    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: false);
+    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
+      Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
+      print("contest list :-> $_result");
+      for (var data in _result['contest']) {
+        contestListModel.add(ContestListModel(
+          id: data['id'] ?? 0,
+          title: data['title'] ?? '',
+          prizePool: data['winning_prize'].toString(),
+          entryFee: data['entrance_amount'].toString(),
+          noOfWinner: data['no_of_winners'].toString(),
+          totalSpot: data['team_length'].toString(),
+          currentSpot: '2',
+        ));
+      }
+
+      setState(() {});
+    }
   }
 }
 

@@ -9,6 +9,7 @@ import 'package:TennixWorldXI/modules/home/homeScreen.dart';
 import 'package:TennixWorldXI/modules/result/standingResult.dart';
 import 'package:TennixWorldXI/utils/avatarImage.dart';
 import 'package:TennixWorldXI/validator/validator.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../api/Api_Handler/api_call_Structure.dart';
 import '../../api/Api_Handler/api_constants.dart';
@@ -34,7 +35,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
 
   @override
   void initState() {
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
     super.initState();
     _getMatchesList();
     _tabController.addListener(() {
@@ -53,7 +54,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Stack(
         children: <Widget>[
           Container(
@@ -80,21 +81,23 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                 bottom: TabBar(
                   controller: _tabController,
                   tabs: [
-                    // Tab(
-                    //   icon: Text(
-                    //     "Upcoming",
-                    //     style: TextStyle(
-                    //       fontFamily: 'Poppins',
-                    //       fontWeight: FontWeight.w500,
-                    //     ),
-                    //   ),
-                    // ),
+                    Tab(
+                      icon: Text(
+                        "Upcoming",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
                     Tab(
                       icon: Text(
                         "Live",
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -104,6 +107,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -115,19 +119,22 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                 child: TabBarView(
                   controller: _tabController,
                   children: <Widget>[
-                    // isDataFetched
-                    //     ? Fixtures(upComingMatches: _upComingMatches,)
-                    //     : Center(child: CircularProgressIndicator()),
+                    isDataFetched
+                        ? Fixtures(
+                            upComingMatches: _upComingMatches,
+                          )
+                        : Center(child: CircularProgressIndicator()),
                     isDataFetched
                         ? Live(
                             liverMatches: _liveMatches,
                           )
                         : Center(child: CircularProgressIndicator()),
-                    isDataFetched
-                        ? Results(
-                            completedMatches: _completedMatches,
-                          )
-                        : Center(child: CircularProgressIndicator()),
+                    Completed(),
+                    // isDataFetched
+                    //     ? Results(
+                    //         completedMatches: _completedMatches,
+                    //       )
+                    //     : Center(child: CircularProgressIndicator()),
                   ],
                 ),
               ),
@@ -592,6 +599,152 @@ class _MatchesListState extends State<MatchesList> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Completed extends StatelessWidget {
+  const Completed({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SizedBox(
+        child: ListView.builder(
+            itemCount: 10,
+            itemBuilder: (context, int) {
+              return GestureDetector(
+                onTap: () {},
+                child: Card(
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Column(children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, top: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('ICC World CUP'),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Divider(
+                      height: 1,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text('Pakistan'),
+                          Text('India'),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset('assets/13.png'),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                'PAK',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              )
+                            ],
+                          ),
+                          Text(
+                            'Completed'.toUpperCase(),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.green,
+                            ),
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'IND',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Image.asset('assets/17.png'),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 30,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  '1 Team',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  '1 Contest',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ]),
+                ),
+              );
+            }),
       ),
     );
   }

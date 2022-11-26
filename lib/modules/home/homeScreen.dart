@@ -260,7 +260,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (_) => CreateContestScreen(
+                                              builder: (_) => ContestsScreen(
+                                                    // matchID: _upComingMatches[int].id,
                                                     country1Flag: 'assets/13.png',
                                                     country1Name: _upComingMatches[int].country1Name.toString(),
                                                     country2Flag: 'assets/17.png',
@@ -577,7 +578,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: false);
     if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
-      debugPrint("_result:-> $_result");
+      // debugPrint("_result:-> $_result");
       for (var data in _result['upcomingMatches']) {
         _upComingMatches.add(MatchShortInfo(
           id: data['id'],

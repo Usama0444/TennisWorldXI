@@ -73,7 +73,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   AppConstant.AppName.toUpperCase(),
                                   style: TextStyle(
                                     fontFamily: 'Poppins',
-                                    fontSize: 40,
+                                    fontSize: 35,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
                                   ),
