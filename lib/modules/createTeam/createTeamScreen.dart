@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_null_comparison
-
+import 'package:TennixWorldXI/GetxController/teamController.dart';
+import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:TennixWorldXI/api/apiProvider.dart';
 import 'package:TennixWorldXI/bloc/teamSelectionBloc.dart';
@@ -19,8 +20,14 @@ import 'package:TennixWorldXI/models/teamResponseData.dart' as team;
 
 enum CreateTeamType { createTeam, editTeam, copyTeam }
 
+enum TabTextType { wk, bat, ar, bowl }
+
+enum AnimationType { isRegular, isMinimum, isFull, isSeven, isCredits, atLeast }
+
 TeamSelectionBloc teamSelectionBloc = TeamSelectionBloc(TeamSelectionBlocState.initial());
 TeamTapBloc teamTapBloc = TeamTapBloc(TeamTapBlocState.initial());
+
+//CreateTeamScreen Main Class
 
 class CreateTeamScreen extends StatefulWidget {
   final ShedualData? shedualData;
@@ -216,8 +223,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             style: TextStyle(
                                               fontFamily: 'Poppins',
                                               color: Colors.white54,
-                                              fontSize:
-                                                  MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
+                                              fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
                                             ),
                                           ),
                                         ),
@@ -236,9 +242,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                         fontFamily: 'Poppins',
                                                         fontWeight: FontWeight.bold,
                                                         color: Colors.white,
-                                                        fontSize: MediaQuery.of(context).size.width >= 360
-                                                            ? AppConstant.SIZE_TITLE20
-                                                            : AppConstant.SIZE_TITLE18,
+                                                        fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
                                                       ),
                                                     );
                                                   },
@@ -251,9 +255,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                   style: TextStyle(
                                                     fontFamily: 'Poppins',
                                                     color: Colors.white54,
-                                                    fontSize: MediaQuery.of(context).size.width >= 360
-                                                        ? AppConstant.SIZE_TITLE12
-                                                        : AppConstant.SIZE_TITLE10,
+                                                    fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
                                                   ),
                                                 ),
                                               )
@@ -283,9 +285,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                         style: TextStyle(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white54,
-                                                          fontSize: MediaQuery.of(context).size.width >= 360
-                                                              ? AppConstant.SIZE_TITLE12
-                                                              : AppConstant.SIZE_TITLE10,
+                                                          fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
                                                         ),
                                                       ),
                                                     ),
@@ -300,9 +300,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                               fontFamily: 'Poppins',
                                                               fontWeight: FontWeight.bold,
                                                               color: Colors.white,
-                                                              fontSize: MediaQuery.of(context).size.width >= 360
-                                                                  ? AppConstant.SIZE_TITLE18
-                                                                  : AppConstant.SIZE_TITLE16,
+                                                              fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE18 : AppConstant.SIZE_TITLE16,
                                                             ),
                                                           );
                                                         },
@@ -339,9 +337,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                         style: TextStyle(
                                                           fontFamily: 'Poppins',
                                                           color: Colors.white54,
-                                                          fontSize: MediaQuery.of(context).size.width >= 360
-                                                              ? AppConstant.SIZE_TITLE12
-                                                              : AppConstant.SIZE_TITLE10,
+                                                          fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
                                                         ),
                                                       ),
                                                     ),
@@ -356,9 +352,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                               fontFamily: 'Poppins',
                                                               fontWeight: FontWeight.bold,
                                                               color: Colors.white,
-                                                              fontSize: MediaQuery.of(context).size.width >= 360
-                                                                  ? AppConstant.SIZE_TITLE18
-                                                                  : AppConstant.SIZE_TITLE16,
+                                                              fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE18 : AppConstant.SIZE_TITLE16,
                                                             ),
                                                           );
                                                         },
@@ -388,8 +382,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             style: TextStyle(
                                               fontFamily: 'Poppins',
                                               color: Colors.white54,
-                                              fontSize:
-                                                  MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
+                                              fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
                                             ),
                                           ),
                                         ),
@@ -404,9 +397,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                     fontFamily: 'Poppins',
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.white,
-                                                    fontSize: MediaQuery.of(context).size.width >= 360
-                                                        ? AppConstant.SIZE_TITLE20
-                                                        : AppConstant.SIZE_TITLE18,
+                                                    fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
                                                   ),
                                                 );
                                               },
@@ -518,8 +509,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                 color: Colors.white,
                                 borderRadius: new BorderRadius.circular(4.0),
                                 boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: AllCoustomTheme.getThemeData().primaryColor.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                                  BoxShadow(color: AllCoustomTheme.getThemeData().primaryColor.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
                                 ],
                               ),
                               child: Material(
@@ -620,6 +610,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
   }
 }
 
+//TabTextView
 class TabTextView extends StatelessWidget {
   final TabTextType? tabTextType;
   final bool? isSelected;
@@ -678,8 +669,7 @@ class TabTextView extends StatelessWidget {
   }
 }
 
-enum TabTextType { wk, bat, ar, bowl }
-enum AnimationType { isRegular, isMinimum, isFull, isSeven, isCredits, atLeast }
+///team selection list
 
 class TeamSelectionList extends StatefulWidget {
   final List<Players>? players;
@@ -694,12 +684,12 @@ class TeamSelectionList extends StatefulWidget {
 class _TeamSelectionListState extends State<TeamSelectionList> {
   var messageList = <String>[];
   var animationType = AnimationType.isRegular;
-
+  var teamController = Get.put(TeamController(), permanent: true);
   @override
   void initState() {
     teamTapBloc.setType(AnimationType.isRegular);
-
     super.initState();
+    teamController.getTeamData();
   }
 
   @override
@@ -755,7 +745,7 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                     mainAxisSize: MainAxisSize.max,
                     children: <Widget>[
                       Container(
-                        padding: EdgeInsets.only(left: 74),
+                        padding: EdgeInsets.only(left: 15),
                         child: Center(
                           child: Text(
                             'PLAYERS',
@@ -772,23 +762,23 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                       Container(
                         width: 80,
                         child: Center(
-                          child: Text(
-                            'POINTS',
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold,
-                              color: AllCoustomTheme.getTextThemeColors(),
-                              fontSize: AppConstant.SIZE_TITLE12,
+                            // child: Text(
+                            //   'POINTS',
+                            //   style: TextStyle(
+                            //     fontFamily: 'Poppins',
+                            //     fontWeight: FontWeight.bold,
+                            //     color: AllCoustomTheme.getTextThemeColors(),
+                            //     fontSize: AppConstant.SIZE_TITLE12,
+                            //   ),
+                            // ),
                             ),
-                          ),
-                        ),
                       ),
                       BlocBuilder(
                         bloc: teamSelectionBloc,
                         builder: (context, TeamSelectionBlocState state) {
                           return InkWell(
                             onTap: () {
-                              teamSelectionBloc.setAssendingAndDesandingList();
+                              // teamSelectionBloc.setAssendingAndDesandingList();
                             },
                             child: Container(
                               width: 70,
@@ -804,11 +794,11 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                                         fontSize: AppConstant.SIZE_TITLE12,
                                       ),
                                     ),
-                                    Icon(
-                                      state.assending! ? Icons.arrow_upward : Icons.arrow_downward,
-                                      size: 20,
-                                      color: AllCoustomTheme.getThemeData().primaryColor,
-                                    )
+                                    // Icon(
+                                    //   state.assending! ? Icons.arrow_upward : Icons.arrow_downward,
+                                    //   size: 20,
+                                    //   color: AllCoustomTheme.getThemeData().primaryColor,
+                                    // )
                                   ],
                                 ),
                               ),
@@ -828,21 +818,25 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
               ],
             ),
           ),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.only(bottom: 100),
-              physics: BouncingScrollPhysics(),
-              itemCount: widget.players!.length,
-              itemBuilder: (context, index) {
-                widget.players!.forEach((f) {
-                  print(f.pid);
-                });
-                return PlayerslistUI(
-                  shedualData: widget.shedualData,
-                  player: widget.players![index],
-                );
-              },
-            ),
+          GetBuilder<TeamController>(
+            builder: ((controller) {
+              return Expanded(
+                child: ListView.builder(
+                  padding: EdgeInsets.only(bottom: 100),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: controller.allPlayersData.length,
+                  itemBuilder: (context, index) {
+                    return PlayerViewItem(
+                      credit: controller.allPlayersData[index].player_credit,
+                      img: controller.allPlayersData[index].player_pic,
+                      name: controller.allPlayersData[index].player_name,
+                      role: controller.allPlayersData[index].player_role,
+                      teamName: controller.allPlayersData[index].player_team_name,
+                    );
+                  },
+                ),
+              );
+            }),
           )
         ],
       ),
@@ -895,12 +889,12 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
   }
 }
 
+//playersListUI
+
 class PlayerslistUI extends StatelessWidget {
   final Players player;
   final ShedualData? shedualData;
-
   const PlayerslistUI({Key? key, required this.player, required this.shedualData}) : super(key: key);
-
   bool isValidMiniMach(TabTextType t, List<TabTextType> tlist) {
     bool isMach = false;
     tlist.forEach((type) {
@@ -925,20 +919,25 @@ class PlayerslistUI extends StatelessWidget {
         final isValidMini = teamSelectionBloc.validMinErrorRequirement();
         if ((100.0 - validCredites) < player.fantasyPlayerRating! && !player.isSelcted!) {
           isDisabled = true;
+          print('WK');
         }
         if (is7Player == 7 && !player.isSelcted!) {
           isDisabled = true;
+          print('max 7');
         }
         if (is11Player == 11 && !player.isSelcted!) {
           isDisabled = true;
+          print('max 11');
         }
         if (isValid && !player.isSelcted!) {
           isDisabled = true;
+          print('max isValid');
         }
         if (isValidMini != null && !player.isSelcted!) {
           if (isValidMini != teamSelectionBloc.getTypeTextEnum(player.playingRole!)) {
             if (!isValidMiniMach(teamSelectionBloc.getTypeTextEnum(player.playingRole!)!, teamSelectionBloc.validMinErrorRequirementList())) {
               isDisabled = true;
+              print('both if');
             }
           }
         }
@@ -959,8 +958,7 @@ class PlayerslistUI extends StatelessWidget {
                     bool isMinimum = false;
                     if (isValidMini != null && !player.isSelcted!) {
                       if (isValidMini != teamSelectionBloc.getTypeTextEnum(player.playingRole!)) {
-                        if (!isValidMiniMach(
-                            teamSelectionBloc.getTypeTextEnum(player.playingRole!)!, teamSelectionBloc.validMinErrorRequirementList())) {
+                        if (!isValidMiniMach(teamSelectionBloc.getTypeTextEnum(player.playingRole!)!, teamSelectionBloc.validMinErrorRequirementList())) {
                           isatlest = true;
                         }
                       }
@@ -990,17 +988,17 @@ class PlayerslistUI extends StatelessWidget {
                   }
                 },
                 onLongPress: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlayerProfileScreen(
-                        shedualData: shedualData,
-                        player: player,
-                        isChoose: true,
-                      ),
-                      fullscreenDialog: true,
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => PlayerProfileScreen(
+                  //       shedualData: shedualData,
+                  //       player: player,
+                  //       isChoose: true,
+                  //     ),
+                  //     fullscreenDialog: true,
+                  //   ),
+                  // );
                 },
                 child: Column(
                   children: <Widget>[

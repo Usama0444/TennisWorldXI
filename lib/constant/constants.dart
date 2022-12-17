@@ -52,6 +52,7 @@ class AppConstant {
   static final kabadiplayer = "assets/kabadiplayer.jpg";
 }
 
+//make different api's url here
 class ApiConstant {
   static String domainUrl = "https://dream11.tennisworldxi.com/";
   static String apiUrl = domainUrl + "api/";

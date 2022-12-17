@@ -1,3 +1,4 @@
+import 'package:TennixWorldXI/TestClass.dart';
 import 'package:TennixWorldXI/bloc/bottom_nav_bar_provider.dart';
 import 'package:TennixWorldXI/bloc/phoneVerificationBloc.dart';
 import 'package:TennixWorldXI/constant/firsttime.dart';
@@ -5,6 +6,7 @@ import 'package:TennixWorldXI/constant/global.dart';
 import 'package:TennixWorldXI/constant/routes.dart';
 import 'package:TennixWorldXI/constant/themes.dart';
 import 'package:TennixWorldXI/modules/CustomImagePicker/camera.dart';
+import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_item.dart';
 import 'package:TennixWorldXI/modules/home/tabScreen.dart';
 import 'package:TennixWorldXI/modules/login/loginScreen.dart';
 import 'package:TennixWorldXI/modules/login/otpValidationScreen.dart';
@@ -109,7 +111,7 @@ class _MyAppState extends State<MyApp> {
           title: AppConstant.AppName,
           theme: AllCoustomTheme.getThemeData(),
           routes: routes,
-          // home: Contest(),
+          // home: PlayerViewItem(),
         ),
       ),
     );

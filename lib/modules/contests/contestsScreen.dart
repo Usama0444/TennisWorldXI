@@ -1766,7 +1766,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
   Future<void> _getContestList() async {
     API_STRUCTURE apiObject = API_STRUCTURE(
       context: context,
-      apiName: 'contest/1',
+      apiName: 'contest/${widget.matchID}',
       apiRequestMethod: API_REQUEST_METHOD.GET,
       isWantSuccessMessage: false,
     );
@@ -1785,7 +1785,6 @@ class _ContestsScreenState extends State<ContestsScreen> {
           currentSpot: '2',
         ));
       }
-
       setState(() {});
     }
   }

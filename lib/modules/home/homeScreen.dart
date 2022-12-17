@@ -261,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                           context,
                                           MaterialPageRoute(
                                               builder: (_) => ContestsScreen(
-                                                    // matchID: _upComingMatches[int].id,
+                                                    matchID: _upComingMatches[int].id,
                                                     country1Flag: 'assets/13.png',
                                                     country1Name: _upComingMatches[int].country1Name.toString(),
                                                     country2Flag: 'assets/17.png',
@@ -578,7 +578,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
     Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: false);
     if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
-      // debugPrint("_result:-> $_result");
+      debugPrint("_result:-> $_result");
       for (var data in _result['upcomingMatches']) {
         _upComingMatches.add(MatchShortInfo(
           id: data['id'],
@@ -586,8 +586,8 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           country1Name: data['team_1_title'],
           country2Name: data['team_2_title'],
           time: data['match_date_time'],
-          country1Flag: 'assets/19.png',
-          country2Flag: 'assets/25.png',
+          country1Flag: data['team_1_thumbnail'],
+          country2Flag: data['team_2_thumbnail'],
           country1ShortName: data['team_1_short_name'],
           country2ShortName: data['team_2_short_name'],
         ));

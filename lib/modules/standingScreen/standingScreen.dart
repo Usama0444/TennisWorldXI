@@ -459,7 +459,7 @@ class _MatchesListState extends State<MatchesList> {
                   Row(
                     children: [
                       Text(
-                        widget.title!,
+                        'widget.title',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Poppins',
@@ -610,142 +610,144 @@ class Completed extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SizedBox(
-        child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, int) {
-              return GestureDetector(
-                onTap: () {},
-                child: Card(
-                  elevation: 5,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  child: Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10, top: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('ICC World CUP'),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Pakistan'),
-                          Text('India'),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Image.asset('assets/13.png'),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'PAK',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              )
-                            ],
-                          ),
-                          Text(
-                            'Completed'.toUpperCase(),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.green,
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Text(
-                                'IND',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: Image.asset('assets/17.png'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      height: 30,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Text(
-                                  '1 Team',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Text(
-                                  '1 Contest',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                  ]),
-                ),
-              );
-            }),
-      ),
+      backgroundColor: Colors.white,
+      // body: SizedBox(
+      //   child: ListView.builder(
+      //       itemCount: 10,
+      //       itemBuilder: (context, int) {
+      //         return GestureDetector(
+      //           onTap: () {},
+      //           child: Card(
+      //             elevation: 5,
+      //             shape: RoundedRectangleBorder(
+      //               borderRadius: BorderRadius.circular(20),
+      //             ),
+      //             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      //             child: Column(children: [
+      //               Padding(
+      //                 padding: const EdgeInsets.only(left: 10, top: 10),
+      //                 child: Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   children: [
+      //                     Text('ICC World CUP'),
+      //                   ],
+      //                 ),
+      //               ),
+      //               SizedBox(
+      //                 height: 5,
+      //               ),
+      //               Divider(
+      //                 height: 1,
+      //               ),
+      //               SizedBox(
+      //                 height: 10,
+      //               ),
+      //               Padding(
+      //                 padding: const EdgeInsets.symmetric(horizontal: 10),
+      //                 child: Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   children: [
+      //                     Text('Pakistan'),
+      //                     Text('India'),
+      //                   ],
+      //                 ),
+      //               ),
+      //               Padding(
+      //                 padding: EdgeInsets.symmetric(horizontal: 10),
+      //                 child: Row(
+      //                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                   children: [
+      //                     Row(
+      //                       children: [
+      //                         SizedBox(
+      //                           width: 50,
+      //                           height: 50,
+      //                           child: Image.asset('assets/13.png'),
+      //                         ),
+      //                         SizedBox(
+      //                           width: 10,
+      //                         ),
+      //                         Text(
+      //                           'PAK',
+      //                           style: TextStyle(
+      //                             fontSize: 20,
+      //                             fontWeight: FontWeight.w800,
+      //                           ),
+      //                         )
+      //                       ],
+      //                     ),
+      //                     Text(
+      //                       'Completed'.toUpperCase(),
+      //                       style: TextStyle(
+      //                         fontSize: 16,
+      //                         fontWeight: FontWeight.w800,
+      //                         color: Colors.green,
+      //                       ),
+      //                     ),
+      //                     Row(
+      //                       children: [
+      //                         Text(
+      //                           'IND',
+      //                           style: TextStyle(
+      //                             fontSize: 20,
+      //                             fontWeight: FontWeight.w800,
+      //                           ),
+      //                         ),
+      //                         SizedBox(
+      //                           width: 10,
+      //                         ),
+      //                         SizedBox(
+      //                           width: 50,
+      //                           height: 50,
+      //                           child: Image.asset('assets/17.png'),
+      //                         ),
+      //                       ],
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ),
+      //               Container(
+      //                 height: 30,
+      //                 decoration: BoxDecoration(
+      //                   color: Colors.grey[200],
+      //                   borderRadius: BorderRadius.only(
+      //                     bottomLeft: Radius.circular(20),
+      //                     bottomRight: Radius.circular(20),
+      //                   ),
+      //                 ),
+      //                 child: Padding(
+      //                   padding: const EdgeInsets.symmetric(horizontal: 20),
+      //                   child: Row(
+      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //                     children: [
+      //                       Row(
+      //                         children: [
+      //                           Text(
+      //                             '1 Team',
+      //                             style: TextStyle(
+      //                               color: Colors.black,
+      //                               fontWeight: FontWeight.bold,
+      //                             ),
+      //                           ),
+      //                           Text(
+      //                             '1 Contest',
+      //                             style: TextStyle(
+      //                               color: Colors.black,
+      //                               fontWeight: FontWeight.bold,
+      //                             ),
+      //                           ),
+      //                         ],
+      //                       ),
+      //                     ],
+      //                   ),
+      //                 ),
+      //               )
+      //             ]),
+      //           ),
+      //         );
+
+      //       }),
+      // ),
     );
   }
 }
