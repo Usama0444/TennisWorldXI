@@ -1,5 +1,9 @@
+import 'package:TennixWorldXI/GetxController/teamController.dart';
+import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/captain_voice_captain_view.dart';
+import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:TennixWorldXI/bloc/teamSelectionBloc.dart';
 import 'package:TennixWorldXI/constant/constants.dart';
@@ -247,160 +251,113 @@ class _ChooseCVCScreenState extends State<ChooseCVCScreen> {
                             progressIndicator: CircularProgressIndicator(
                               strokeWidth: 2.0,
                             ),
-                            child: BlocBuilder(
-                              bloc: teamSelectionBloc,
-                              builder: (context, TeamSelectionBlocState state) {
-                                var selectedPlayerList = <Players>[];
-                                state.allPlayerList!.forEach((player) {
-                                  if (player.isSelcted!) {
-                                    selectedPlayerList.add(player);
-                                  }
-                                });
-                                var wkList = <Players>[];
-                                var batList = <Players>[];
-                                var arList = <Players>[];
-                                var bowlList = <Players>[];
-                                var allPlayesList = <Players>[];
-                                selectedPlayerList.forEach((player) {
-                                  if (player.playingRole!.toLowerCase() == teamSelectionBloc.getTypeText(TabTextType.wk).toLowerCase()) {
-                                    wkList.add(player);
-                                  }
-                                  if (player.playingRole!.toLowerCase() == teamSelectionBloc.getTypeText(TabTextType.bat).toLowerCase()) {
-                                    batList.add(player);
-                                  }
-                                  if (player.playingRole!.toLowerCase() == teamSelectionBloc.getTypeText(TabTextType.ar).toLowerCase()) {
-                                    arList.add(player);
-                                  }
-                                  if (player.playingRole!.toLowerCase() == teamSelectionBloc.getTypeText(TabTextType.bowl).toLowerCase()) {
-                                    bowlList.add(player);
-                                  }
-                                });
-
-                                wkList.sort((a, b) => b.fantasyPlayerRating!.compareTo(a.fantasyPlayerRating!));
-                                batList.sort((a, b) => b.fantasyPlayerRating!.compareTo(a.fantasyPlayerRating!));
-                                arList.sort((a, b) => b.fantasyPlayerRating!.compareTo(a.fantasyPlayerRating!));
-                                bowlList.sort((a, b) => b.fantasyPlayerRating!.compareTo(a.fantasyPlayerRating!));
-
-                                allPlayesList.addAll(wkList);
-                                allPlayesList.addAll(batList);
-                                allPlayesList.addAll(arList);
-                                allPlayesList.addAll(bowlList);
-
-                                return ListView.builder(
+                            child: GetBuilder<TeamController>(builder: (controller) {
+                              return ListView.builder(
                                   padding: EdgeInsets.only(bottom: 100),
                                   physics: BouncingScrollPhysics(),
-                                  itemCount: allPlayesList.length,
-                                  itemBuilder: (context, index) => PlayerslistUI(
-                                    player: allPlayesList[index],
-                                    isGrayBar: index != 0 ? allPlayesList[index].playingRole != allPlayesList[index - 1].playingRole : true,
-                                  ),
-                                );
-                              },
-                            ),
+                                  itemCount: controller.allPlayersData.length,
+                                  itemBuilder: (context, index) => CaptainVoiceCaptainItem(player: controller.allPlayersData[index], playerIndex: index));
+                            }),
                           ),
                         )
                       ],
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 60),
-                    child: Container(
-                      height: 60,
-                      padding: EdgeInsets.only(left: 50, right: 50, bottom: 20),
-                      child: Row(
-                        children: <Widget>[
-                          Expanded(
-                            child: Container(
-                              decoration: new BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: new BorderRadius.circular(4.0),
-                                boxShadow: <BoxShadow>[
-                                  BoxShadow(
-                                      color: AllCoustomTheme.getThemeData().primaryColor.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
-                                ],
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
+                  GetBuilder<TeamController>(builder: (cont) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 60),
+                      child: Container(
+                        height: 60,
+                        padding: EdgeInsets.only(left: 50, right: 50, bottom: 20),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Container(
+                                decoration: new BoxDecoration(
+                                  color: Colors.white,
                                   borderRadius: new BorderRadius.circular(4.0),
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => TeamPreviewScreen(),
-                                        fullscreenDialog: true,
-                                      ),
-                                    );
-                                  },
-                                  child: Center(
-                                    child: Text(
-                                      'PREVIEW',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.bold,
-                                        color: AllCoustomTheme.getThemeData().primaryColor,
-                                        fontSize: AppConstant.SIZE_TITLE12,
+                                  boxShadow: <BoxShadow>[
+                                    BoxShadow(color: AllCoustomTheme.getThemeData().primaryColor.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                                  ],
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    borderRadius: new BorderRadius.circular(4.0),
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => TeamPreviewScreen(),
+                                          fullscreenDialog: true,
+                                        ),
+                                      );
+                                    },
+                                    child: Center(
+                                      child: Text(
+                                        'PREVIEW',
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins',
+                                          fontWeight: FontWeight.bold,
+                                          color: AllCoustomTheme.getThemeData().primaryColor,
+                                          fontSize: AppConstant.SIZE_TITLE12,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          Expanded(
-                            child: BlocBuilder(
-                              bloc: teamSelectionBloc,
-                              builder: (context, TeamSelectionBlocState state) {
-                                final isDisabled = teamSelectionBloc.validSaveTeamRequirement();
-                                return Opacity(
-                                  opacity: isDisabled ? 1.0 : 0.2,
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: AllCoustomTheme.getThemeData().primaryColor,
+                            SizedBox(
+                              width: 40,
+                            ),
+                            Expanded(
+                              child: Opacity(
+                                opacity: cont.captainID != 0 && cont.voiceCaptain != 0 ? 1.0 : 0.2,
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: AllCoustomTheme.getThemeData().primaryColor,
+                                    borderRadius: new BorderRadius.circular(4.0),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                                    ],
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
                                       borderRadius: new BorderRadius.circular(4.0),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
-                                      ],
-                                    ),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        borderRadius: new BorderRadius.circular(4.0),
-                                        onTap: () async {
-                                          if (isDisabled) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => MyTeamsScreen(),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            'SAVE TEAM',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: AppConstant.SIZE_TITLE12,
+                                      onTap: () async {
+                                        if (cont.captainID != 0 && cont.voiceCaptain != 0) {
+                                          await cont.createTeam();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MyTeamsScreen(),
                                             ),
+                                          );
+                                        }
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          'SAVE TEAM',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: AppConstant.SIZE_TITLE12,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                );
-                              },
+                                ),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  )
+                    );
+                  })
                 ],
               ),
             ),

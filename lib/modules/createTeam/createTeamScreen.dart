@@ -44,9 +44,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
   var selectedIndex = 0;
   var allPlayerList = <Players>[];
   bool isLoginProsses = false;
+  var teamController = Get.put(TeamController(), permanent: true);
 
   @override
   void initState() {
+    teamController.getTeamData();
     teamSelectionBloc.cleanList();
     teamTapBloc.cleanList();
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
@@ -200,7 +202,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                               color: AllCoustomTheme.getThemeData().primaryColor,
                               child: Center(
                                 child: Text(
-                                  'Max 7 players from a team',
+                                  'Max 11 players from a team',
                                   style: TextStyle(fontFamily: 'Poppins', color: Colors.white, fontSize: AppConstant.SIZE_TITLE14),
                                 ),
                               ),
@@ -232,22 +234,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             mainAxisAlignment: MainAxisAlignment.start,
                                             crossAxisAlignment: CrossAxisAlignment.end,
                                             children: <Widget>[
-                                              Container(
-                                                child: BlocBuilder(
-                                                  bloc: teamSelectionBloc,
-                                                  builder: (context, TeamSelectionBlocState state) {
-                                                    return Text(
-                                                      '${teamSelectionBloc.getSelectedPlayerCount()}',
-                                                      style: TextStyle(
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight: FontWeight.bold,
-                                                        color: Colors.white,
-                                                        fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
+                                              GetBuilder<TeamController>(builder: (con) {
+                                                return Container(
+                                                  child: Text(
+                                                    '${con.getSelectedPlayerCount()}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Colors.white,
+                                                      fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
+                                                    ),
+                                                  ),
+                                                );
+                                              }),
                                               Container(
                                                 padding: EdgeInsets.only(bottom: 4),
                                                 child: Text(
@@ -411,19 +410,17 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                               ),
                             ),
                             Container(
-                              height: 40,
-                              width: double.infinity,
-                              padding: EdgeInsets.all(8),
-                              child: BlocBuilder(
-                                bloc: teamSelectionBloc,
-                                builder: (context, TeamSelectionBlocState state) {
-                                  final playesCount = teamSelectionBloc.getSelectedPlayerCount();
-                                  return CreateTeamProgressbarView(
-                                    teamCount: playesCount,
-                                  );
-                                },
-                              ),
-                            ),
+                                height: 40,
+                                width: double.infinity,
+                                padding: EdgeInsets.all(8),
+                                child: GetBuilder<TeamController>(
+                                  builder: (controller) {
+                                    final playesCount = controller.getSelectedPlayerCount();
+                                    return CreateTeamProgressbarView(
+                                      teamCount: playesCount,
+                                    );
+                                  },
+                                )),
                             SizedBox(
                               height: 4,
                             ),
@@ -543,59 +540,51 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                           SizedBox(
                             width: 40,
                           ),
-                          Expanded(
-                            child: BlocBuilder(
-                              bloc: teamSelectionBloc,
-                              builder: (context, TeamSelectionBlocState state) {
-                                final playesCount = teamSelectionBloc.getSelectedPlayerCount();
-                                final isValid = teamSelectionBloc.validMinRequirement();
-                                var isDisabled = true;
-                                if (playesCount == 11 && isValid) {
-                                  isDisabled = false;
-                                }
-                                return Opacity(
-                                  opacity: isDisabled ? 0.2 : 1.0,
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: AllCoustomTheme.getThemeData().primaryColor,
+                          Expanded(child: GetBuilder<TeamController>(
+                            builder: (cont) {
+                              return Opacity(
+                                opacity: cont.selectedPlayers.length == 11 ? 1.0 : 0.2,
+                                child: Container(
+                                  decoration: new BoxDecoration(
+                                    color: AllCoustomTheme.getThemeData().primaryColor,
+                                    borderRadius: new BorderRadius.circular(4.0),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                                    ],
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
                                       borderRadius: new BorderRadius.circular(4.0),
-                                      boxShadow: <BoxShadow>[
-                                        BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
-                                      ],
-                                    ),
-                                    child: Material(
-                                      color: Colors.transparent,
-                                      child: InkWell(
-                                        borderRadius: new BorderRadius.circular(4.0),
-                                        onTap: () {
-                                          if (!isDisabled) {
-                                            teamSelectionBloc.refreshCAndVC();
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) => ChooseCVCScreen(),
-                                              ),
-                                            );
-                                          }
-                                        },
-                                        child: Center(
-                                          child: Text(
-                                            'CONTINUE',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: AppConstant.SIZE_TITLE12,
+                                      onTap: () {
+                                        if (teamController.selectedPlayers.length == 11) {
+                                          print('yes');
+                                          teamSelectionBloc.refreshCAndVC();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => ChooseCVCScreen(),
                                             ),
+                                          );
+                                        }
+                                      },
+                                      child: Center(
+                                        child: Text(
+                                          'CONTINUE',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: AppConstant.SIZE_TITLE12,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                ),
+                              );
+                            },
+                          )),
                         ],
                       ),
                     ),
@@ -650,18 +639,20 @@ class TabTextView extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.only(bottom: 2),
-              child: Text(
-                ' ($count)',
-                style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.bold,
-                  color: isSelected! ? AllCoustomTheme.getBlackAndWhiteThemeColors() : AllCoustomTheme.getTextThemeColors(),
-                  fontSize: AppConstant.SIZE_TITLE10,
+            GetBuilder<TeamController>(builder: (con) {
+              return Container(
+                padding: EdgeInsets.only(bottom: 2),
+                child: Text(
+                  ' (${con.getSelectedPlayerCount()})',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    color: isSelected! ? AllCoustomTheme.getBlackAndWhiteThemeColors() : AllCoustomTheme.getTextThemeColors(),
+                    fontSize: AppConstant.SIZE_TITLE10,
+                  ),
                 ),
-              ),
-            )
+              );
+            })
           ],
         ),
       ),
@@ -684,12 +675,10 @@ class TeamSelectionList extends StatefulWidget {
 class _TeamSelectionListState extends State<TeamSelectionList> {
   var messageList = <String>[];
   var animationType = AnimationType.isRegular;
-  var teamController = Get.put(TeamController(), permanent: true);
   @override
   void initState() {
     teamTapBloc.setType(AnimationType.isRegular);
     super.initState();
-    teamController.getTeamData();
   }
 
   @override
@@ -824,15 +813,33 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                 child: ListView.builder(
                   padding: EdgeInsets.only(bottom: 100),
                   physics: BouncingScrollPhysics(),
-                  itemCount: controller.allPlayersData.length,
+                  itemCount: widget.tabType == TabTextType.wk
+                      ? controller.wicketKiperList.length
+                      : widget.tabType == TabTextType.bat
+                          ? controller.batterList.length
+                          : widget.tabType == TabTextType.bowl
+                              ? controller.bowlerList.length
+                              : controller.allRounderList.length,
                   itemBuilder: (context, index) {
-                    return PlayerViewItem(
-                      credit: controller.allPlayersData[index].player_credit,
-                      img: controller.allPlayersData[index].player_pic,
-                      name: controller.allPlayersData[index].player_name,
-                      role: controller.allPlayersData[index].player_role,
-                      teamName: controller.allPlayersData[index].player_team_name,
-                    );
+                    return widget.tabType == TabTextType.wk
+                        ? PlayerViewItem(
+                            player: controller.wicketKiperList[index],
+                            playerIndex: controller.allPlayersData.indexOf(controller.wicketKiperList[index]),
+                          )
+                        : widget.tabType == TabTextType.bat
+                            ? PlayerViewItem(
+                                player: controller.batterList[index],
+                                playerIndex: controller.allPlayersData.indexOf(controller.batterList[index]),
+                              )
+                            : widget.tabType == TabTextType.bowl
+                                ? PlayerViewItem(
+                                    player: controller.bowlerList[index],
+                                    playerIndex: controller.allPlayersData.indexOf(controller.bowlerList[index]),
+                                  )
+                                : PlayerViewItem(
+                                    player: controller.allRounderList[index],
+                                    playerIndex: controller.allPlayersData.indexOf(controller.allRounderList[index]),
+                                  );
                   },
                 ),
               );

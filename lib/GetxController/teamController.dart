@@ -3,30 +3,121 @@ import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
 class TeamController extends GetxController {
-  var match_id = 14;
+  var match_id;
+  List<bool> select = [];
+  List<PlayerModel> wicketKiperList = [];
+  List<PlayerModel> batterList = [];
+  List<PlayerModel> allRounderList = [];
+  List<PlayerModel> bowlerList = [];
   List<PlayerModel> allPlayersData = [];
+  List<PlayerModel> selectedPlayers = [];
+  List<int> maxSelectionCount = [1, 5, 3, 5];
+  List<int> minSelectionCount = [1, 3, 1, 3];
+  int captainID = 0;
+  int voiceCaptain = 0;
+  List<bool> isCaptainSelect = [];
+  List<bool> isVoiceCaptainSelect = [];
+  var teamPlayerIds = [];
   getTeamData() async {
-    allPlayersData.clear();
-    print('data getting');
+    clearAllListData();
     var response = await Dio().get('https://dream11.tennisworldxi.com/api/players/$match_id');
     List data = response.data['data']['result']['allplayers'];
     var teamNames = response.data['data']['result']['match'];
     for (int i = 0; i < data.length; i++) {
+      select.add(false);
+      isCaptainSelect.add(false);
+      isVoiceCaptainSelect.add(false);
       allPlayersData.add(PlayerModel(
         match_id: data[i]['match_id'],
         player_credit: data[i]['credit_point'],
         player_id: data[i]['player_id'],
         player_name: data[i]['player_name'],
         player_pic: data[i]['player_image'],
-        player_role: data[i]['player_role'],
+        player_role: data[i]['player_role'] == '8'
+            ? 'wk'
+            : data[i]['player_role'] == '2'
+                ? 'bowl'
+                : data[i]['player_role'] == '4' || data[i]['player_role'] == '5' || data[i]['player_role'] == '6'
+                    ? 'bat'
+                    : 'all',
         player_team_name: data[i]['player_team_name'] == '1' ? teamNames['team_1_title'] : teamNames['team_2_title'],
       ));
     }
+
+    for (int i = 0; i < allPlayersData.length; i++) {
+      if (allPlayersData[i].player_role == 'wk') {
+        wicketKiperList.add(allPlayersData[i]);
+      } else if (allPlayersData[i].player_role == 'bat') {
+        batterList.add(allPlayersData[i]);
+      } else if (allPlayersData[i].player_role == 'bowl') {
+        bowlerList.add(allPlayersData[i]);
+      } else {
+        allRounderList.add(allPlayersData[i]);
+      }
+    }
     update();
-    // print(allPlayersData.length);
-    // print('players Name');
-    // for (int i = 0; i < allPlayersData.length; i++) {
-    //   print(allPlayersData[i].player_name);
-    // }
+  }
+
+  clearAllListData() {
+    allPlayersData.clear();
+    select.clear();
+    teamPlayerIds.clear();
+    wicketKiperList.clear();
+    allRounderList.clear();
+    batterList.clear();
+    bowlerList.clear();
+    selectedPlayers.clear();
+    isCaptainSelect.clear();
+    isVoiceCaptainSelect.clear();
+  }
+
+  int getSelectedPlayerCount() {
+    if (selectedPlayers.length < 11) {
+      return selectedPlayers.length;
+    } else {
+      return 11;
+    }
+  }
+
+  createTeam() async {
+    print('create');
+    for (var player in wicketKiperList) {
+      teamPlayerIds.add(player.player_id);
+    }
+    for (var player in allRounderList) {
+      teamPlayerIds.add(player.player_id);
+    }
+    for (var player in batterList) {
+      teamPlayerIds.add(player.player_id);
+    }
+    for (var player in bowlerList) {
+      teamPlayerIds.add(player.player_id);
+    }
+    update();
+    try {
+      var formData = {
+        'team1': 1,
+        'team2': 2,
+        'captainId': captainID,
+        'allRounder': allRounderList.length,
+        'batsman': batterList.length,
+        'bowler': bowlerList.length,
+        'wKeeper': wicketKiperList.length,
+        'teamPlayers': teamPlayerIds,
+        'voicecaptainId': voiceCaptain,
+        'matchId': match_id,
+      };
+      print('uper');
+      var response = await Dio().post(
+        'https://dream11.tennisworldxi.com/api/team/user-create-team',
+        queryParameters: formData,
+      );
+      print('status${response.statusCode}');
+      if (response.statusCode == 200) {
+        print('successful');
+      } else {
+        print(response.statusCode);
+      }
+    } catch (e) {}
   }
 }

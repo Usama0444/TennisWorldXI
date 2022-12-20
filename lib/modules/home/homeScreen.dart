@@ -1,6 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:ui';
+import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:TennixWorldXI/modules/login/sliderView.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -257,6 +258,10 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                 itemBuilder: (context, int) {
                                   return GestureDetector(
                                     onTap: () {
+                                      var teamCont = Get.put(TeamController(), permanent: true);
+                                      teamCont.match_id = _upComingMatches[int].id;
+                                      teamCont.update();
+
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
