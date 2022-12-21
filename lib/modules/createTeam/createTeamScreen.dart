@@ -558,7 +558,6 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                       borderRadius: new BorderRadius.circular(4.0),
                                       onTap: () {
                                         if (teamController.selectedPlayers.length == 11) {
-                                          print('yes');
                                           teamSelectionBloc.refreshCAndVC();
                                           Navigator.push(
                                             context,
@@ -706,15 +705,27 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                       return BlocBuilder(
                         bloc: teamSelectionBloc,
                         builder: (context, TeamSelectionBlocState state) {
-                          return Text(
-                            getValideTxt(widget.tabType!),
-                            style: TextStyle(
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.bold,
-                              color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                              fontSize: AppConstant.SIZE_TITLE14,
-                            ),
-                          );
+                          return GetBuilder<TeamController>(builder: (con) {
+                            return Text(
+                              con.wicketKiperList.length < 1
+                                  ? 'You must pick at least 1 Wicket-Keeper'
+                                  : con.batterList.length < 3
+                                      ? 'You must pick at least 3 Batsmen.'
+                                      : con.allRounderList.length < 1
+                                          ? 'You must pick at least 1 All-Rounder.'
+                                          : con.bowlerList.length < 3
+                                              ? 'You must pick at least 3 bowlers.'
+                                              : con.selectedPlayers.length == 11
+                                                  ? '11 players selected, tap continue'
+                                                  : getValideTxt(widget.tabType!),
+                              style: TextStyle(
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.bold,
+                                color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
+                                fontSize: AppConstant.SIZE_TITLE14,
+                              ),
+                            );
+                          });
                         },
                       );
                     },

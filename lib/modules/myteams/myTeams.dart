@@ -247,26 +247,7 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => TeamPreviewScreen(
-                    createdTeamData: teamList[index],
-                    createTeamPreviewType: CreateTeamPreviewType.created,
-                    editCallback: () async {
-                      await Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CreateTeamScreen(
-                            createdTeamData: teamList[index],
-                            createTeamtype: CreateTeamType.editTeam,
-                          ),
-                          fullscreenDialog: true,
-                        ),
-                      );
-                      setState(() {
-                        getTeamList();
-                      });
-                    },
-                    shreCallback: () {},
-                  ),
+                  builder: (context) => TeamPreviewScreen(),
                   fullscreenDialog: true,
                 ),
               );

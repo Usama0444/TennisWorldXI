@@ -1,4 +1,5 @@
 import 'package:TennixWorldXI/models/MyModels/player_model.dart';
+import 'package:TennixWorldXI/utils/toast.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 
@@ -11,8 +12,6 @@ class TeamController extends GetxController {
   List<PlayerModel> bowlerList = [];
   List<PlayerModel> allPlayersData = [];
   List<PlayerModel> selectedPlayers = [];
-  List<int> maxSelectionCount = [1, 5, 3, 5];
-  List<int> minSelectionCount = [1, 3, 1, 3];
   int captainID = 0;
   int voiceCaptain = 0;
   List<bool> isCaptainSelect = [];
@@ -79,6 +78,14 @@ class TeamController extends GetxController {
     }
   }
 
+  bool checkTeamValidation() {
+    if (wicketKiperList.length < 1 || batterList.length < 3 || allRounderList.length < 1 || bowlerList.length < 3) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   createTeam() async {
     print('create');
     for (var player in wicketKiperList) {
@@ -104,20 +111,20 @@ class TeamController extends GetxController {
         'bowler': bowlerList.length,
         'wKeeper': wicketKiperList.length,
         'teamPlayers': teamPlayerIds,
-        'voicecaptainId': voiceCaptain,
+        'vicecaptainId': voiceCaptain,
         'matchId': match_id,
       };
-      print('uper');
       var response = await Dio().post(
         'https://dream11.tennisworldxi.com/api/team/user-create-team',
         queryParameters: formData,
       );
-      print('status${response.statusCode}');
       if (response.statusCode == 200) {
-        print('successful');
+        CustomToast.showToast(message: 'Team Added');
       } else {
-        print(response.statusCode);
+        CustomToast.showToast(message: 'Something went wrong');
       }
-    } catch (e) {}
+    } catch (e) {
+      CustomToast.showToast(message: 'Something went wrong');
+    }
   }
 }

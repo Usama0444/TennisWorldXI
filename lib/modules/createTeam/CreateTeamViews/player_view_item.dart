@@ -170,7 +170,6 @@ class _PlayerViewItemState extends State<PlayerViewItem> {
                                   controller.select[widget.playerIndex] = true;
                                   controller.selectedPlayers.add(widget.player);
                                 }
-                                controller.minSelectionCount[3] += 1;
                               }
                             }
                           }
