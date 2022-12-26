@@ -1,4 +1,5 @@
 import 'package:TennixWorldXI/models/MyModels/player_model.dart';
+import 'package:TennixWorldXI/models/MyModels/team_model.dart';
 import 'package:TennixWorldXI/utils/toast.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,11 @@ class TeamController extends GetxController {
   List<bool> isCaptainSelect = [];
   List<bool> isVoiceCaptainSelect = [];
   var teamPlayerIds = [];
-  getTeamData() async {
+
+//////User teams variables
+  List<TeamModel> userTeams = [];
+
+  getPlayersData() async {
     clearAllListData();
     var response = await Dio().get('https://dream11.tennisworldxi.com/api/players/$match_id');
     List data = response.data['data']['result']['allplayers'];
@@ -125,6 +130,46 @@ class TeamController extends GetxController {
       }
     } catch (e) {
       CustomToast.showToast(message: 'Something went wrong');
+    }
+  }
+
+  ///User teams Methods
+
+  getAllUserTeams() async {
+    try {
+      userTeams.clear();
+      print('in get team method match_id $match_id');
+      var resp = await Dio().get('https://dream11.tennisworldxi.com/api/team/user-team/15');
+      print('resposne= > ${resp.data}');
+      var data = resp.data['data']['result']['userTeams'];
+      var captainName = resp.data['data']['result']['captainName'];
+      var cap_pic = resp.data['data']['result']['captainImage'];
+      var vice_captainName = resp.data['data']['result']['vice_captainName'];
+      var vice_cap_pic = resp.data['data']['result']['vice_captainImage'];
+      print('team data %%%%%%%%%%%%%%%%%%%%%%%%');
+      print('cap name $cap_pic');
+      for (int i = 0; i < data.length; i++) {
+        userTeams.add(TeamModel(
+          match_id: match_id,
+          bowlers: data[i]['bowler'],
+          team_id: data[i]['id'],
+          team_no: data[i]['team_no'],
+          wkeeper: data[i]['w_keeper'],
+          batters: data[i]['batsman'],
+          allRounders: data[i]['all_rounder'],
+          vice_captain_pic: vice_cap_pic[i],
+          captain_name: captainName[i],
+          captain_pic: cap_pic[i],
+          vice_captain_name: vice_captainName[i],
+        ));
+      }
+      for (var v in userTeams) {
+        print(v.captain_pic);
+      }
+      update();
+    } catch (e) {
+      print('Something went wrong');
+      CustomToast.showToast(message: 'Something went wrong!');
     }
   }
 }

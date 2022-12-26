@@ -60,7 +60,7 @@ class _LeagueTeamPreviewScreenState extends State<LeagueTeamPreviewScreen> {
         isProsses = true;
       });
 
-      final data = await ApiProvider().getTeamData();
+      final data = await ApiProvider().getPlayersData();
       if (data != null && data.success == 1 && data.playerList!.length > 0) {
         var allPlayerList = data.playerList;
 

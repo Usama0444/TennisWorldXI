@@ -53,11 +53,11 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
   ];
   @override
   void initState() {
-    getTeamData(false);
+    getPlayersData(false);
     super.initState();
   }
 
-  Future<Null> getTeamData(bool pool) async {
+  Future<Null> getPlayersData(bool pool) async {
     userData = (await MySharedPreferences().getUserData());
     if (!pool) {
       setState(() {
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
               displacement: 100,
               key: _refreshIndicatorKey,
               onRefresh: () async {
-                await getTeamData(true);
+                await getPlayersData(true);
               },
               child: ModalProgressHUD(
                 inAsyncCall: isLoginProsses,

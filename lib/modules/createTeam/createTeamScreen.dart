@@ -48,7 +48,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
 
   @override
   void initState() {
-    teamController.getTeamData();
+    teamController.getPlayersData();
     teamSelectionBloc.cleanList();
     teamTapBloc.cleanList();
     tabController = TabController(length: 4, vsync: this, initialIndex: 0);
@@ -66,7 +66,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
     setState(() {
       isLoginProsses = true;
     });
-    final data = await ApiProvider().getTeamData();
+    final data = await ApiProvider().getPlayersData();
 
     if (data != null && data.playerList!.length > 0) {
       allPlayerList.clear();

@@ -24,9 +24,7 @@ class TeamSelectionScreen extends StatefulWidget {
   final String? leagueId;
   final String? entryfee;
 
-  const TeamSelectionScreen(
-      {Key? key, this.shedualData, this.leagueId, this.teamSelectionType = TeamSelectionType.regular, this.selectedTeamId = '', this.entryfee = '0'})
-      : super(key: key);
+  const TeamSelectionScreen({Key? key, this.shedualData, this.leagueId, this.teamSelectionType = TeamSelectionType.regular, this.selectedTeamId = '', this.entryfee = '0'}) : super(key: key);
   @override
   _TeamSelectionScreenState createState() => _TeamSelectionScreenState();
 }
@@ -569,33 +567,7 @@ class _TeamSelectionScreenState extends State<TeamSelectionScreen> {
                 team: teamList[index],
                 shedualData: widget.shedualData!,
                 allViewClick: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => TeamPreviewScreen(
-                        shedualData: widget.shedualData,
-                        createdTeamData: teamList[index],
-                        createTeamPreviewType: CreateTeamPreviewType.created,
-                        editCallback: () async {
-                          await Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => CreateTeamScreen(
-                                createdTeamData: teamList[index],
-                                createTeamtype: CreateTeamType.editTeam,
-                              ),
-                              fullscreenDialog: true,
-                            ),
-                          );
-                          setState(() {
-                            getTeamList();
-                          });
-                        },
-                        shreCallback: () {},
-                      ),
-                      fullscreenDialog: true,
-                    ),
-                  );
+                  Navigator.push(context, MaterialPageRoute(builder: (_) => TeamPreviewScreen()));
                 },
                 checkBoxClick: () {
                   setState(() {
@@ -658,7 +630,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
   }
 
   Future getTeamDeatil() async {
-    SquadsResponseData data = await ApiProvider().getTeamData();
+    SquadsResponseData data = await ApiProvider().getPlayersData();
     if (data.success == 1 && data.playerList!.length > 0) {
       players = data.playerList!;
 
@@ -755,9 +727,7 @@ class _JoinTeamViewState extends State<JoinTeamView> {
                   borderRadius: new BorderRadius.circular(32.0),
                   border: new Border.all(
                     width: 2.0,
-                    color: widget.team!.isSelected!
-                        ? AllCoustomTheme.getThemeData().primaryColor
-                        : AllCoustomTheme.getTextThemeColors().withOpacity(0.5),
+                    color: widget.team!.isSelected! ? AllCoustomTheme.getThemeData().primaryColor : AllCoustomTheme.getTextThemeColors().withOpacity(0.5),
                   ),
                 ),
                 child: Container(
