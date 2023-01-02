@@ -255,8 +255,8 @@ class _ChooseCVCScreenState extends State<ChooseCVCScreen> {
                               return ListView.builder(
                                   padding: EdgeInsets.only(bottom: 100),
                                   physics: BouncingScrollPhysics(),
-                                  itemCount: controller.allPlayersData.length,
-                                  itemBuilder: (context, index) => CaptainVoiceCaptainItem(player: controller.allPlayersData[index], playerIndex: index));
+                                  itemCount: (controller.selectedPlayers.length) + 1,
+                                  itemBuilder: (context, index) => index == 0 ? header() : CaptainVoiceCaptainItem(player: controller.selectedPlayers[index - 1], playerIndex: index));
                             }),
                           ),
                         )
@@ -366,238 +366,75 @@ class _ChooseCVCScreenState extends State<ChooseCVCScreen> {
       ),
     );
   }
-}
 
-class PlayerslistUI extends StatelessWidget {
-  final Players? player;
-  final ShedualData? shedualData;
-  final bool? isGrayBar;
-
-  const PlayerslistUI({Key? key, this.player, this.isGrayBar = false, this.shedualData}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AllCoustomTheme.getThemeData().backgroundColor,
-      child: Column(
-        children: <Widget>[
-          isGrayBar!
-              ? Container(
-                  padding: EdgeInsets.all(4),
-                  color: AllCoustomTheme.getThemeData().dividerColor.withOpacity(0.1),
-                  child: Center(
-                    child: Text(
-                      teamSelectionBloc.getFullNameType(player!.playingRole!),
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.bold,
-                        color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                        fontSize: AppConstant.SIZE_TITLE12,
-                      ),
+  Widget header() {
+    return Column(
+      children: [
+        SizedBox(
+          height: 5,
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.03, right: MediaQuery.of(context).size.width * 0.05),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Type↓'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                )
-              : SizedBox(),
-          Container(
-            height: 60,
-            child: Material(
-              color: Colors.transparent,
-              child: InkWell(
-                borderRadius: new BorderRadius.circular(0.0),
-                onTap: () async {},
-                onLongPress: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PlayerProfileScreen(
-                        shedualData: shedualData!,
-                        player: player!,
-                        isChoose: false,
-                      ),
-                      fullscreenDialog: true,
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.25,
+                  ),
+                  Text(
+                    'points'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
-                  );
-                },
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Row(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.only(left: 16),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PlayerProfileScreen(
-                                      shedualData: shedualData!,
-                                      player: player!,
-                                      isChoose: false,
-                                    ),
-                                    fullscreenDialog: true,
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                width: 50,
-                                height: 50,
-                                child: AvatarImage(
-                                  isCircle: true,
-                                  isAssets: true,
-                                  imageUrl: 'assets/cname/${player!.pid}.png',
-                                  radius: 50,
-                                  sizeValue: 50,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Container(
-                                    child: Text(
-                                      '${player!.title}',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.bold,
-                                        color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                                        fontSize: AppConstant.SIZE_TITLE12,
-                                      ),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.only(top: 4),
-                                    child: Text(
-                                      '${player!.teamName} - ${player!.playingRole!.toUpperCase()}',
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins',
-                                        color: AllCoustomTheme.getTextThemeColors(),
-                                        fontSize: AppConstant.SIZE_TITLE10,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            width: 80,
-                            child: Center(
-                              child: Text(
-                                '${player!.point}',
-                                style: TextStyle(
-                                  fontFamily: 'Poppins',
-                                  color: AllCoustomTheme.getTextThemeColors(),
-                                  fontSize: AppConstant.SIZE_TITLE12,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(top: 8, bottom: 8),
-                            width: 0.4,
-                            child: Container(
-                              color: AllCoustomTheme.getTextThemeColors().withOpacity(0.5),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(right: 8, left: 8),
-                            child: Center(
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: new BorderRadius.circular(32.0),
-                                  onTap: () {
-                                    teamSelectionBloc.setCaptain(player!.pid!);
-                                  },
-                                  child: Container(
-                                    width: 32,
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: player!.isC! ? AllCoustomTheme.getThemeData().primaryColor : Colors.transparent,
-                                      borderRadius: new BorderRadius.circular(32.0),
-                                      border: new Border.all(
-                                        width: 1.0,
-                                        color: player!.isC! ? AllCoustomTheme.getThemeData().primaryColor : AllCoustomTheme.getTextThemeColors(),
-                                      ),
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: 2, top: 2),
-                                      child: Center(
-                                        child: Text(
-                                          'C',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: player!.isC! ? Colors.white : AllCoustomTheme.getTextThemeColors(),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: AppConstant.SIZE_TITLE16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(right: 16),
-                            child: Center(
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: new BorderRadius.circular(32.0),
-                                  onTap: () {
-                                    teamSelectionBloc.setViceCaptain(player!.pid!);
-                                  },
-                                  child: Container(
-                                    width: 32,
-                                    height: 32,
-                                    decoration: BoxDecoration(
-                                      color: player!.isVC! ? AllCoustomTheme.getThemeData().primaryColor : Colors.transparent,
-                                      borderRadius: new BorderRadius.circular(32.0),
-                                      border: new Border.all(
-                                        width: 1.0,
-                                        color: player!.isVC! ? AllCoustomTheme.getThemeData().primaryColor : AllCoustomTheme.getTextThemeColors(),
-                                      ),
-                                    ),
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: 4, top: 1),
-                                      child: Center(
-                                        child: Text(
-                                          'vc',
-                                          style: TextStyle(
-                                            fontFamily: 'Poppins',
-                                            color: player!.isVC! ? Colors.white : AllCoustomTheme.getTextThemeColors(),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: AppConstant.SIZE_TITLE18,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Divider(
-                      height: 1,
-                    ),
-                  ],
-                ),
+                  )
+                ],
               ),
-            ),
+              Row(
+                children: [
+                  Text(
+                    '% c by'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.02,
+                  ),
+                  Text(
+                    '% vc by'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.grey[500],
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+        Divider(
+          height: 2,
+          color: Colors.black,
+        ),
+        SizedBox(
+          height: 5,
+        ),
+      ],
     );
   }
 }

@@ -37,7 +37,7 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
 
   var sheduallist = <ShedualData>[];
@@ -260,20 +260,28 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                                     onTap: () {
                                       var teamCont = Get.put(TeamController(), permanent: true);
                                       teamCont.match_id = _upComingMatches[int].id;
+                                      teamCont.team1Flag = _upComingMatches[int].country1Flag;
+                                      teamCont.team2Flag = _upComingMatches[int].country2Flag;
+                                      teamCont.team1Name = _upComingMatches[int].country1Name;
+                                      teamCont.team2Name = _upComingMatches[int].country2Name;
+                                      teamCont.team1ShortName = _upComingMatches[int].country1ShortName;
+                                      teamCont.team2ShortName = _upComingMatches[int].country2ShortName;
+                                      teamCont.contest_id = _upComingMatches[int].contest_id;
                                       teamCont.update();
-
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (_) => ContestsScreen(
                                                     matchID: _upComingMatches[int].id,
-                                                    country1Flag: 'assets/13.png',
-                                                    country1Name: _upComingMatches[int].country1Name.toString(),
-                                                    country2Flag: 'assets/17.png',
-                                                    country2Name: _upComingMatches[int].country2Name.toString(),
+                                                    country1Flag: 'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country1Flag}',
+                                                    country1Name: _upComingMatches[int].country1ShortName.toString(),
+                                                    country2Flag: 'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country2Flag}',
+                                                    country2Name: _upComingMatches[int].country2ShortName.toString(),
                                                     price: '123',
                                                     time: '1h 46m',
                                                     titel: _upComingMatches[int].title.toString(),
+                                                    country1FullName: _upComingMatches[int].country1Name.toString(),
+                                                    country2FullName: _upComingMatches[int].country2Name.toString(),
                                                   )));
                                     },
                                     child: Card(
@@ -603,6 +611,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
           country2Flag: data['team_2_thumbnail'],
           country1ShortName: data['team_1_short_name'],
           country2ShortName: data['team_2_short_name'],
+          contest_id: data['contest_category_id'],
         ));
       }
       isLoginProsses = false;

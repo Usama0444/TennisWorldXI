@@ -46,7 +46,7 @@ class _FacebookGoogleViewState extends State<FacebookGoogleView> {
                     child: InkWell(
                       borderRadius: new BorderRadius.circular(8.0),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (builder)=> LoginView()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (builder) => LoginView()));
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 12, bottom: 12),
@@ -91,7 +91,7 @@ class _FacebookGoogleViewState extends State<FacebookGoogleView> {
                     child: InkWell(
                       borderRadius: new BorderRadius.circular(8.0),
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (builder)=> RegisterScreen()));
+                        Navigator.push(context, MaterialPageRoute(builder: (builder) => RegisterScreen()));
                       },
                       child: Padding(
                         padding: EdgeInsets.only(top: 12, bottom: 12),

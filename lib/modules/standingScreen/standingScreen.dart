@@ -212,6 +212,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
       for (var data in _result['upcomingMatches']) {
         _upComingMatches.add(MatchShortInfo(
+          contest_id: 1,
           country1ShortName: '',
           country2ShortName: '',
           id: data['id'],
@@ -225,6 +226,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
       }
       for (var data in _result['liveMatches']) {
         _liveMatches.add(MatchShortInfo(
+          contest_id: 1,
           id: data['id'],
           title: data['title'],
           country1Name: data['team_1_title'],
@@ -238,6 +240,7 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
       }
       for (var data in _result['completedMatches']) {
         _completedMatches.add(MatchShortInfo(
+          contest_id: 1,
           country1ShortName: '',
           country2ShortName: '',
           id: data['id'],

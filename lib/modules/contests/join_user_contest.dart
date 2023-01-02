@@ -1,19 +1,22 @@
-// ignore_for_file: unnecessary_null_comparison
-
 import 'package:TennixWorldXI/GetxController/teamController.dart';
-import 'package:TennixWorldXI/constant/constants.dart';
-import 'package:TennixWorldXI/constant/themes.dart';
-import 'package:TennixWorldXI/modules/contests/contestsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/container.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class MyTeamsScreen extends StatefulWidget {
+import '../../constant/constants.dart';
+import '../../constant/themes.dart';
+import 'contestsScreen.dart';
+
+class JoinUserContest extends StatefulWidget {
+  const JoinUserContest({super.key});
+
   @override
-  _MyTeamsScreenState createState() => _MyTeamsScreenState();
+  State<JoinUserContest> createState() => _JoinUserContestState();
 }
 
-class _MyTeamsScreenState extends State<MyTeamsScreen> {
+class _JoinUserContestState extends State<JoinUserContest> {
   var teamController = Get.find<TeamController>();
   @override
   void initState() {
@@ -79,7 +82,7 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                                     Expanded(
                                       child: Center(
                                         child: Text(
-                                          'My Teams',
+                                          'Join Contest',
                                           style: TextStyle(
                                             fontFamily: 'Poppins',
                                             fontSize: AppConstant.SIZE_TITLE22,
@@ -408,6 +411,22 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                                                               fontSize: AppConstant.SIZE_TITLE12,
                                                             ),
                                                           ),
+                                                          SizedBox(
+                                                            width: 8,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.end,
+                                                            children: [
+                                                              Radio(
+                                                                  value: index,
+                                                                  groupValue: con.group_val,
+                                                                  onChanged: (va) {
+                                                                    con.group_val = va;
+                                                                    con.team_id = con.userTeams[index].team_id;
+                                                                    con.update();
+                                                                  }),
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -422,6 +441,18 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                       ],
                     ),
                   ],
+                ),
+              ),
+              floatingActionButton: FloatingActionButton.extended(
+                backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
+                onPressed: () {},
+                label: Text(
+                  'Submit',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),

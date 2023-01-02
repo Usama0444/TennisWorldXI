@@ -9,6 +9,7 @@ class MatchShortInfo {
   final String? price;
   final String? country1ShortName;
   final String? country2ShortName;
+  final int? contest_id;
 
   MatchShortInfo({
     required this.id,
@@ -21,6 +22,7 @@ class MatchShortInfo {
     required this.country2Flag,
     required this.country1ShortName,
     required this.country2ShortName,
+    required this.contest_id,
   });
 
   factory MatchShortInfo.fromJson({required Map<String, dynamic> jsonData}) {
@@ -37,6 +39,7 @@ class MatchShortInfo {
       country2Flag: 'assets/25.png',
       price: jsonData['price'] ?? '',
       time: jsonData['title'] ?? '',
+      contest_id: jsonData['contest_category_id'] ?? 1,
     );
   }
 }

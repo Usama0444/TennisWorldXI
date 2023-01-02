@@ -4,6 +4,8 @@ import 'dart:core';
 import 'dart:ui';
 import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:TennixWorldXI/models/contest_list_model.dart';
+import 'package:TennixWorldXI/modules/contests/join_user_contest.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
@@ -22,6 +24,7 @@ import 'package:sticky_headers/sticky_headers.dart';
 import '../../api/Api_Handler/api_call_Structure.dart';
 import '../../api/Api_Handler/api_constants.dart';
 import '../../api/Api_Handler/api_error_response.dart';
+import '../../utils/toast.dart';
 import 'insideContest.dart';
 
 class ContestsScreen extends StatefulWidget {
@@ -33,6 +36,8 @@ class ContestsScreen extends StatefulWidget {
   final String? time;
   final String? price;
   final int? matchID;
+  final String? country1FullName;
+  final String? country2FullName;
 
   const ContestsScreen({
     Key? key,
@@ -44,6 +49,8 @@ class ContestsScreen extends StatefulWidget {
     this.time,
     this.price,
     this.matchID,
+    this.country1FullName,
+    this.country2FullName,
   }) : super(key: key);
   @override
   _ContestsScreenState createState() => _ContestsScreenState();
@@ -56,6 +63,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
   bool tab1 = true;
   bool tab2 = false;
   bool tab3 = false;
+  bool isTeamSelect = false;
   var teamController = Get.find<TeamController>();
   @override
   void initState() {
@@ -141,15 +149,15 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                     ],
                                   ),
                                 ),
-                                MatchHadder(
-                                  country1Flag: widget.country1Flag!,
-                                  country2Flag: widget.country2Flag!,
-                                  country1Name: widget.country1Name!,
-                                  country2Name: widget.country2Name!,
-                                  price: widget.price!,
-                                  time: widget.time!,
-                                  titel: widget.titel!,
-                                )
+                                // MatchHadder(
+                                //   country1Flag: widget.country1Flag!,
+                                //   country2Flag: widget.country2Flag!,
+                                //   country1Name: widget.country1Name!,
+                                //   country2Name: widget.country2Name!,
+                                //   price: widget.price!,
+                                //   time: widget.time!,
+                                //   titel: widget.titel!,
+                                // )
                               ],
                             ),
                           ),
@@ -177,14 +185,11 @@ class _ContestsScreenState extends State<ContestsScreen> {
         !tab2
             ? Padding(
                 padding: const EdgeInsets.only(bottom: 70),
-                child: IgnorePointer(
-                  ignoring: iscontestsProsses,
-                  child: Container(
-                    width: double.infinity,
-                    child: CreateTeamButton(
-                      contestJoinedList: categoryList.totalcontest!,
-                      teamList: categoryList.teamlist!.length,
-                      createTeam: () {
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -193,8 +198,26 @@ class _ContestsScreenState extends State<ContestsScreen> {
                           ),
                         );
                       },
+                      child: Text('create team'.toUpperCase()),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
+                      ),
                     ),
-                  ),
+                    Opacity(
+                      opacity: isTeamSelect ? 1.0 : 0.4,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (isTeamSelect) {
+                            teamController.joinUserContest();
+                          }
+                        },
+                        child: Text('Join Contest'.toUpperCase()),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
               )
             : SizedBox()
@@ -327,57 +350,203 @@ class _ContestsScreenState extends State<ContestsScreen> {
                       physics: BouncingScrollPhysics(),
                       itemCount: 4,
                       itemBuilder: (context, index) {
-                        return StickyHeader(
-                          header: new Container(
-                            color: AllCoustomTheme.getThemeData().scaffoldBackgroundColor,
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 4, bottom: 6, left: 8),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  new Text(
-                                    'Contest Number $index',
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                  Text(
-                                    'The Ultimate Face Off',
-                                    style: TextStyle(
-                                      fontFamily: 'Poppins',
-                                      color: AllCoustomTheme.getThemeData().primaryColor,
-                                      fontSize: AppConstant.SIZE_TITLE12,
-                                    ),
-                                  ),
-                                  index != 0
-                                      ? Text('')
-                                      : Image.asset(
-                                          'assets/discount.png',
-                                          width: 100,
-                                          height: 20,
-                                        ),
-                                ],
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => InsideContest(),
+                                fullscreenDialog: false,
                               ),
-                            ),
-                          ),
-                          content: Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 100),
-                              child: SizedBox(
-                                height: 600,
-                                child: ListView.builder(
-                                    itemCount: contestListModel.length,
-                                    itemBuilder: (context, index) {
-                                      return contestnt(
-                                        contestListModel[index].prizePool.toString(),
-                                        contestListModel[index].entryFee.toString(),
-                                        contestListModel[index].totalSpot.toString(),
-                                        contestListModel[index].currentSpot.toString(),
-                                        contestListModel[index].noOfWinner.toString(),
-                                        0.1,
-                                      );
-                                    }),
+                            );
+                          },
+                          child: StickyHeader(
+                              header: new Container(
+                                height: MediaQuery.of(context).size.height * 0.18,
+                                color: AllCoustomTheme.getThemeData().scaffoldBackgroundColor,
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: 4,
+                                    bottom: 6,
+                                    left: MediaQuery.of(context).size.width * 0.03,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          new Text(
+                                            '${widget.titel}',
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              SizedBox(
+                                                width: MediaQuery.of(context).size.width * 0.03,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    '${widget.country1FullName}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: AllCoustomTheme.getThemeData().primaryColor,
+                                                      fontSize: AppConstant.SIZE_TITLE12,
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            widget.country1Flag!,
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                                        child: Text(
+                                                          widget.country1Name!,
+                                                          textAlign: TextAlign.start,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            fontWeight: FontWeight.bold,
+                                                            color: AllCoustomTheme.getThemeData().primaryColor,
+                                                            fontSize: AppConstant.SIZE_TITLE12,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width * 0.12,
+                                                    height: MediaQuery.of(context).size.height * 0.02,
+                                                    child: Text(
+                                                      '20 Lac',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context).size.width * 0.15,
+                                              ),
+                                              Container(
+                                                child: Text(
+                                                  '1h 34 min',
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                    fontFamily: 'Poppins',
+                                                    fontSize: AppConstant.SIZE_TITLE12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context).primaryColor,
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: MediaQuery.of(context).size.width * 0.15,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    '${widget.country2FullName}',
+                                                    style: TextStyle(
+                                                      fontFamily: 'Poppins',
+                                                      color: AllCoustomTheme.getThemeData().primaryColor,
+                                                      fontSize: AppConstant.SIZE_TITLE12,
+                                                    ),
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Container(
+                                                        padding: EdgeInsets.only(left: 8, right: 8),
+                                                        child: Text(
+                                                          widget.country2Name!,
+                                                          textAlign: TextAlign.start,
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            fontWeight: FontWeight.bold,
+                                                            color: AllCoustomTheme.getThemeData().primaryColor,
+                                                            fontSize: AppConstant.SIZE_TITLE12,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            widget.country2Flag!,
+                                                            fit: BoxFit.fill,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
+                                                  Container(
+                                                    width: MediaQuery.of(context).size.width * 0.12,
+                                                    height: MediaQuery.of(context).size.height * 0.01,
+                                                    child: Icon(Icons.live_tv),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              content: Padding(
+                                padding: const EdgeInsets.only(left: 8, right: 8, top: 6, bottom: 100),
+                                child: SizedBox(
+                                    height: 600,
+                                    child: isLoading
+                                        ? Column(
+                                            children: [
+                                              Center(
+                                                child: CircularProgressIndicator(
+                                                  color: AllCoustomTheme.getThemeData().primaryColor,
+                                                ),
+                                              ),
+                                            ],
+                                          )
+                                        : ListView.builder(
+                                            itemCount: contestListModel.length,
+                                            itemBuilder: (context, index) {
+                                              return contestnt(
+                                                contestListModel[index].prizePool.toString(),
+                                                contestListModel[index].entryFee.toString(),
+                                                contestListModel[index].totalSpot.toString(),
+                                                contestListModel[index].currentSpot.toString(),
+                                                contestListModel[index].noOfWinner.toString(),
+                                                0.1,
+                                                contestListModel[index].id,
+                                              );
+                                            })),
                               )),
                         );
                       },
@@ -490,84 +659,104 @@ class _ContestsScreenState extends State<ContestsScreen> {
                 ),
               )
             : tab2
-                ? Column(
-                    children: [
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        'You have not joined a contest yet!',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          color: AllCoustomTheme.getTextThemeColors(),
-                          fontSize: AppConstant.SIZE_TITLE14,
+                ? contestListModel.length != 0
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 600,
+                          child: ListView.builder(
+                              itemCount: contestListModel.length,
+                              itemBuilder: (context, index) {
+                                return contestnt(
+                                  contestListModel[index].prizePool.toString(),
+                                  contestListModel[index].entryFee.toString(),
+                                  contestListModel[index].totalSpot.toString(),
+                                  contestListModel[index].currentSpot.toString(),
+                                  contestListModel[index].noOfWinner.toString(),
+                                  0.1,
+                                  contestListModel[index].id,
+                                );
+                              }),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Image.asset(
-                        AppConstant.g1,
-                        fit: BoxFit.cover,
-                        height: 200,
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Text(
-                        'What are you waiting for',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                          color: AllCoustomTheme.getTextThemeColors(),
-                          fontSize: AppConstant.SIZE_TITLE14,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 16,
-                      ),
-                      Container(
-                        height: 50,
-                        padding: EdgeInsets.only(left: 50, right: 50, bottom: 8),
-                        child: Row(
-                          children: <Widget>[
-                            Flexible(
-                              child: Container(
-                                decoration: new BoxDecoration(
-                                  color: AllCoustomTheme.getThemeData().primaryColor,
-                                  borderRadius: new BorderRadius.circular(4.0),
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
-                                  ],
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
-                                    borderRadius: new BorderRadius.circular(4.0),
-                                    onTap: () async {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Center(
-                                      child: Text(
-                                        'JOIN CONTEST',
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins',
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                          fontSize: AppConstant.SIZE_TITLE12,
+                      )
+                    : Column(
+                        children: [
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            'You have not joined a contest yet!',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              color: AllCoustomTheme.getTextThemeColors(),
+                              fontSize: AppConstant.SIZE_TITLE14,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Image.asset(
+                            AppConstant.g1,
+                            fit: BoxFit.cover,
+                            height: 200,
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Text(
+                            'What are you waiting for',
+                            style: TextStyle(
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.bold,
+                              color: AllCoustomTheme.getTextThemeColors(),
+                              fontSize: AppConstant.SIZE_TITLE14,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 16,
+                          ),
+                          Container(
+                            height: 50,
+                            padding: EdgeInsets.only(left: 50, right: 50, bottom: 8),
+                            child: Row(
+                              children: <Widget>[
+                                Flexible(
+                                  child: Container(
+                                    decoration: new BoxDecoration(
+                                      color: AllCoustomTheme.getThemeData().primaryColor,
+                                      borderRadius: new BorderRadius.circular(4.0),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                                      ],
+                                    ),
+                                    child: Material(
+                                      color: Colors.transparent,
+                                      child: InkWell(
+                                        borderRadius: new BorderRadius.circular(4.0),
+                                        onTap: () async {
+                                          Get.to(JoinUserContest());
+                                        },
+                                        child: Center(
+                                          child: Text(
+                                            'JOIN CONTEST',
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: AppConstant.SIZE_TITLE12,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )
+                          ),
+                        ],
+                      )
                 : GetBuilder<TeamController>(
                     builder: (con) => Expanded(
                         child: ListView.builder(
@@ -584,7 +773,9 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                             topLeft: Radius.circular(13),
                                             topRight: Radius.circular(13),
                                           ),
-                                          image: DecorationImage(image: AssetImage(AppConstant.cricketGround), fit: BoxFit.cover)),
+                                          color: Colors.green[900]
+                                          // image: DecorationImage(image: AssetImage(AppConstant.cricketGround), fit: BoxFit.cover)
+                                          ),
                                       child: Column(
                                         children: [
                                           Padding(
@@ -596,6 +787,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                   style: TextStyle(
                                                     fontFamily: 'Poppins',
                                                     fontWeight: FontWeight.bold,
+                                                    color: Colors.white,
                                                     fontSize: AppConstant.SIZE_TITLE14,
                                                   ),
                                                 ),
@@ -627,7 +819,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    'SIN',
+                                                    '${teamController.team1ShortName}',
                                                     style: TextStyle(
                                                       fontFamily: 'Poppins',
                                                       fontWeight: FontWeight.bold,
@@ -653,7 +845,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
                                                   Text(
-                                                    'DHA',
+                                                    '${teamController.team2ShortName}',
                                                     style: TextStyle(
                                                       fontFamily: 'Poppins',
                                                       fontWeight: FontWeight.bold,
@@ -866,7 +1058,17 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                               fontSize: AppConstant.SIZE_TITLE12,
                                             ),
                                           ),
-                                          Expanded(child: SizedBox()),
+                                          Radio(
+                                              value: teamController.radioBtnVal[index],
+                                              groupValue: teamController.group_val,
+                                              onChanged: (val) {
+                                                teamController.group_val = teamController.radioBtnVal[index];
+                                                teamController.team_id = con.userTeams[index].team_id;
+                                                teamController.update();
+                                                setState(() {
+                                                  isTeamSelect = true;
+                                                });
+                                              }),
                                         ],
                                       ),
                                     ),
@@ -874,7 +1076,6 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                 ),
                               );
                             }))),
-      
       ],
     );
   }
@@ -886,6 +1087,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
     String currentSpot,
     String winnerNo,
     double progress,
+    int contest_id,
   ) {
     return InkWell(
       onTap: () => Navigator.push(
@@ -1733,29 +1935,30 @@ class _ContestsScreenState extends State<ContestsScreen> {
   }
 
   List<ContestListModel> contestListModel = [];
+  bool isLoading = true;
   Future<void> _getContestList() async {
-    API_STRUCTURE apiObject = API_STRUCTURE(
-      context: context,
-      apiName: 'contest/${widget.matchID}',
-      apiRequestMethod: API_REQUEST_METHOD.GET,
-      isWantSuccessMessage: false,
-    );
-    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: false);
-    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
-      Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
-      for (var data in _result['contest']) {
-        contestListModel.add(ContestListModel(
-          id: data['id'] ?? 0,
-          title: data['title'] ?? '',
-          prizePool: data['winning_prize'].toString(),
-          entryFee: data['entrance_amount'].toString(),
-          noOfWinner: data['no_of_winners'].toString(),
-          totalSpot: data['team_length'].toString(),
-          currentSpot: '2',
-        ));
-      }
-      setState(() {});
+    contestListModel.clear();
+    // if (teamController.userTeams.length != 0) {
+    var formData = {
+      'match_id': teamController.match_id,
+      'contest_id': teamController.contest_id,
+    };
+    var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/leaderboard', queryParameters: formData);
+    var data = response.data['data']['contest'];
+    for (int i = 0; i < {response.data['data']['contests']}.toList().length; i++) {
+      contestListModel.add(ContestListModel(
+        id: data['id'] ?? 0,
+        title: data['title'] ?? '',
+        prizePool: data['winning_prize'].toString(),
+        entryFee: data['entrance_amount'].toString(),
+        noOfWinner: data['no_of_winners'].toString(),
+        totalSpot: data['team_length'].toString(),
+        currentSpot: '2',
+      ));
     }
+    // }
+    isLoading = false;
+    setState(() {});
   }
 }
 
@@ -1798,7 +2001,12 @@ class _MatchHadderState extends State<MatchHadder> {
                 Container(
                   width: 24,
                   height: 24,
-                  child: Image.asset(widget.country1Flag!),
+                  child: ClipOval(
+                    child: Image.network(
+                      widget.country1Flag!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 8, right: 8),
@@ -1841,7 +2049,12 @@ class _MatchHadderState extends State<MatchHadder> {
                 Container(
                   width: 24,
                   height: 24,
-                  child: Image.asset(widget.country2Flag!),
+                  child: ClipOval(
+                    child: Image.network(
+                      widget.country2Flag!,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: SizedBox(),

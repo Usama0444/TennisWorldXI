@@ -202,8 +202,12 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                               color: AllCoustomTheme.getThemeData().primaryColor,
                               child: Center(
                                 child: Text(
-                                  'Max 11 players from a team',
-                                  style: TextStyle(fontFamily: 'Poppins', color: Colors.white, fontSize: AppConstant.SIZE_TITLE14),
+                                  'Max 7 players from a team',
+                                  style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    color: Colors.white,
+                                    fontSize: AppConstant.SIZE_TITLE14,
+                                  ),
                                 ),
                               ),
                             ),
@@ -279,21 +283,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Container(
-                                                      child: Text(
-                                                        'SA',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: Colors.white54,
-                                                          fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
                                                       child: BlocBuilder(
                                                         bloc: teamSelectionBloc,
                                                         builder: (context, TeamSelectionBlocState state) {
                                                           return Text(
-                                                            'SA',
+                                                            '${teamController.team1ShortName}',
                                                             textAlign: TextAlign.start,
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
@@ -305,6 +299,18 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                         },
                                                       ),
                                                     ),
+                                                    GetBuilder<TeamController>(builder: (cont) {
+                                                      return Container(
+                                                        child: Text(
+                                                          '${teamController.teamASelecttedPlayer.length}',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            color: Colors.white,
+                                                            fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE16 : AppConstant.SIZE_TITLE14,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    })
                                                   ],
                                                 ),
                                               ),
@@ -312,7 +318,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             Container(
                                               width: 50,
                                               height: 50,
-                                              child: Image.asset('assets/19.png'),
+                                              child: ClipOval(
+                                                  child: Image.network(
+                                                'https://dream11.tennisworldxi.com/storage/app/${teamController.team1Flag}',
+                                                fit: BoxFit.cover,
+                                              )),
                                             ),
                                             Container(
                                               width: 16,
@@ -320,7 +330,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             Container(
                                               width: 50,
                                               height: 50,
-                                              child: Image.asset('assets/25.png'),
+                                              child: ClipOval(
+                                                  child: Image.network(
+                                                'https://dream11.tennisworldxi.com/storage/app/${teamController.team2Flag}',
+                                                fit: BoxFit.cover,
+                                              )),
                                             ),
                                             Expanded(
                                               child: Container(
@@ -331,21 +345,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
                                                     Container(
-                                                      child: Text(
-                                                        'IND',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: Colors.white54,
-                                                          fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE12 : AppConstant.SIZE_TITLE10,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Container(
                                                       child: BlocBuilder(
                                                         bloc: teamSelectionBloc,
                                                         builder: (context, TeamSelectionBlocState state) {
                                                           return Text(
-                                                            'IND',
+                                                            '${teamController.team2ShortName}',
                                                             textAlign: TextAlign.start,
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
@@ -357,6 +361,18 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                                         },
                                                       ),
                                                     ),
+                                                    GetBuilder<TeamController>(builder: (cont) {
+                                                      return Container(
+                                                        child: Text(
+                                                          '${cont.teamBSelecttedPlayer.length}',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            color: Colors.white,
+                                                            fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE16 : AppConstant.SIZE_TITLE14,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    })
                                                   ],
                                                 ),
                                               ),
@@ -385,24 +401,19 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                             ),
                                           ),
                                         ),
-                                        Container(
-                                          child: Container(
-                                            child: BlocBuilder(
-                                              bloc: teamSelectionBloc,
-                                              builder: (context, TeamSelectionBlocState state) {
-                                                return Text(
-                                                  '${100.0 - teamSelectionBloc.getTotalSelctedPlayerRating()}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
-                                                  ),
-                                                );
-                                              },
+                                        GetBuilder<TeamController>(builder: (controller) {
+                                          return Container(
+                                            child: Text(
+                                              '${100.0 - controller.team_credits}',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins',
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white,
+                                                fontSize: MediaQuery.of(context).size.width >= 360 ? AppConstant.SIZE_TITLE20 : AppConstant.SIZE_TITLE18,
+                                              ),
                                             ),
-                                          ),
-                                        )
+                                          );
+                                        })
                                       ],
                                     ),
                                   ),
@@ -543,7 +554,17 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                           Expanded(child: GetBuilder<TeamController>(
                             builder: (cont) {
                               return Opacity(
-                                opacity: cont.selectedPlayers.length == 11 ? 1.0 : 0.2,
+                                opacity: cont.selectedPlayers.length == 11 &&
+                                        cont.teamASelecttedPlayer.length >= 4 &&
+                                        cont.teamASelecttedPlayer.length <= 7 &&
+                                        cont.teamBSelecttedPlayer.length >= 4 &&
+                                        cont.teamBSelecttedPlayer.length <= 7 &&
+                                        cont.select_wicketKiperList.length >= 1 &&
+                                        cont.select_batterList.length >= 3 &&
+                                        cont.select_allRounderList.length >= 1 &&
+                                        cont.select_bowlerList.length >= 3
+                                    ? 1.0
+                                    : 0.2,
                                 child: Container(
                                   decoration: new BoxDecoration(
                                     color: AllCoustomTheme.getThemeData().primaryColor,
@@ -557,7 +578,11 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                     child: InkWell(
                                       borderRadius: new BorderRadius.circular(4.0),
                                       onTap: () {
-                                        if (teamController.selectedPlayers.length == 11) {
+                                        if (teamController.select_wicketKiperList.length >= 1 &&
+                                            teamController.select_batterList.length >= 3 &&
+                                            teamController.select_allRounderList.length >= 1 &&
+                                            teamController.select_bowlerList.length >= 3 &&
+                                            teamController.selectedPlayers.length == 11) {
                                           teamSelectionBloc.refreshCAndVC();
                                           Navigator.push(
                                             context,
@@ -642,7 +667,15 @@ class TabTextView extends StatelessWidget {
               return Container(
                 padding: EdgeInsets.only(bottom: 2),
                 child: Text(
-                  ' (${con.getSelectedPlayerCount()})',
+                  tabTextType == TabTextType.wk
+                      ? "(${con.select_wicketKiperList.length})"
+                      : tabTextType == TabTextType.bat
+                          ? "(${con.select_batterList.length})"
+                          : tabTextType == TabTextType.ar
+                              ? "(${con.select_allRounderList.length})"
+                              : tabTextType == TabTextType.bowl
+                                  ? "(${con.select_bowlerList.length})"
+                                  : '',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold,
@@ -707,17 +740,28 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
                         builder: (context, TeamSelectionBlocState state) {
                           return GetBuilder<TeamController>(builder: (con) {
                             return Text(
-                              con.wicketKiperList.length < 1
+                              widget.tabType == TabTextType.bat && con.select_wicketKiperList.length < 1
                                   ? 'You must pick at least 1 Wicket-Keeper'
-                                  : con.batterList.length < 3
+                                  : widget.tabType == TabTextType.ar && con.select_batterList.length < 3
                                       ? 'You must pick at least 3 Batsmen.'
-                                      : con.allRounderList.length < 1
+                                      : widget.tabType == TabTextType.bowl && con.select_allRounderList.length < 1
                                           ? 'You must pick at least 1 All-Rounder.'
-                                          : con.bowlerList.length < 3
+                                          : con.selectedPlayers.length == 11 && con.select_bowlerList.length < 3
                                               ? 'You must pick at least 3 bowlers.'
-                                              : con.selectedPlayers.length == 11
-                                                  ? '11 players selected, tap continue'
-                                                  : getValideTxt(widget.tabType!),
+                                              : con.teamASelecttedPlayer.length == 7 && con.select_bowlerList.length >= 3 && con.select_allRounderList.length >= 1 && con.select_batterList.length >= 3
+                                                  ? 'You can pick max 7 Players.'
+                                                  : con.teamBSelecttedPlayer.length == 7 &&
+                                                          con.select_bowlerList.length >= 3 &&
+                                                          con.select_allRounderList.length >= 1 &&
+                                                          con.select_batterList.length >= 3
+                                                      ? 'You can pick max 7 Players.'
+                                                      : con.selectedPlayers.length == 11
+                                                          ? con.teamASelecttedPlayer.length < 4
+                                                              ? 'You must pick at least 4 Players.'
+                                                              : con.teamBSelecttedPlayer.length < 4
+                                                                  ? 'You must pick at least 4 Players.'
+                                                                  : '11 players selected, tap continue'
+                                                          : getValideTxt(widget.tabType!),
                               style: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontWeight: FontWeight.bold,
@@ -865,13 +909,13 @@ class _TeamSelectionListState extends State<TeamSelectionList> {
     var txt = '';
     if (animationType == AnimationType.isRegular) {
       if (TabTextType.wk == type) {
-        txt = 'Pick 1 Wicket-Keeper';
+        txt = 'Pick 1 - 4 Wicket-Keeper';
       } else if (TabTextType.bat == type) {
-        txt = 'Pick 3 - 5 Batsmen';
+        txt = 'Pick 3 - 6 Batsmen';
       } else if (TabTextType.ar == type) {
-        txt = 'Pick 1 - 3 All-Rounders';
+        txt = 'Pick 1 - 4 All-Rounders';
       } else if (TabTextType.bowl == type) {
-        txt = 'Pick 3 - 5 Bowlers';
+        txt = 'Pick 3 - 6 Bowlers';
       }
     } else if (animationType == AnimationType.isMinimum) {
       if (TabTextType.wk == type) {

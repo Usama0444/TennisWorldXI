@@ -16,21 +16,21 @@ import '../home/tabScreen.dart';
 import 'continuebutton.dart';
 
 class LoginView extends StatefulWidget {
-
-  const LoginView({Key? key,}) : super(key: key);
+  const LoginView({
+    Key? key,
+  }) : super(key: key);
   @override
   _LoginViewState createState() => _LoginViewState();
 }
 
 class _LoginViewState extends State<LoginView> {
   DateTime date = DateTime.now();
-  TextEditingController phoneController =  TextEditingController();
-  TextEditingController passwordController =  TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   FocusNode phoneFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
   var _obscureConfirmText = true;
   final _formKey = GlobalKey<FormState>();
-
 
   @override
   void dispose() {
@@ -75,7 +75,7 @@ class _LoginViewState extends State<LoginView> {
           children: <Widget>[
             Form(
               key: _formKey,
-              child:  Container(
+              child: Container(
                 padding: EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
@@ -83,11 +83,11 @@ class _LoginViewState extends State<LoginView> {
                       elevation: 8,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 12,bottom: 5),
+                        padding: const EdgeInsets.only(left: 12, bottom: 5),
                         child: Center(
                           child: TextFormField(
-                            onTap: (){
-                              Future.delayed(const Duration(milliseconds: 100)).then((value){
+                            onTap: () {
+                              Future.delayed(const Duration(milliseconds: 100)).then((value) {
                                 setState(() {});
                               });
                             },
@@ -100,7 +100,7 @@ class _LoginViewState extends State<LoginView> {
                               hintText: "Phone Number",
                               fillColor: Colors.black,
                               border: InputBorder.none,
-                              prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 ":'',
+                              prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 " : '',
                               prefixStyle: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: AppConstant.SIZE_TITLE16,
@@ -112,7 +112,7 @@ class _LoginViewState extends State<LoginView> {
                               fontSize: AppConstant.SIZE_TITLE16,
                               color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
                             ),
-                            validator: (value){
+                            validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Phone number can not be empty';
                               } else {
@@ -130,11 +130,11 @@ class _LoginViewState extends State<LoginView> {
                       elevation: 8,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 12,bottom: 5),
+                        padding: const EdgeInsets.only(left: 12, bottom: 5),
                         child: Center(
                           child: TextFormField(
-                            onTap: (){
-                              Future.delayed(const Duration(milliseconds: 100)).then((value){
+                            onTap: () {
+                              Future.delayed(const Duration(milliseconds: 100)).then((value) {
                                 setState(() {});
                               });
                             },
@@ -282,34 +282,34 @@ class _LoginViewState extends State<LoginView> {
     FocusScope.of(context).unfocus();
     if (_formKey.currentState!.validate()) {
       bool isValidNUmber = await isValidPhoneNumber(phoneNumber: phoneController.text);
-      if(isValidNUmber){
+      if (isValidNUmber) {
         _loginUser();
-      }else{
+      } else {
         CustomToast.showToast(message: "Please enter a valid phone number");
       }
     }
   }
-  Future<void>_loginUser()async {
+
+  Future<void> _loginUser() async {
     API_STRUCTURE apiObject = API_STRUCTURE(
-      context: context,
-      apiName: ApiConstant.loginUser,
-      apiRequestMethod: API_REQUEST_METHOD.POST,
-      isWantSuccessMessage: false,
-      body: FormData.fromMap({
-        "phone": phoneController.text.trim(),
-        "password": passwordController.text.trim(),
-      })
-    );
-    Map<dynamic, dynamic> apiResponse= await apiObject.requestAPI(isShowLoading: true);
+        context: context,
+        apiName: ApiConstant.loginUser,
+        apiRequestMethod: API_REQUEST_METHOD.POST,
+        isWantSuccessMessage: false,
+        body: FormData.fromMap({
+          "phone": phoneController.text.trim(),
+          "password": passwordController.text.trim(),
+        }));
+    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: true);
     debugPrint("login apiResponse:-> $apiResponse");
-    if(apiResponse.containsKey(API_RESPONSE.SUCCESS)){
-      Map<String,dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
+    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
+      Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
       Utils.userToken = _result['access_token'];
       Utils.userData = UserData.fromServerJson(_result['user']);
-      if(Utils.userData!=null){
+      if (Utils.userData != null) {
         MySharedPreferences().setUserDataString(Utils.userData!);
       }
-      Navigator.popUntil(context, (route) => route.isFirst);
+      // Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(

@@ -80,87 +80,127 @@ class _CaptainVoiceCaptainItemState extends State<CaptainVoiceCaptainItem> {
                           ),
                         ),
                       ),
-                      Opacity(
-                        opacity: contr.isCaptainSelect[widget.playerIndex] ? 1.0 : 0.2,
-                        child: InkWell(
-                          onTap: () {
-                            if (contr.isCaptainSelect[widget.playerIndex]) {
-                              contr.isCaptainSelect[widget.playerIndex] = false;
-                              contr.isVoiceCaptainSelect[widget.playerIndex] = true;
-                              contr.captainID = 0;
-                              for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
-                                contr.isVoiceCaptainSelect[i] = false;
-                              }
-                              for (int i = 0; i < contr.isCaptainSelect.length; i++) {
-                                contr.isCaptainSelect[i] = false;
-                              }
-                            } else {
-                              for (int i = 0; i < contr.isCaptainSelect.length; i++) {
-                                contr.isCaptainSelect[i] = false;
-                              }
-                              contr.isCaptainSelect[widget.playerIndex] = true;
-                              contr.captainID = int.parse(widget.player.player_id.toString());
-                              contr.isVoiceCaptainSelect[widget.playerIndex] = false;
-                            }
-                            contr.update();
-                          },
-                          child: Container(
-                            width: 20,
-                            child: Text(
-                              'C',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold,
-                                color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                                fontSize: AppConstant.SIZE_TITLE12,
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Opacity(
+                            opacity: contr.isCaptainSelect[widget.playerIndex] ? 1.0 : 0.2,
+                            child: InkWell(
+                              onTap: () {
+                                if (contr.isCaptainSelect[widget.playerIndex]) {
+                                  contr.isCaptainSelect[widget.playerIndex] = false;
+                                  contr.isVoiceCaptainSelect[widget.playerIndex] = true;
+                                  contr.captainID = 0;
+                                  for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
+                                    contr.isVoiceCaptainSelect[i] = false;
+                                  }
+                                  for (int i = 0; i < contr.isCaptainSelect.length; i++) {
+                                    contr.isCaptainSelect[i] = false;
+                                  }
+                                } else {
+                                  for (int i = 0; i < contr.isCaptainSelect.length; i++) {
+                                    contr.isCaptainSelect[i] = false;
+                                  }
+                                  contr.isCaptainSelect[widget.playerIndex] = true;
+                                  contr.captainID = int.parse(widget.player.player_id.toString());
+                                  contr.isVoiceCaptainSelect[widget.playerIndex] = false;
+                                }
+                                contr.update();
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                height: MediaQuery.of(context).size.height * 0.05,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'C',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.bold,
+                                      color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
+                                      fontSize: AppConstant.SIZE_TITLE12,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          Text(
+                            '0.15%',
+                            style: TextStyle(fontSize: 10),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10,
                       ),
                       SizedBox(
                         width: 10,
                         child: Text('|'),
                       ),
-                      Opacity(
-                        opacity: contr.isVoiceCaptainSelect[widget.playerIndex] ? 1.0 : 0.2,
-                        child: InkWell(
-                          onTap: () {
-                            if (contr.isVoiceCaptainSelect[widget.playerIndex]) {
-                              contr.isVoiceCaptainSelect[widget.playerIndex] = false;
-                              contr.voiceCaptain = 0;
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Opacity(
+                            opacity: contr.isVoiceCaptainSelect[widget.playerIndex] ? 1.0 : 0.2,
+                            child: InkWell(
+                              onTap: () {
+                                if (contr.isVoiceCaptainSelect[widget.playerIndex]) {
+                                  contr.isVoiceCaptainSelect[widget.playerIndex] = false;
+                                  contr.voiceCaptain = 0;
 
-                              for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
-                                contr.isVoiceCaptainSelect[i] = false;
-                              }
-                              for (int i = 0; i < contr.isCaptainSelect.length; i++) {
-                                contr.isCaptainSelect[i] = false;
-                              }
-                              contr.isCaptainSelect[widget.playerIndex] = true;
-                            } else {
-                              for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
-                                contr.isVoiceCaptainSelect[i] = false;
-                              }
-                              contr.isCaptainSelect[widget.playerIndex] = false;
-                              contr.isVoiceCaptainSelect[widget.playerIndex] = true;
-                              contr.voiceCaptain = int.parse(widget.player.player_id.toString());
-                            }
-                            contr.update();
-                          },
-                          child: Container(
-                            width: 20,
-                            margin: EdgeInsets.only(right: 10),
-                            child: Text(
-                              'VC',
-                              style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold,
-                                color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                                fontSize: AppConstant.SIZE_TITLE12,
+                                  for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
+                                    contr.isVoiceCaptainSelect[i] = false;
+                                  }
+                                  for (int i = 0; i < contr.isCaptainSelect.length; i++) {
+                                    contr.isCaptainSelect[i] = false;
+                                  }
+                                  contr.isCaptainSelect[widget.playerIndex] = true;
+                                } else {
+                                  for (int i = 0; i < contr.isVoiceCaptainSelect.length; i++) {
+                                    contr.isVoiceCaptainSelect[i] = false;
+                                  }
+                                  contr.isCaptainSelect[widget.playerIndex] = false;
+                                  contr.isVoiceCaptainSelect[widget.playerIndex] = true;
+                                  contr.voiceCaptain = int.parse(widget.player.player_id.toString());
+                                }
+                                contr.update();
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.1,
+                                height: MediaQuery.of(context).size.height * 0.05,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Colors.grey,
+                                ),
+                                margin: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+                                child: Center(
+                                  child: Text(
+                                    'VC',
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.bold,
+                                      color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
+                                      fontSize: AppConstant.SIZE_TITLE12,
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          Padding(
+                            padding: EdgeInsets.only(right: MediaQuery.of(context).size.width * 0.05),
+                            child: Text(
+                              '0.30%',
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),

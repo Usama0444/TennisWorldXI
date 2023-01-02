@@ -83,7 +83,7 @@ class _TeamPreviewScreenState extends State<TeamPreviewScreen> {
                                         ),
                                       ),
                                     ),
-                                    getTypeList(controller.wicketKiperList),
+                                    getTypeList(controller.select_wicketKiperList),
                                   ],
                                 ),
                                 Column(
@@ -102,7 +102,7 @@ class _TeamPreviewScreenState extends State<TeamPreviewScreen> {
                                         ),
                                       ),
                                     ),
-                                    getTypeList(controller.batterList),
+                                    getTypeList(controller.select_batterList),
                                   ],
                                 ),
                                 Column(
@@ -121,7 +121,7 @@ class _TeamPreviewScreenState extends State<TeamPreviewScreen> {
                                         ),
                                       ),
                                     ),
-                                    getTypeList(controller.allRounderList),
+                                    getTypeList(controller.select_allRounderList),
                                   ],
                                 ),
                                 Column(
@@ -140,7 +140,7 @@ class _TeamPreviewScreenState extends State<TeamPreviewScreen> {
                                         ),
                                       ),
                                     ),
-                                    getTypeList(controller.bowlerList),
+                                    getTypeList(controller.select_bowlerList),
                                   ],
                                 ),
                                 SizedBox(

@@ -262,8 +262,8 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
       body: TabBarView(
         controller: controller,
         children: <Widget>[
-          dowunloadbar(),
           prizeBreackup(),
+          dowunloadbar(),
         ],
       ),
     );
@@ -541,8 +541,8 @@ class ContestTabHeader extends SliverPersistentHeaderDelegate {
                 fontSize: AppConstant.SIZE_TITLE14,
               ),
               tabs: [
-                new Tab(text: 'Leaderboard'),
-                new Tab(text: 'Prize Breakup'),
+                new Tab(text: 'Winning'),
+                new Tab(text: 'LeaderBoard'),
               ],
               controller: controller,
             ),
