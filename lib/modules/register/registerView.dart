@@ -26,8 +26,9 @@ import '../../validator/validator.dart';
 import '../CustomImagePicker/camera.dart';
 
 class RegisterView extends StatefulWidget {
-
-  const RegisterView({Key? key,}) : super(key: key);
+  const RegisterView({
+    Key? key,
+  }) : super(key: key);
   @override
   _RegisterViewState createState() => _RegisterViewState();
 }
@@ -38,13 +39,13 @@ class _RegisterViewState extends State<RegisterView> {
   var stateList = <StateList>[];
   var cityList = <CityList>[];
 
-  String imageUrl='';
-  TextEditingController userNameController =  TextEditingController();
-  TextEditingController emailController =  TextEditingController();
+  String imageUrl = '';
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   // TextEditingController referCodeController =  TextEditingController();
-  TextEditingController phoneController =  TextEditingController();
-  TextEditingController passwordController =  TextEditingController();
-  TextEditingController confirmPasswordController =  TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
   FocusNode userNameFocusNode = FocusNode();
   FocusNode emailFocusNode = FocusNode();
@@ -57,10 +58,10 @@ class _RegisterViewState extends State<RegisterView> {
   // var referFocusNode = FocusNode();
   // var date = DateTime.now();
   var isRegisterButtonPress = false;
-  CountryList selectedCountry =  CountryList();
-  StateList selectedState =  StateList();
+  CountryList selectedCountry = CountryList();
+  StateList selectedState = StateList();
 
-  CityList selectedCity =  CityList();
+  CityList selectedCity = CityList();
 
   String countryCode = "";
   File? _image;
@@ -87,7 +88,6 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-
     return ModalProgressHUD(
       inAsyncCall: isRegisterButtonPress,
       color: Colors.transparent,
@@ -98,7 +98,7 @@ class _RegisterViewState extends State<RegisterView> {
             padding: EdgeInsets.only(bottom: 0, top: 50),
             child: Container(
               padding: EdgeInsets.only(bottom: 0),
-              decoration:  BoxDecoration(
+              decoration: BoxDecoration(
                 color: AllCoustomTheme.getThemeData().backgroundColor,
               ),
               child: Form(
@@ -116,7 +116,7 @@ class _RegisterViewState extends State<RegisterView> {
                             elevation: 8,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 12,bottom: 5),
+                              padding: const EdgeInsets.only(left: 12, bottom: 5),
                               child: Center(
                                 child: TextFormField(
                                   keyboardType: TextInputType.text,
@@ -132,7 +132,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     fontSize: AppConstant.SIZE_TITLE16,
                                     color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
                                   ),
-                                  validator: (value){
+                                  validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'User name can not be empty';
                                     } else {
@@ -150,7 +150,7 @@ class _RegisterViewState extends State<RegisterView> {
                             elevation: 8,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 12,bottom: 5),
+                              padding: const EdgeInsets.only(left: 12, bottom: 5),
                               child: Center(
                                 child: TextFormField(
                                   controller: emailController,
@@ -178,7 +178,7 @@ class _RegisterViewState extends State<RegisterView> {
                             elevation: 8,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 12,bottom: 5),
+                              padding: const EdgeInsets.only(left: 12, bottom: 5),
                               child: Center(
                                 child: TextFormField(
                                   controller: phoneController,
@@ -189,7 +189,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     hintText: "Phone Number",
                                     fillColor: Colors.black,
                                     border: InputBorder.none,
-                                    prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 ":'',
+                                    prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 " : '',
                                     prefixStyle: TextStyle(
                                       fontFamily: 'Poppins',
                                       fontSize: AppConstant.SIZE_TITLE16,
@@ -201,7 +201,7 @@ class _RegisterViewState extends State<RegisterView> {
                                     fontSize: AppConstant.SIZE_TITLE16,
                                     color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
                                   ),
-                                  validator: (value){
+                                  validator: (value) {
                                     if (value!.isEmpty) {
                                       return 'Phone number can not be empty';
                                     } else {
@@ -215,28 +215,31 @@ class _RegisterViewState extends State<RegisterView> {
                           SizedBox(
                             height: 8,
                           ),
-                           Container(
-                           height: 60,
+                          Container(
+                            height: 60,
                             child: Card(
-                             elevation: 8,
+                              elevation: 8,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                             child: Padding(
-                                padding: const EdgeInsets.only(left: 12,bottom: 5),
-                               child: Center(
-                                 child: TextFormField(
-                               keyboardType: TextInputType.emailAddress,
-                                  decoration: InputDecoration(
-                                  hintText: "referral code",
-                                       fillColor: Colors.black,
-                                        border: InputBorder.none,
-                                      ),
-                                       style: TextStyle(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 12, bottom: 5),
+                                child: Center(
+                                  child: TextFormField(
+                                    keyboardType: TextInputType.emailAddress,
+                                    decoration: InputDecoration(
+                                      hintText: "referral code",
+                                      fillColor: Colors.black,
+                                      border: InputBorder.none,
+                                    ),
+                                    style: TextStyle(
                                       fontFamily: 'Poppins',
-                                    fontSize: AppConstant.SIZE_TITLE16,
+                                      fontSize: AppConstant.SIZE_TITLE16,
                                       color: AllCoustomTheme.getBlackAndWhiteThemeColors(),
-                                   ),),
-                               ),),
-                             ),),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
                           // SizedBox(
                           //   height: 8,
                           // ),
@@ -353,7 +356,7 @@ class _RegisterViewState extends State<RegisterView> {
                             elevation: 8,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 12,bottom: 5),
+                              padding: const EdgeInsets.only(left: 12, bottom: 5),
                               child: Center(
                                 child: TextFormField(
                                   controller: passwordController,
@@ -382,7 +385,7 @@ class _RegisterViewState extends State<RegisterView> {
                             elevation: 8,
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 12,bottom: 5),
+                              padding: const EdgeInsets.only(left: 12, bottom: 5),
                               child: Center(
                                 child: TextFormField(
                                   controller: confirmPasswordController,
@@ -409,28 +412,27 @@ class _RegisterViewState extends State<RegisterView> {
                         ],
                       ),
                     ),
-               Column(children: [
-                Row(
-                  children: [
-                    Material(
-                      child: Checkbox(
-                       value: agree,
-                        onChanged: (value) {
-                          setState(() {
-                        agree = value ?? false;
-                          });
-                        },
+                    Column(children: [
+                      Row(
+                        children: [
+                          Material(
+                            child: Checkbox(
+                              value: agree,
+                              onChanged: (value) {
+                                setState(() {
+                                  agree = value ?? false;
+                                });
+                              },
+                            ),
+                          ),
+                          const Text(
+                            'I have read and accept terms and conditions',
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        ],
                       ),
-                    ),
-                    const Text(
-                      'I have read and accept terms and conditions',
-                      overflow: TextOverflow.ellipsis,
-                    )
-                  ],
-                ),
-   ] ),
-
-                Padding(
+                    ]),
+                    Padding(
                       padding: const EdgeInsets.only(right: 14, left: 14, bottom: 14),
                       child: ContinueButton(
                         name: "Register",
@@ -452,7 +454,7 @@ class _RegisterViewState extends State<RegisterView> {
                 Container(
                   height: 96,
                   width: 96,
-                  decoration:  BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     boxShadow: <BoxShadow>[
                       BoxShadow(color: Colors.black45, offset: Offset(1.1, 1.1), blurRadius: 3.0),
@@ -463,15 +465,15 @@ class _RegisterViewState extends State<RegisterView> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
                       InkWell(
-                        onTap:()async{
-                          Map<String,dynamic> ?result = await Navigator.push(context, MaterialPageRoute(builder: (builder)=>const CustomImagePickerScreen()));
+                        onTap: () async {
+                          Map<String, dynamic>? result = await Navigator.push(context, MaterialPageRoute(builder: (builder) => const CustomImagePickerScreen()));
                           debugPrint("pickedImage:-> $result");
-                          if(result!=null){
+                          if (result != null) {
                             setState(() {
                               _image = result['pickedImage'];
                               debugPrint("Picked an Image");
                             });
-                          }else{
+                          } else {
                             debugPrint("Not Picked any Image");
                           }
                         },
@@ -483,7 +485,7 @@ class _RegisterViewState extends State<RegisterView> {
                               color: Colors.white,
                             ),
                             child: Container(
-                              decoration:  BoxDecoration(
+                              decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
                               child: CircleAvatar(
@@ -504,7 +506,7 @@ class _RegisterViewState extends State<RegisterView> {
                                             placeholder: (context, url) => CircularProgressIndicator(
                                               strokeWidth: 2.0,
                                             ),
-                                            errorWidget: (context, url, error) =>  Icon(Icons.error),
+                                            errorWidget: (context, url, error) => Icon(Icons.error),
                                             fit: BoxFit.cover,
                                           )
                                     : Image.file(
@@ -524,7 +526,7 @@ class _RegisterViewState extends State<RegisterView> {
                   left: 70.0,
                   top: 70.0,
                   child: Container(
-                    decoration:  BoxDecoration(
+                    decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.transparent,
                       boxShadow: <BoxShadow>[
@@ -533,7 +535,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                     height: 20,
                     width: 20,
-                    child:  CircleAvatar(
+                    child: CircleAvatar(
                       backgroundColor: AllCoustomTheme.getThemeData().backgroundColor,
                       child: Icon(Icons.edit, size: 14, color: AllCoustomTheme.getThemeData().primaryColor),
                     ),
@@ -552,39 +554,42 @@ class _RegisterViewState extends State<RegisterView> {
   var genderListIndex = 0;
 
   void _submit() async {
-    if(_image==null&&(loginUserData.image == '' || loginUserData.image == null)){
+    if (_image == null && (loginUserData.image == '' || loginUserData.image == null)) {
       CustomToast.showToast(message: "Please select an image");
-    }
-    else if (_formKey.currentState!.validate()) {
+    } else if (_formKey.currentState!.validate()) {
       bool isValidNUmber = await isValidPhoneNumber(phoneNumber: phoneController.text);
-      if(isValidNUmber){
+      if (isValidNUmber) {
         _registerUser();
-      }else{
+      } else {
         CustomToast.showToast(message: "Please enter a valid phone number");
       }
     }
   }
 
-  Future<void>_registerUser()async{
+  Future<void> _registerUser() async {
     API_STRUCTURE apiObject = API_STRUCTURE(
         context: context,
         apiName: ApiConstant.registerUser,
         apiRequestMethod: API_REQUEST_METHOD.POST,
         isWantSuccessMessage: false,
         body: FormData.fromMap({
-        "user_name": userNameController.text.trim(),
-        "email": emailController.text.trim(),
-        "phone": phoneController.text.trim(),
-        "dial_code": '+91',
-        "password": passwordController.text.trim(),
-        "password_confirmation": confirmPasswordController.text.trim(),
-        "image": _image!=null? await MultipartFile.fromFile(_image!.path, filename: _image == null ? "" : _image!.path.split('/').last,):null
-        })
-    );
-    Map<dynamic, dynamic> apiResponse= await apiObject.requestAPI(isShowLoading: true);
+          "user_name": userNameController.text.trim(),
+          "email": emailController.text.trim(),
+          "phone": phoneController.text.trim(),
+          "dial_code": '+91',
+          "password": passwordController.text.trim(),
+          "password_confirmation": confirmPasswordController.text.trim(),
+          "image": _image != null
+              ? await MultipartFile.fromFile(
+                  _image!.path,
+                  filename: _image == null ? "" : _image!.path.split('/').last,
+                )
+              : null
+        }));
+    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: true);
     debugPrint("Register apiResponse:-> $apiResponse");
-    if(apiResponse.containsKey(API_RESPONSE.SUCCESS)){
-      CustomToast.showToast(message: "Registration successful",isShowSingle: false);
+    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
+      CustomToast.showToast(message: "Registration successful", isShowSingle: false);
       CustomToast.showToast(message: "Login to continue");
       Navigator.pop(context);
       // Navigator.push(
@@ -608,6 +613,7 @@ class _RegisterViewState extends State<RegisterView> {
       }
     }
   }
+
   String? _validatePassword(String? value) {
     if (value!.isEmpty) {
       return 'Password can not be empty';
@@ -619,11 +625,12 @@ class _RegisterViewState extends State<RegisterView> {
       }
     }
   }
+
   String? _validateConfirmPassword(String? value) {
     if (value!.isEmpty) {
       return 'Password can not be empty';
     } else {
-      if (value.trim()!=passwordController.text.trim()) {
+      if (value.trim() != passwordController.text.trim()) {
         return 'Password does"nt match';
       } else {
         return null;

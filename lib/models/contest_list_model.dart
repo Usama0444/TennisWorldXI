@@ -1,5 +1,5 @@
 class ContestListModel {
-  final int id;
+  var id;
   final String? title;
   final String? prizePool;
   final String? noOfWinner;
@@ -19,7 +19,7 @@ class ContestListModel {
 
   factory ContestListModel.fromJson({required Map<String, dynamic> jsonData}) {
     return ContestListModel(
-      id: jsonData['id'] ?? 0,
+      id: jsonData['id'] ?? '0',
       title: jsonData['title'] ?? '',
       prizePool: jsonData['winning_prize'] ?? '',
       entryFee: jsonData['entrance_amount'] ?? '',

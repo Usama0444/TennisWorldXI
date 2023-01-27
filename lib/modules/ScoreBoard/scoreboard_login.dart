@@ -2,6 +2,7 @@ import 'package:TennixWorldXI/constant/global.dart';
 import 'package:TennixWorldXI/constant/sharedPreferences.dart';
 import 'package:TennixWorldXI/main.dart';
 import 'package:TennixWorldXI/models/userData.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/score_board.dart';
 import 'package:TennixWorldXI/modules/login/forgotPasswordView.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/gestures.dart';
@@ -9,25 +10,26 @@ import 'package:flutter/material.dart';
 import 'package:TennixWorldXI/constant/constants.dart';
 import 'package:TennixWorldXI/constant/themes.dart';
 import 'package:TennixWorldXI/validator/validator.dart';
+import 'package:get/get.dart';
 import '../../api/Api_Handler/api_call_Structure.dart';
 import '../../api/Api_Handler/api_constants.dart';
 import '../../api/Api_Handler/api_error_response.dart';
 import '../../utils/phone_number.dart';
 import '../../utils/toast.dart';
 import '../home/tabScreen.dart';
-import 'continuebutton.dart';
+import '../login/continuebutton.dart';
 
-class LoginView extends StatefulWidget {
-  const LoginView({
+class ScoreboardLoginView extends StatefulWidget {
+  const ScoreboardLoginView({
     Key? key,
   }) : super(key: key);
   @override
-  _LoginViewState createState() => _LoginViewState();
+  _ScoreboardLoginViewState createState() => _ScoreboardLoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class _ScoreboardLoginViewState extends State<ScoreboardLoginView> {
   DateTime date = DateTime.now();
-  TextEditingController phoneController = TextEditingController();
+  TextEditingController username = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   FocusNode phoneFocusNode = FocusNode();
   FocusNode passwordFocusNode = FocusNode();
@@ -38,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
   void dispose() {
     phoneFocusNode.dispose();
     passwordController.dispose();
-    phoneController.dispose();
+    username.dispose();
     passwordFocusNode.dispose();
     super.dispose();
   }
@@ -61,7 +63,7 @@ class _LoginViewState extends State<LoginView> {
       child: Scaffold(
         appBar: AppBar(
           title: Text(
-            'Login',
+            'Scoreboard Login',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Poppins',
@@ -94,16 +96,14 @@ class _LoginViewState extends State<LoginView> {
                                   setState(() {});
                                 });
                               },
-                              controller: phoneController,
+                              controller: username,
                               focusNode: phoneFocusNode,
                               textAlignVertical: TextAlignVertical.center,
-                              keyboardType: TextInputType.phone,
                               textInputAction: TextInputAction.done,
                               decoration: InputDecoration(
-                                hintText: "Phone Number",
+                                hintText: "Username",
                                 fillColor: Colors.black,
                                 border: InputBorder.none,
-                                prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 " : '',
                                 prefixStyle: TextStyle(
                                   fontFamily: 'Poppins',
                                   fontSize: AppConstant.SIZE_TITLE16,
@@ -117,7 +117,7 @@ class _LoginViewState extends State<LoginView> {
                               ),
                               validator: (value) {
                                 if (value!.isEmpty) {
-                                  return 'Phone number can not be empty';
+                                  return 'Usernmae can not be empty';
                                 } else {
                                   return null;
                                 }
@@ -192,7 +192,9 @@ class _LoginViewState extends State<LoginView> {
                 child: ContinueButton(
                   name: "Login",
                   callBack: () {
-                    _submit();
+                    if (_formKey.currentState!.validate()) {
+                      Get.to(ScoreBoard());
+                    }
                   },
                 ),
               ),
@@ -225,49 +227,5 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
-  }
-
-  void _submit() async {
-    FocusScope.of(context).unfocus();
-    if (_formKey.currentState!.validate()) {
-      bool isValidNUmber = await isValidPhoneNumber(phoneNumber: phoneController.text);
-      if (isValidNUmber) {
-        _loginUser();
-      } else {
-        CustomToast.showToast(message: "Please enter a valid phone number");
-      }
-    }
-  }
-
-  Future<void> _loginUser() async {
-    API_STRUCTURE apiObject = API_STRUCTURE(
-        context: context,
-        apiName: ApiConstant.loginUser,
-        apiRequestMethod: API_REQUEST_METHOD.POST,
-        isWantSuccessMessage: false,
-        body: FormData.fromMap({
-          "phone": phoneController.text.trim(),
-          "password": passwordController.text.trim(),
-        }));
-    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: true);
-    debugPrint("login apiResponse:-> $apiResponse");
-    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
-      Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
-      Utils.userToken = _result['access_token'];
-      Utils.userData = UserData.fromServerJson(_result['user']);
-      userId = _result['user']['id'];
-      print('user id getted $userId');
-
-      if (Utils.userData != null) {
-        MySharedPreferences().setUserDataString(Utils.userData!);
-      }
-      // Navigator.popUntil(context, (route) => route.isFirst);
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => TabScreen(),
-        ),
-      );
-    }
   }
 }

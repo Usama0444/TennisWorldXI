@@ -1,10 +1,13 @@
 import 'dart:convert';
 
+import 'package:TennixWorldXI/main.dart';
+import 'package:TennixWorldXI/models/MyModels/leaderboardModel.dart';
 import 'package:TennixWorldXI/models/MyModels/player_model.dart';
 import 'package:TennixWorldXI/models/MyModels/team_model.dart';
 import 'package:TennixWorldXI/utils/toast.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../models/contest_list_model.dart';
 
@@ -38,7 +41,12 @@ class TeamController extends GetxController {
   int? group_val;
   List<int> radioBtnVal = [];
   List<ContestListModel> contestListModel = [];
+  List<LeaderModel> leaderModel = [];
   var team_credits = 0.0;
+  var current_date = DateFormat.yMMMMd().format(DateTime.now());
+  var rank_list = [];
+  var prize_list = [];
+
 //////User teams variables
   List<TeamModel> userTeams = [];
 
@@ -122,33 +130,42 @@ class TeamController extends GetxController {
 
   createTeam() async {
     teamPlayerIds.clear();
-    for (var player in wicketKiperList) {
+    for (var player in select_wicketKiperList) {
       teamPlayerIds.add(player.player_id.toString());
     }
-    for (var player in allRounderList) {
+    for (var player in select_allRounderList) {
       teamPlayerIds.add(player.player_id.toString());
     }
-    for (var player in batterList) {
+    for (var player in select_batterList) {
       teamPlayerIds.add(player.player_id.toString());
     }
-    for (var player in bowlerList) {
+    for (var player in select_bowlerList) {
       teamPlayerIds.add(player.player_id.toString());
     }
     update();
+    // print('wk ${select_wicketKiperList.length}\nbowler ${select_bowlerList.length}');
+    // print('team ids ${json.encode(teamPlayerIds)}');
+
     try {
       var formData = {
         'team1': 1,
         'team2': 2,
         'captainId': captainID,
-        'allRounder': allRounderList.length,
-        'batsman': batterList.length,
-        'bowler': bowlerList.length,
-        'wKeeper': wicketKiperList.length,
-        'teamPlayers': teamPlayerIds,
+        'allRounder': select_allRounderList.length,
+        'batsman': select_batterList.length,
+        'bowler': select_bowlerList.length,
+        'wKeeper': select_wicketKiperList.length,
+        'teamPlayers': json.encode(teamPlayerIds),
         'vicecaptainId': voiceCaptain,
         'matchId': match_id,
+        'user_id': userId,
+        'team1_count': teamASelecttedPlayer.length,
+        'team2_count': teamBSelecttedPlayer.length,
       };
-      print(json.encode(teamPlayerIds));
+      print('form data');
+      for (var v in formData.entries) {
+        print(v);
+      }
       var response = await Dio().post(
         'https://dream11.tennisworldxi.com/api/team/user-create-team',
         queryParameters: formData,
@@ -201,29 +218,35 @@ class TeamController extends GetxController {
       userTeams.clear();
       radioBtnVal.clear();
       selectteamForContest.clear();
-      var resp = await Dio().get('https://dream11.tennisworldxi.com/api/team/user-team/$match_id');
-      var data = resp.data['data']['result']['userTeams'];
-      var captainName = resp.data['data']['result']['captainName'];
-      var cap_pic = resp.data['data']['result']['captainImage'];
-      var vice_captainName = resp.data['data']['result']['vice_captainName'];
-      var vice_cap_pic = resp.data['data']['result']['vice_captainImage'];
-      for (int i = 0; i < data.length; i++) {
-        userTeams.add(TeamModel(
-          match_id: match_id,
-          bowlers: data[i]['bowler'],
-          team_id: data[i]['id'],
-          team_no: data[i]['team_no'],
-          wkeeper: data[i]['w_keeper'],
-          batters: data[i]['batsman'],
-          allRounders: data[i]['all_rounder'],
-          vice_captain_pic: vice_cap_pic[i],
-          captain_name: captainName[i],
-          captain_pic: cap_pic[i],
-          vice_captain_name: vice_captainName[i],
-        ));
-        radioBtnVal.add(i);
+      var resp = await Dio().get('https://dream11.tennisworldxi.com/api/team/user-team/$userId/$match_id');
+      if (resp.data['status']) {
+        var data = resp.data['data']['result']['userTeams'];
+        var captainName = resp.data['data']['result']['captainName'];
+        var cap_pic = resp.data['data']['result']['captainImage'];
+        var vice_captainName = resp.data['data']['result']['vice_captainName'];
+        var vice_cap_pic = resp.data['data']['result']['vice_captainImage'];
+        for (int i = 0; i < data.length; i++) {
+          userTeams.add(TeamModel(
+            match_id: match_id,
+            bowlers: data[i]['bowler'],
+            team_id: data[i]['id'],
+            team_no: data[i]['team_no'],
+            wkeeper: data[i]['w_keeper'],
+            batters: data[i]['batsman'],
+            allRounders: data[i]['all_rounder'],
+            vice_captain_pic: vice_cap_pic[i],
+            captain_name: captainName[i],
+            captain_pic: cap_pic[i],
+            vice_captain_name: vice_captainName[i],
+            team1_count: data[i]['team1_count'],
+            team2_count: data[i]['team2_count'],
+          ));
+          radioBtnVal.add(i);
+        }
+        update();
+      } else {
+        CustomToast.showToast(message: 'Team Not Created yet!');
       }
-      update();
     } catch (e) {
       print('Something went wrong in team $e');
       CustomToast.showToast(message: 'Something went wrong!');
@@ -237,44 +260,81 @@ class TeamController extends GetxController {
         'match_id': match_id,
         'contest_id': contest_id,
         'team_id': team_id,
+        'user_id': userId,
       };
 
       var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/userjoin-contest', queryParameters: formData);
       if (response.statusCode == 200) {
         CustomToast.showToast(message: response.data['data']);
       }
+      getContestList();
     } catch (e) {
       print(e.toString());
       CustomToast.showToast(message: 'something went wrong');
     }
   }
 
-  getDataJoinContest() async {
-    try {
-      print('get data');
-      var formData = {
-        'match_id': 14,
-        'contest_id': 1,
-      };
-      var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/leaderboard', queryParameters: formData);
-      for (var data in response.data['contest']) {
-        contestListModel.add(ContestListModel(
-          id: data['id'] ?? 0,
-          title: data['title'] ?? '',
-          prizePool: data['winning_prize'].toString(),
-          entryFee: data['entrance_amount'].toString(),
-          noOfWinner: data['no_of_winners'].toString(),
-          totalSpot: data['team_length'].toString(),
-          currentSpot: '2',
-        ));
-      }
-      update();
+  Future<void> getContestList() async {
+    contestListModel.clear();
+    rank_list.clear();
+    prize_list.clear();
+    leaderModel.clear();
+    var formData = {
+      'match_id': match_id,
+      'contest_id': contest_id,
+      'user_id': userId,
+    };
+    var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/leaderboard', queryParameters: formData);
+    var data = response.data['data']['contests'];
+    var myleaderboardData = response.data['data']['current_team_users'];
+    var othersleaderboardData = response.data['data']['team_users'];
 
-      if (response.statusCode == 200) {
-        CustomToast.showToast(message: 'Fetch Contest');
-      } else {
-        CustomToast.showToast(message: 'Not Fetch Contest');
+    if (data.length > 0) {
+      var rank = [];
+      var prize = [];
+      for (int i = 0; i < data.length; i++) {
+        contestListModel.add(ContestListModel(
+          id: data[i]['id'] ?? 0,
+          title: data[i]['title'] ?? '',
+          prizePool: data[i]['winning_prize'].toString(),
+          entryFee: data[i]['entrance_amount'].toString(),
+          noOfWinner: data[i]['no_of_winners'].toString(),
+          totalSpot: data[i]['spot'].toString(),
+          currentSpot: data[i]['current_spot'].toString(),
+        ));
+        rank = data[i]['rank_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').split(',');
+        prize = data[i]['prize_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').split(',');
       }
-    } catch (e) {}
+      for (var v in rank) {
+        if (v != 'null') {
+          rank_list.add(v);
+        }
+      }
+      for (var v in prize) {
+        if (v != 'null') {
+          prize_list.add(v);
+        }
+      }
+    }
+    if (myleaderboardData.length > 0) {
+      for (int i = 0; i < myleaderboardData.length; i++) {
+        leaderModel.add(LeaderModel(
+          teamrank: myleaderboardData[i]['rank'].toString(),
+          userimg: myleaderboardData[i]['users']['image'],
+          username: myleaderboardData[i]['users']['user_name'],
+        ));
+        update();
+      }
+    }
+    if (othersleaderboardData.length > 0) {
+      for (int i = 0; i < othersleaderboardData.length; i++) {
+        leaderModel.add(LeaderModel(
+          teamrank: othersleaderboardData[i]['rank'].toString(),
+          userimg: othersleaderboardData[i]['users']['image'],
+          username: othersleaderboardData[i]['users']['user_name'],
+        ));
+        update();
+      }
+    }
   }
 }

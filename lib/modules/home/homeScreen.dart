@@ -2,6 +2,7 @@
 
 import 'dart:ui';
 import 'package:TennixWorldXI/GetxController/teamController.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/score_view.dart';
 import 'package:TennixWorldXI/modules/login/sliderView.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -331,14 +332,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               Row(
                                                 children: [
-                                                  SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child: ClipOval(
-                                                        child: Image.network(
-                                                      'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country1Flag}',
-                                                      fit: BoxFit.cover,
-                                                    )),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.to(ScoreView(
+                                                        team_id: 1,
+                                                      ));
+                                                    },
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: ClipOval(
+                                                          child: Image.network(
+                                                        'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country1Flag}',
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                    ),
                                                   ),
                                                   SizedBox(
                                                     width: 10,
@@ -372,14 +380,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   SizedBox(
                                                     width: 10,
                                                   ),
-                                                  SizedBox(
-                                                    width: 50,
-                                                    height: 50,
-                                                    child: ClipOval(
-                                                        child: Image.network(
-                                                      'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country2Flag}',
-                                                      fit: BoxFit.cover,
-                                                    )),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.to(ScoreView(
+                                                        team_id: 2,
+                                                      ));
+                                                    },
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: ClipOval(
+                                                          child: Image.network(
+                                                        'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country2Flag}',
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                    ),
                                                   ),
                                                 ],
                                               ),

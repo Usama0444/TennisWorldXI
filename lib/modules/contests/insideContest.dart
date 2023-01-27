@@ -1,4 +1,7 @@
+import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:TennixWorldXI/constant/constants.dart';
@@ -15,7 +18,7 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
 
   ScrollController _scrollController = new ScrollController();
   late TabController controller;
-
+  var teamController = Get.put(TeamController());
   @override
   void initState() {
     super.initState();
@@ -142,7 +145,7 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
                         height: 4,
                       ),
                       Text(
-                        '₹10000',
+                        '₹${teamController.contestListModel[0].prizePool}',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 20,
@@ -164,7 +167,7 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '1',
+                        '${teamController.contestListModel[0].noOfWinner}',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontSize: 20,
@@ -193,11 +196,10 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
                       Container(
                         height: 30,
                         width: 90,
-                        // ignore: deprecated_member_use
                         child: ElevatedButton(
                           onPressed: () {},
                           child: Text(
-                            '₹575',
+                            '₹${teamController.contestListModel[0].entryFee}',
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
@@ -228,7 +230,7 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
                 child: Row(
                   children: <Widget>[
                     Text(
-                      '2 spot left',
+                      '${teamController.contestListModel[0].currentSpot} spot left',
                       style: TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, color: Colors.orange[400]),
                     )
                   ],
@@ -301,86 +303,34 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
           ),
         ),
         Expanded(
-          child: ListView(
+          child: ListView.builder(
+            itemCount: teamController.rank_list.length,
+            itemBuilder: (context, index) {
+              return Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 10, top: 4, right: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(
+                          '# ${teamController.rank_list[index]}',
+                        ),
+                        Text(
+                          '₹ ${teamController.prize_list[index]}',
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            color: AllCoustomTheme.getTextThemeColors(),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Divider(),
+                ],
+              );
+            },
             physics: BouncingScrollPhysics(),
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.only(left: 10, top: 4, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      '# 1',
-                    ),
-                    Text(
-                      '₹ 10000.00',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: AllCoustomTheme.getTextThemeColors(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(),
-              Container(
-                padding: EdgeInsets.only(left: 10, top: 4, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      '# 2 - 100',
-                    ),
-                    Text(
-                      '₹ 1000.00',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: AllCoustomTheme.getTextThemeColors(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(),
-              Container(
-                padding: EdgeInsets.only(left: 10, top: 4, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      '# 101 - 1000',
-                    ),
-                    Text(
-                      '₹ 100.00',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: AllCoustomTheme.getTextThemeColors(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(),
-              Container(
-                padding: EdgeInsets.only(left: 10, top: 4, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      '# 1001 - 5000',
-                    ),
-                    Text(
-                      '₹ 10.00',
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        color: AllCoustomTheme.getTextThemeColors(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Divider(),
-            ],
           ),
         ),
         Container(
@@ -405,67 +355,68 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
   Widget dowunloadbar() {
     return Column(
       children: <Widget>[
-        Container(
-          height: 50,
-          color: AllCoustomTheme.getTextThemeColors().withOpacity(0.1),
-          child: Container(
-            padding: EdgeInsets.only(left: 10, top: 10, right: 10),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  'view all teams \nafter the deadline',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: AppConstant.SIZE_TITLE12,
-                    color: AllCoustomTheme.getTextThemeColors(),
-                  ),
-                ),
-                Container(
-                  child: Opacity(
-                    opacity: 0.6,
-                    child: Container(
-                      width: 150,
-                      height: 24,
-                      decoration: BoxDecoration(
-                        color: AllCoustomTheme.getThemeData().backgroundColor,
-                        borderRadius: new BorderRadius.circular(4.0),
-                        boxShadow: <BoxShadow>[
-                          BoxShadow(color: AllCoustomTheme.getBlackAndWhiteThemeColors().withOpacity(0.3), offset: Offset(0, 1), blurRadius: 5.0),
-                        ],
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              child: Text(
-                                'Download Teams ',
-                                style: TextStyle(fontFamily: 'Poppins', fontSize: AppConstant.SIZE_TITLE10, color: AllCoustomTheme.getTextThemeColors()),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 2),
-                              child: Icon(
-                                Icons.file_download,
-                                color: AllCoustomTheme.getTextThemeColors(),
-                                size: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // Container(
+        //   height: 50,
+        //   color: AllCoustomTheme.getTextThemeColors().withOpacity(0.1),
+        //   child: Container(
+        //     padding: EdgeInsets.only(left: 10, top: 10, right: 10),
+        //     child: Row(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       children: <Widget>[
+        //         Text(
+        //           'view all teams \nafter the deadline',
+        //           style: TextStyle(
+        //             fontFamily: 'Poppins',
+        //             fontSize: AppConstant.SIZE_TITLE12,
+        //             color: AllCoustomTheme.getTextThemeColors(),
+        //           ),
+        //         ),
+        //         Container(
+        //           child: Opacity(
+        //             opacity: 0.6,
+        //             child: Container(
+        //               width: 150,
+        //               height: 24,
+        //               decoration: BoxDecoration(
+        //                 color: AllCoustomTheme.getThemeData().backgroundColor,
+        //                 borderRadius: new BorderRadius.circular(4.0),
+        //                 boxShadow: <BoxShadow>[
+        //                   BoxShadow(color: AllCoustomTheme.getBlackAndWhiteThemeColors().withOpacity(0.3), offset: Offset(0, 1), blurRadius: 5.0),
+        //                 ],
+        //               ),
+        //               child: Material(
+        //                 color: Colors.transparent,
+        //                 child: Row(
+        //                   mainAxisSize: MainAxisSize.max,
+        //                   crossAxisAlignment: CrossAxisAlignment.center,
+        //                   mainAxisAlignment: MainAxisAlignment.center,
+        //                   children: <Widget>[
+        //                     Container(
+        //                       child: Text(
+        //                         'Download Teams ',
+        //                         style: TextStyle(fontFamily: 'Poppins', fontSize: AppConstant.SIZE_TITLE10, color: AllCoustomTheme.getTextThemeColors()),
+        //                       ),
+        //                     ),
+        //                     Container(
+        //                       padding: EdgeInsets.only(top: 2),
+        //                       child: Icon(
+        //                         Icons.file_download,
+        //                         color: AllCoustomTheme.getTextThemeColors(),
+        //                         size: 14,
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ),
+        //               ),
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
+
         Container(
           padding: EdgeInsets.only(left: 10, top: 4, right: 10),
           child: Row(
@@ -481,40 +432,85 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
           ),
         ),
         Divider(),
-        Expanded(
-          child: Container(
-            padding: EdgeInsets.only(left: 10, right: 10),
-            child: ListView(
-              physics: BouncingScrollPhysics(),
-              children: <Widget>[
-                Text(
-                  'No team has joined this contest yet',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    color: AllCoustomTheme.getTextThemeColors(),
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-                Container(
-                  width: 100,
-                  height: 100,
-                  child: Image.asset(AppConstant.users),
-                ),
-                Container(
-                  child: Text(
-                    'Be the first one to join this contest & start winning!',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: AppConstant.SIZE_TITLE14,
-                      color: Colors.grey,
+        GetBuilder<TeamController>(builder: (controller) {
+          if (controller.leaderModel.length == 0) {
+            return Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: ListView(
+                  physics: BouncingScrollPhysics(),
+                  children: <Widget>[
+                    Text(
+                      'No team has joined this contest yet',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: AllCoustomTheme.getTextThemeColors(),
+                      ),
+                      textAlign: TextAlign.center,
                     ),
-                    textAlign: TextAlign.center,
-                  ),
-                )
-              ],
-            ),
-          ),
-        )
+                    Container(
+                      width: 100,
+                      height: 100,
+                      child: Image.asset(AppConstant.users),
+                    ),
+                    Container(
+                      child: Text(
+                        'Be the first one to join this contest & start winning!',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontSize: AppConstant.SIZE_TITLE14,
+                          color: Colors.grey,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          } else {
+            return Expanded(
+              child: Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: ListView.builder(
+                  itemCount: controller.leaderModel.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Container(
+                          width: 50,
+                          height: 50,
+                          child: ClipOval(
+                              child: Image.network(
+                            'https://dream11.tennisworldxi.com/storage/app/${controller.leaderModel[index].userimg}',
+                            fit: BoxFit.cover,
+                          ))),
+                      title: Row(
+                        children: [
+                          Row(
+                            children: [
+                              Text('${controller.leaderModel[index].username}'),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                width: 30,
+                                height: 20,
+                                color: Colors.grey[200],
+                                child: Center(
+                                  child: Text('T${index + 1}'),
+                                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            );
+          }
+        })
       ],
     );
   }
@@ -568,10 +564,10 @@ class ContestTabHeader extends SliverPersistentHeaderDelegate {
 }
 
 class MatchHadder extends StatelessWidget {
-  const MatchHadder({
+  MatchHadder({
     Key? key,
   }) : super(key: key);
-
+  var teamController = Get.put(TeamController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -586,12 +582,17 @@ class MatchHadder extends StatelessWidget {
                 Container(
                   width: 24,
                   height: 24,
-                  child: Image.asset('assets/19.png'),
+                  child: ClipOval(
+                    child: Image.network(
+                      'https://dream11.tennisworldxi.com/storage/app/${teamController.team1Flag}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 8, right: 8),
                   child: Text(
-                    "SA",
+                    "${teamController.team1ShortName}",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'Poppins',
@@ -616,7 +617,7 @@ class MatchHadder extends StatelessWidget {
                 Container(
                   padding: EdgeInsets.only(left: 8, right: 8),
                   child: Text(
-                    'IND',
+                    '${teamController.team2ShortName}',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'Poppins',
@@ -629,14 +630,19 @@ class MatchHadder extends StatelessWidget {
                 Container(
                   width: 24,
                   height: 24,
-                  child: Image.asset('assets/25.png'),
+                  child: ClipOval(
+                    child: Image.network(
+                      'https://dream11.tennisworldxi.com/storage/app/${teamController.team2Flag}',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
                 Expanded(
                   child: SizedBox(),
                 ),
                 Container(
                   child: Text(
-                    'Mon, 9 Sep',
+                    '${teamController.current_date}',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       color: HexColor(

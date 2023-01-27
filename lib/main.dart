@@ -6,6 +6,8 @@ import 'package:TennixWorldXI/constant/global.dart';
 import 'package:TennixWorldXI/constant/routes.dart';
 import 'package:TennixWorldXI/constant/themes.dart';
 import 'package:TennixWorldXI/modules/CustomImagePicker/camera.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/player_record.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/score_view.dart';
 import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_item.dart';
 import 'package:TennixWorldXI/modules/home/tabScreen.dart';
 import 'package:TennixWorldXI/modules/login/loginScreen.dart';
@@ -18,6 +20,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'constant/constants.dart';
+import 'modules/ScoreBoard/Player_all_record.dart';
+
+int userId = 2;
 
 class SimpleBlocDelegate extends BlocObserver {
   @override
@@ -101,13 +106,13 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: Container(
-        color: AllCoustomTheme.getThemeData().primaryColor,
+        color: Color(0xff081c3f),
         child: GetMaterialApp(
           debugShowCheckedModeBanner: false,
           title: AppConstant.AppName,
           theme: AllCoustomTheme.getThemeData(),
           routes: routes,
-          // home: PlayerViewItem(),
+          // home: ScoreView(),
         ),
       ),
     );

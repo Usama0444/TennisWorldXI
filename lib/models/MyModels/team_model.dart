@@ -12,6 +12,8 @@ class TeamModel {
   var vice_captain_name;
   var captain_pic;
   var vice_captain_pic;
+  var team1_count;
+  var team2_count;
 
   TeamModel({
     required this.match_id,
@@ -25,6 +27,8 @@ class TeamModel {
     required this.captain_name,
     required this.captain_pic,
     required this.vice_captain_name,
+    required this.team1_count,
+    required this.team2_count,
   });
 
   factory TeamModel.fromJson({required Map<String, dynamic> json}) {
@@ -40,6 +44,8 @@ class TeamModel {
       captain_pic: json['captainImage'],
       vice_captain_name: json['vice_captainName'],
       vice_captain_pic: json['vice_captainImage'],
+      team1_count: json['team1_count'],
+      team2_count: json['team2_count'],
     );
   }
 }

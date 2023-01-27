@@ -1,4 +1,9 @@
+import 'package:TennixWorldXI/GetxController/scoreboard_controller.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/Player_all_record.dart';
 import 'package:TennixWorldXI/modules/ScoreBoard/score_board.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/score_view.dart';
+import 'package:TennixWorldXI/modules/ScoreBoard/scoreboard_login.dart';
+import 'package:TennixWorldXI/modules/login/loginView.dart';
 import 'package:TennixWorldXI/modules/myProfile/myProfileScreen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/all_transactions.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +19,7 @@ import 'package:TennixWorldXI/utils/avatarImage.dart';
 import 'package:TennixWorldXI/constant/global.dart';
 import 'package:get/get.dart';
 
+import '../ScoreBoard/player_record.dart';
 import '../home/moreScreen.dart';
 import '../myProfile/transectionHistoryScreen.dart';
 import '../pymentOptions/accountVerification.dart';
@@ -30,6 +36,14 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   var appVerison = '1.1.1';
   bool isLoginProsses = false;
+  var scoreboardController = Get.put(ScoreboardController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scoreboardController.getAllScoreboardData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +78,18 @@ class _AppDrawerState extends State<AppDrawer> {
                       height: 1,
                     ),
                     score(),
+                    Divider(
+                      height: 1,
+                    ),
+                    // liveScore(),
+                    // Divider(
+                    //   height: 1,
+                    // ),
+                    playerRecord(),
+                    Divider(
+                      height: 1,
+                    ),
+                    playerCurrentRecord(),
                     Divider(
                       height: 1,
                     ),
@@ -462,10 +488,133 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
+  // Widget liveScore() {
+  //   return GestureDetector(
+  //     onTap: () {
+  //       Get.to(ScoreView(team_id:1,));
+  //     },
+  //     child: Container(
+  //       height: 54,
+  //       child: Padding(
+  //         padding: EdgeInsets.only(left: 14, right: 14),
+  //         child: new Row(
+  //           children: <Widget>[
+  //             Container(
+  //               child: Icon(
+  //                 Icons.payment,
+  //                 color: AllCoustomTheme.getThemeData().primaryColor,
+  //                 size: 22,
+  //               ),
+  //             ),
+  //             SizedBox(
+  //               width: 10,
+  //             ),
+  //             Expanded(
+  //               child: Container(
+  //                 child: Text(
+  //                   'Live Scoreboard',
+  //                   textAlign: TextAlign.start,
+  //                   style: TextStyle(
+  //                     fontFamily: 'Poppins',
+  //                     color: AllCoustomTheme.getThemeData().primaryColor,
+  //                     fontWeight: FontWeight.w500,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  Widget playerRecord() {
+    return GestureDetector(
+      onTap: () {
+        Get.to(PlayerAllRecord());
+      },
+      child: Container(
+        height: 54,
+        child: Padding(
+          padding: EdgeInsets.only(left: 14, right: 14),
+          child: new Row(
+            children: <Widget>[
+              Container(
+                child: Icon(
+                  Icons.payment,
+                  color: AllCoustomTheme.getThemeData().primaryColor,
+                  size: 22,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  child: Text(
+                    'Player Record',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: AllCoustomTheme.getThemeData().primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget playerCurrentRecord() {
+    return GestureDetector(
+      onTap: () {
+        Get.to(PlayerRecord());
+      },
+      child: Container(
+        height: 54,
+        child: Padding(
+          padding: EdgeInsets.only(left: 14, right: 14),
+          child: new Row(
+            children: <Widget>[
+              Container(
+                child: Icon(
+                  Icons.payment,
+                  color: AllCoustomTheme.getThemeData().primaryColor,
+                  size: 22,
+                ),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                child: Container(
+                  child: Text(
+                    'Current Player Record',
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontFamily: 'Poppins',
+                      color: AllCoustomTheme.getThemeData().primaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget score() {
     return InkWell(
       onTap: () {
-        Get.to(ScoreBoard());
+        scoreboardController.loginStatus == 1 ? Get.to(ScoreBoard()) : Get.to(ScoreboardLoginView());
       },
       child: Container(
         height: 54,
@@ -843,8 +992,7 @@ class _AppDrawerState extends State<AppDrawer> {
       height: 54,
       child: InkWell(
         onTap: () {
-          // Navigator.pop(context);
-          // LogOut().logout(context);
+          Get.offAll(LoginView());
         },
         child: Padding(
           padding: EdgeInsets.only(left: 14, right: 14),

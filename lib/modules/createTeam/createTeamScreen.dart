@@ -181,7 +181,7 @@ class _CreateTeamScreenState extends State<CreateTeamScreen> with SingleTickerPr
                                   Expanded(
                                     child: Center(
                                       child: Text(
-                                        'Tue, 9 Aug',
+                                        '${teamController.current_date}',
                                         style: TextStyle(
                                           fontFamily: 'Poppins',
                                           fontSize: 24,

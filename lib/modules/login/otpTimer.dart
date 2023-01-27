@@ -33,7 +33,7 @@ class _OtpTimerViewState extends State<OtpTimerView> {
         setSecondView();
         if (time == 0) {
           timer?.cancel();
-          widget.timeCallBack!(true);
+          // widget.timeCallBack!(true);
         }
       }
     });

@@ -181,7 +181,7 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                                                                     height: 8,
                                                                   ),
                                                                   Text(
-                                                                    '4',
+                                                                    '${con.userTeams[index].team1_count}',
                                                                     style: TextStyle(
                                                                       fontFamily: 'Poppins',
                                                                       fontWeight: FontWeight.bold,
@@ -207,7 +207,7 @@ class _MyTeamsScreenState extends State<MyTeamsScreen> {
                                                                     height: 8,
                                                                   ),
                                                                   Text(
-                                                                    '4',
+                                                                    '${con.userTeams[index].team2_count}',
                                                                     style: TextStyle(
                                                                       fontFamily: 'Poppins',
                                                                       fontWeight: FontWeight.bold,

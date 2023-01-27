@@ -116,7 +116,11 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
                                       Container(
                                         width: 24,
                                         height: 24,
-                                        child: Image.asset(widget.country1Flag!),
+                                        child: ClipOval(
+                                            child: Image.network(
+                                          widget.country1Flag!,
+                                          fit: BoxFit.cover,
+                                        )),
                                       ),
                                       Container(
                                         padding: EdgeInsets.only(left: 8, right: 8),
@@ -159,7 +163,11 @@ class _CreateContestScreenState extends State<CreateContestScreen> {
                                       Container(
                                         width: 24,
                                         height: 24,
-                                        child: Image.asset(widget.country2Flag!),
+                                        child: ClipOval(
+                                            child: Image.network(
+                                          widget.country2Flag!,
+                                          fit: BoxFit.cover,
+                                        )),
                                       ),
                                       Expanded(
                                         child: SizedBox(),

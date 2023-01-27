@@ -107,7 +107,7 @@ class _PymentScreenState extends State<PymentScreen> {
     };
 
     try {
-      _razorpay.open(options);
+      // _razorpay.open(options);
     } catch (e) {
       debugPrint(e.toString());
     }

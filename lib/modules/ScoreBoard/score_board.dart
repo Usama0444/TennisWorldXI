@@ -1,6 +1,8 @@
+import 'package:TennixWorldXI/GetxController/scoreboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
 import '../../constant/themes.dart';
 
@@ -12,6 +14,8 @@ class ScoreBoard extends StatefulWidget {
 }
 
 class _ScoreBoardState extends State<ScoreBoard> {
+  ScoreboardController controller = Get.put(ScoreboardController());
+
   //batters
   int batter1Run = 0;
   int batter2Run = 0;
@@ -60,6 +64,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
 
   void pressNumberButtonByUser(int btnValue) {
     int n = btnValue;
+
     if (bowlerBalls < 6) {
       undoBowlerBalls = bowlerBalls;
       bowlerBalls++;
@@ -177,8 +182,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
         batter2Six++;
       }
     }
-
     setState(() {});
+    controller.updateScoreboard(btnValue);
   }
 
   void pressNonNumberBtns(var val) {
@@ -283,733 +288,1249 @@ class _ScoreBoardState extends State<ScoreBoard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color(0xff081c3f),
         body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: [
-              Container(
-                height: AppBar().preferredSize.height,
-                color: AllCoustomTheme.getThemeData().primaryColor,
-                child: Row(
-                  children: <Widget>[
-                    Material(
-                      color: AllCoustomTheme.getThemeData().primaryColor,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Container(
-                          width: AppBar().preferredSize.height,
-                          height: AppBar().preferredSize.height,
-                          child: Icon(
-                            Icons.arrow_back,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        'ScoreSheet',
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                color: Colors.white,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/13.png',
-                                width: 50,
-                                height: 30,
-                                fit: BoxFit.fitHeight,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'Pakistan',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            '8/220',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              Image.asset(
-                                'assets/17.png',
-                                width: 50,
-                                height: 30,
-                                fit: BoxFit.fitHeight,
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                'India',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                          Text(
-                            '$teamLossWicket/$teamScore',
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.black.withOpacity(0.5),
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 430,
-                child: ListView(
+            scrollDirection: Axis.vertical,
+            child: GetBuilder<ScoreboardController>(
+              builder: (controller) {
+                return Column(
                   children: [
                     Container(
-                      color: Colors.grey[400],
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
-                                      color: Colors.blue,
-                                      width: 4,
-                                    ),
-                                  )),
-                                  child: Center(
-                                    child: Text(
-                                      '2nd Inning',
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ),
+                      height: AppBar().preferredSize.height,
+                      color: Color(0xff081c3f),
+                      child: Row(
+                        children: <Widget>[
+                          Material(
+                            color: Color(0xff081c3f),
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.pop(context);
+                              },
+                              child: Container(
+                                width: AppBar().preferredSize.height,
+                                height: AppBar().preferredSize.height,
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.white,
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 55,
-                                  decoration: BoxDecoration(
-                                      border: Border(
-                                    bottom: BorderSide(
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.2,
+                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                    'tennisworldxi'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
                                       color: Colors.white,
-                                      width: 2,
+                                      fontSize: 12,
                                     ),
-                                  )),
-                                  child: Center(
-                                    child: Text(
-                                      'Ball-by-Ball',
+                                  ),
+                                  Text(
+                                    'Scoreboard'.toUpperCase(),
+                                    style: TextStyle(
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Color(0xff081c3f),
+                      child: Column(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/13.png',
+                                        width: 50,
+                                        height: 30,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${controller.scoreboardTeam?.team1name}'.toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '${controller.scoreboardTeam?.team1TotalWicket}/${controller.scoreboardTeam?.team1TotalScore}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.white),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Image.asset(
+                                        'assets/17.png',
+                                        width: 50,
+                                        height: 30,
+                                        fit: BoxFit.fitHeight,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        '${controller.scoreboardTeam?.team2name}'.toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '${controller.scoreboardTeam?.team2TotalWicket}/${controller.scoreboardTeam?.team2TotalScore}',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 430,
+                      child: ListView(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                left: BorderSide(color: Colors.white),
+                                right: BorderSide(color: Colors.white),
+                                top: BorderSide(color: Colors.white),
+                              ),
+                              color: Color(0xff081c3f),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.blue,
+                                            width: 4,
+                                          ),
+                                        )),
+                                        child: Center(
+                                          child: Text(
+                                            '2nd Inning',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        decoration: BoxDecoration(
+                                            border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.white,
+                                            width: 2,
+                                          ),
+                                        )),
+                                        child: Center(
+                                          child: Text(
+                                            'Ball-by-Ball',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.normal,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      left: BorderSide(color: Colors.white),
+                                      right: BorderSide(color: Colors.white),
+                                      bottom: BorderSide(color: Colors.white),
+                                    ),
+                                    color: Color(0xff081c3f),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 55,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                'Batters'.toUpperCase(),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 55,
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'R',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'B',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    '4s',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    '6s',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 40,
+                                        margin: EdgeInsets.only(right: 30),
+                                        decoration: strikPlayer1
+                                            ? BoxDecoration(
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: Colors.white.withOpacity(0.5),
+                                                ),
+                                                borderRadius: BorderRadius.circular(10),
+                                              )
+                                            : BoxDecoration(),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '${controller.scoreboardPlayers?.batsman1_name}',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              strikPlayer1
+                                                  ? Icon(
+                                                      Icons.subdirectory_arrow_right_outlined,
+                                                      color: Colors.white,
+                                                    )
+                                                  : Text(''),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_runs}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_bowls}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_four}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_six}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 40,
+                                        margin: EdgeInsets.only(right: 30),
+                                        decoration: strikPlayer2
+                                            ? BoxDecoration(
+                                                border: Border.all(
+                                                  width: 2,
+                                                  color: Colors.white.withOpacity(0.5),
+                                                ),
+                                                borderRadius: BorderRadius.circular(10),
+                                              )
+                                            : BoxDecoration(),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                '${controller.scoreboardPlayers?.batsman2_name.toString().split(' ')[0]}',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              strikPlayer2
+                                                  ? Icon(
+                                                      Icons.subdirectory_arrow_right_outlined,
+                                                      color: Colors.white,
+                                                    )
+                                                  : Text(''),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman2_runs}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman2_bowls}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman2_four}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman2_six}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          // border: Border.all(
+                                          //   width: 2,
+                                          //   color: Colors.black.withOpacity(0.5),
+                                          // ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Partnership'.toUpperCase(),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                              ),
+                                              // Icon(Icons.subdirectory_arrow_right_outlined),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_runs + controller.scoreboardPlayers?.batsman2_runs}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_bowls + controller.scoreboardPlayers?.batsman2_bowls}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_four + controller.scoreboardPlayers?.batsman2_four}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.batsman1_six + controller.scoreboardPlayers?.batsman2_six}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white),
+                                    color: Color(0xff081c3f),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 55,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                'Bowler'.toUpperCase(),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 55,
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'O',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'R',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'M',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'W',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    'N',
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.normal,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 40,
+                                        margin: EdgeInsets.only(right: 30, left: 10),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            width: 2,
+                                            color: Colors.white.withOpacity(0.5),
+                                          ),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Center(
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  "${controller.scoreboardPlayers!.bolwer_name}",
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.normal,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        height: 55,
+                                        child: Center(
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.bowler_runing_balls}.${controller.scoreboardPlayers?.bowler_runing_over}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.bolwer_runs}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '$overM',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.bolwer_wicket}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                              Expanded(
+                                                flex: 1,
+                                                child: Text(
+                                                  '${controller.scoreboardPlayers?.bolwer_no_balls}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Column(
+                              children: [
+                                Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.white),
+                                    color: Color(0xff081c3f),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 40,
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                'Extra Runs'.toUpperCase(),
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.normal,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          height: 40,
+                                          child: Center(
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '${controller.scoreboardTeam?.team1ExtraScore}',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.normal,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(top: 14),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(0);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      '0',
                                       style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.normal,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
                                       ),
-                                    ),
+                                    )),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.grey[400],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(1);
+                                  },
                                   child: Container(
-                                    height: 55,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Batters'.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 55,
                                     child: Center(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'R',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'B',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              '4s',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              '6s',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        child: Text(
+                                      '1',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
                                       ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 40,
-                                  margin: EdgeInsets.only(right: 30),
-                                  decoration: strikPlayer1
-                                      ? BoxDecoration(
-                                          border: Border.all(
-                                            width: 2,
-                                            color: Colors.black.withOpacity(0.5),
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                      : BoxDecoration(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'S Adam',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                        strikPlayer1 ? Icon(Icons.subdirectory_arrow_right_outlined) : Text(''),
-                                      ],
-                                    ),
+                                    )),
                                   ),
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
-                                child: Container(
-                                  height: 55,
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter1Run',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter1Ball',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter1Fours',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter1Six',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 40,
-                                  margin: EdgeInsets.only(right: 30),
-                                  decoration: strikPlayer2
-                                      ? BoxDecoration(
-                                          border: Border.all(
-                                            width: 2,
-                                            color: Colors.black.withOpacity(0.5),
-                                          ),
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                      : BoxDecoration(),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Anil Gupta',
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                        strikPlayer2 ? Icon(Icons.subdirectory_arrow_right_outlined) : Text(''),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 55,
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter2Run',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter2Ball',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter2Fours',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$batter2Six',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    // border: Border.all(
-                                    //   width: 2,
-                                    //   color: Colors.black.withOpacity(0.5),
-                                    // ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          'Partnership'.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                        // Icon(Icons.subdirectory_arrow_right_outlined),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 55,
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '${batter1Run + batter2Run}',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '${batter1Ball + batter2Ball}',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '${batter1Fours + batter2Fours}',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '${batter1Six + batter2Six}',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.grey[400],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(2);
+                                  },
                                   child: Container(
-                                    height: 55,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Bowler'.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 55,
                                     child: Center(
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'O',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'R',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'M',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'W',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Text(
-                                              'N',
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                        child: Text(
+                                      '2',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
                                       ),
-                                    ),
+                                    )),
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(3);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      '3',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('undo');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.green,
+                                      border: Border.all(color: Colors.green, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Icon(
+                                      Icons.undo,
+                                      color: Colors.white,
+                                    )),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
                           ),
                           Row(
                             children: [
                               Expanded(
                                 flex: 1,
-                                child: Container(
-                                  height: 40,
-                                  margin: EdgeInsets.only(right: 30, left: 10),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 2,
-                                      color: Colors.black.withOpacity(0.5),
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(4);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
                                     ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'S Adam',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
+                                    child: Center(
+                                        child: Text(
+                                      '4',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
                                       ),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(6);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
                                     ),
+                                    child: Center(
+                                        child: Text(
+                                      '6',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNumberButtonByUser(5);
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      '5+',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 25,
+                                        color: Colors.white,
+                                      ),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {},
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'End\nOver'.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                      ),
+                                    )),
                                   ),
                                 ),
                               ),
                               Expanded(
                                 flex: 1,
                                 child: Container(
+                                  width: 60,
                                   height: 55,
-                                  child: Center(
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$over.$bowlerBalls',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$bowlerRun',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$overM',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$bowlerWicket',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Text(
-                                            '$bowlerNoBall',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('Wide');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
                                     ),
+                                    child: Center(
+                                        child: Text(
+                                      'wide'.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('No Ball');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'No\nBall'.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('Bye');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'bye'.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('Led Bye');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.white, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'Led\nbye'.toUpperCase(),
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                                    )),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    pressNonNumberBtns('Wicket');
+                                  },
+                                  child: Container(
+                                    width: 60,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.red,
+                                      border: Border.all(color: Colors.red, width: 3),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Center(
+                                        child: Text(
+                                      'Wicket'.toUpperCase(),
+                                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+                                    )),
                                   ),
                                 ),
                               ),
@@ -1017,405 +1538,20 @@ class _ScoreBoardState extends State<ScoreBoard> {
                           ),
                         ],
                       ),
-                    ),
-                    Container(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: Colors.grey[400],
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 55,
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Extra Runs'.toUpperCase(),
-                                          style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Container(
-                                    height: 55,
-                                    child: Center(
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            '$extraRuns',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                    )
                   ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 14),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(0);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: ClipOval(
-                                      child: Image.asset(
-                                'assets/dot.png',
-                                width: 20,
-                                height: 20,
-                                fit: BoxFit.cover,
-                              ))),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(1);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '1',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(2);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '2',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(3);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '3',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('undo');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                border: Border.all(color: Colors.green, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Icon(
-                                Icons.undo,
-                                color: Colors.white,
-                              )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(4);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '4',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(6);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '6',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNumberButtonByUser(5);
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                '5+',
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {},
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'End\nOver'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            width: 60,
-                            height: 55,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('Wide');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color.fromARGB(255, 36, 35, 35), width: 3),
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 36, 35, 35),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'wide'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('No Ball');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color.fromARGB(255, 36, 35, 35), width: 3),
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 36, 35, 35),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'No\nBall'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('Bye');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color.fromARGB(255, 36, 35, 35), width: 3),
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 36, 35, 35),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'bye'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('Led Bye');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Color.fromARGB(255, 36, 35, 35), width: 3),
-                                shape: BoxShape.circle,
-                                color: Color.fromARGB(255, 36, 35, 35),
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'Led\nbye'.toUpperCase(),
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                            onTap: () {
-                              pressNonNumberBtns('Wicket');
-                            },
-                            child: Container(
-                              width: 60,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                border: Border.all(color: Colors.red, width: 3),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                  child: Text(
-                                'Wicket'.toUpperCase(),
-                                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
-                              )),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+                );
+              },
+            )),
       ),
     );
   }
 }
+
+//when wicket button click below buttons will show
+// run out
+// stumping
+// catch
+// bold
+// hit wicket
+// retired hurt

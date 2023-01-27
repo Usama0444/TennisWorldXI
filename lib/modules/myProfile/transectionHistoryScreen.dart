@@ -226,7 +226,7 @@ class _TransectionHistoryScreenState extends State<TransectionHistoryScreen> {
                                             ),
                                             Container(
                                               child: Text(
-                                                'Selecte Date',
+                                                'Select Date',
                                                 style: TextStyle(
                                                   fontFamily: 'Poppins',
                                                   fontSize: AppConstant.SIZE_TITLE18,

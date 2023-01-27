@@ -3,6 +3,7 @@
 import 'dart:core';
 import 'dart:ui';
 import 'package:TennixWorldXI/GetxController/teamController.dart';
+import 'package:TennixWorldXI/main.dart';
 import 'package:TennixWorldXI/models/contest_list_model.dart';
 import 'package:TennixWorldXI/modules/contests/join_user_contest.dart';
 import 'package:dio/dio.dart';
@@ -63,6 +64,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
   bool tab1 = true;
   bool tab2 = false;
   bool tab3 = false;
+  bool isLoading = true;
   bool isTeamSelect = false;
   var teamController = Get.find<TeamController>();
   @override
@@ -72,7 +74,11 @@ class _ContestsScreenState extends State<ContestsScreen> {
     categoryList.totalcontest = 0;
     super.initState();
     teamController.getAllUserTeams();
-    _getContestList();
+    teamController.getContestList().then((value) {
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
 
   @override
@@ -396,7 +402,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                 crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    '${widget.country1FullName}',
+                                                    '${widget.country1FullName}'.toUpperCase(),
                                                     style: TextStyle(
                                                       fontFamily: 'Poppins',
                                                       color: AllCoustomTheme.getThemeData().primaryColor,
@@ -418,7 +424,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                       Container(
                                                         padding: EdgeInsets.only(left: 8, right: 8),
                                                         child: Text(
-                                                          widget.country1Name!,
+                                                          widget.country1Name!.toUpperCase(),
                                                           textAlign: TextAlign.start,
                                                           style: TextStyle(
                                                             fontFamily: 'Poppins',
@@ -464,53 +470,56 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                               SizedBox(
                                                 width: MediaQuery.of(context).size.width * 0.15,
                                               ),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    '${widget.country2FullName}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      color: AllCoustomTheme.getThemeData().primaryColor,
-                                                      fontSize: AppConstant.SIZE_TITLE12,
+                                              Padding(
+                                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.020),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      '${widget.country2FullName}'.toUpperCase(),
+                                                      style: TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        color: AllCoustomTheme.getThemeData().primaryColor,
+                                                        fontSize: AppConstant.SIZE_TITLE12,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        padding: EdgeInsets.only(left: 8, right: 8),
-                                                        child: Text(
-                                                          widget.country2Name!,
-                                                          textAlign: TextAlign.start,
-                                                          style: TextStyle(
-                                                            fontFamily: 'Poppins',
-                                                            fontWeight: FontWeight.bold,
-                                                            color: AllCoustomTheme.getThemeData().primaryColor,
-                                                            fontSize: AppConstant.SIZE_TITLE12,
+                                                    Row(
+                                                      children: [
+                                                        Container(
+                                                          padding: EdgeInsets.only(left: 8, right: 8),
+                                                          child: Text(
+                                                            widget.country2Name!,
+                                                            textAlign: TextAlign.start,
+                                                            style: TextStyle(
+                                                              fontFamily: 'Poppins',
+                                                              fontWeight: FontWeight.bold,
+                                                              color: AllCoustomTheme.getThemeData().primaryColor,
+                                                              fontSize: AppConstant.SIZE_TITLE12,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                      Container(
-                                                        width: 50,
-                                                        height: 50,
-                                                        child: ClipOval(
-                                                          child: Image.network(
-                                                            widget.country2Flag!,
-                                                            fit: BoxFit.fill,
+                                                        Container(
+                                                          width: 50,
+                                                          height: 50,
+                                                          child: ClipOval(
+                                                            child: Image.network(
+                                                              widget.country2Flag!,
+                                                              fit: BoxFit.fill,
+                                                            ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  SizedBox(
-                                                    height: 10,
-                                                  ),
-                                                  Container(
-                                                    width: MediaQuery.of(context).size.width * 0.12,
-                                                    height: MediaQuery.of(context).size.height * 0.01,
-                                                    child: Icon(Icons.live_tv),
-                                                  ),
-                                                ],
+                                                      ],
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Container(
+                                                      width: MediaQuery.of(context).size.width * 0.12,
+                                                      height: MediaQuery.of(context).size.height * 0.01,
+                                                      child: Icon(Icons.live_tv),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
                                             ],
                                           ),
@@ -535,16 +544,16 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                             ],
                                           )
                                         : ListView.builder(
-                                            itemCount: contestListModel.length,
+                                            itemCount: teamController.contestListModel.length,
                                             itemBuilder: (context, index) {
                                               return contestnt(
-                                                contestListModel[index].prizePool.toString(),
-                                                contestListModel[index].entryFee.toString(),
-                                                contestListModel[index].totalSpot.toString(),
-                                                contestListModel[index].currentSpot.toString(),
-                                                contestListModel[index].noOfWinner.toString(),
+                                                teamController.contestListModel[index].prizePool.toString(),
+                                                teamController.contestListModel[index].entryFee.toString(),
+                                                teamController.contestListModel[index].totalSpot.toString(),
+                                                teamController.contestListModel[index].currentSpot.toString(),
+                                                teamController.contestListModel[index].noOfWinner.toString(),
                                                 0.1,
-                                                contestListModel[index].id,
+                                                teamController.contestListModel[index].id,
                                               );
                                             })),
                               )),
@@ -659,22 +668,22 @@ class _ContestsScreenState extends State<ContestsScreen> {
                 ),
               )
             : tab2
-                ? contestListModel.length != 0
+                ? teamController.contestListModel.length != 0
                     ? Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SizedBox(
                           height: 600,
                           child: ListView.builder(
-                              itemCount: contestListModel.length,
+                              itemCount: teamController.contestListModel.length,
                               itemBuilder: (context, index) {
                                 return contestnt(
-                                  contestListModel[index].prizePool.toString(),
-                                  contestListModel[index].entryFee.toString(),
-                                  contestListModel[index].totalSpot.toString(),
-                                  contestListModel[index].currentSpot.toString(),
-                                  contestListModel[index].noOfWinner.toString(),
+                                  teamController.contestListModel[index].prizePool.toString(),
+                                  teamController.contestListModel[index].entryFee.toString(),
+                                  teamController.contestListModel[index].totalSpot.toString(),
+                                  teamController.contestListModel[index].currentSpot.toString(),
+                                  teamController.contestListModel[index].noOfWinner.toString(),
                                   0.1,
-                                  contestListModel[index].id,
+                                  teamController.contestListModel[index].id,
                                 );
                               }),
                         ),
@@ -762,129 +771,149 @@ class _ContestsScreenState extends State<ContestsScreen> {
                         child: ListView.builder(
                             itemCount: con.userTeams.length,
                             itemBuilder: (context, index) {
-                              return Card(
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(13),
-                                            topRight: Radius.circular(13),
-                                          ),
-                                          color: Colors.green[900]
-                                          // image: DecorationImage(image: AssetImage(AppConstant.cricketGround), fit: BoxFit.cover)
-                                          ),
-                                      child: Column(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  'Team ${con.userTeams[index].team_no}',
-                                                  style: TextStyle(
-                                                    fontFamily: 'Poppins',
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: AppConstant.SIZE_TITLE14,
-                                                  ),
-                                                ),
-                                                Expanded(child: SizedBox()),
-                                                Icon(
-                                                  Icons.edit,
-                                                  color: Colors.white,
-                                                  size: 16,
-                                                ),
-                                                SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Icon(
-                                                  Icons.copy_all,
-                                                  color: Colors.white,
-                                                  size: 16,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 6,
-                                          ),
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              return Column(
+                                children: [
+                                  Card(
+                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 150,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(13),
+                                                topRight: Radius.circular(13),
+                                              ),
+                                              color: Colors.green[900]
+                                              // image: DecorationImage(image: AssetImage(AppConstant.cricketGround), fit: BoxFit.cover)
+                                              ),
+                                          child: Column(
                                             children: [
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    '${teamController.team1ShortName}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                      fontSize: AppConstant.SIZE_TITLE14,
+                                              Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      'Team ${con.userTeams[index].team_no}',
+                                                      style: TextStyle(
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.white,
+                                                        fontSize: AppConstant.SIZE_TITLE14,
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 8,
-                                                  ),
-                                                  Text(
-                                                    '4',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight: FontWeight.bold,
+                                                    Expanded(child: SizedBox()),
+                                                    Icon(
+                                                      Icons.edit,
                                                       color: Colors.white,
-                                                      fontSize: AppConstant.SIZE_TITLE14,
+                                                      size: 16,
                                                     ),
-                                                  ),
-                                                ],
+                                                    SizedBox(
+                                                      width: 8,
+                                                    ),
+                                                    Icon(
+                                                      Icons.copy_all,
+                                                      color: Colors.white,
+                                                      size: 16,
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                              Column(
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                    '${teamController.team2ShortName}',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                      fontSize: AppConstant.SIZE_TITLE14,
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 8,
-                                                  ),
-                                                  Text(
-                                                    '4',
-                                                    style: TextStyle(
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight: FontWeight.bold,
-                                                      color: Colors.white,
-                                                      fontSize: AppConstant.SIZE_TITLE14,
-                                                    ),
-                                                  ),
-                                                ],
+                                              SizedBox(
+                                                height: 6,
                                               ),
-                                              Stack(
+                                              Row(
+                                                crossAxisAlignment: CrossAxisAlignment.center,
+                                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                 children: [
                                                   Column(
                                                     mainAxisAlignment: MainAxisAlignment.center,
                                                     children: [
-                                                      ClipOval(
-                                                          child: Image.network(
-                                                        'https://dream11.tennisworldxi.com/storage/app/${con.userTeams[index].captain_pic}',
-                                                        width: 60,
-                                                        height: 60,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                      Container(
-                                                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(7)),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
+                                                      Text(
+                                                        '${teamController.team1ShortName}',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: AppConstant.SIZE_TITLE14,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                      Text(
+                                                        '${con.userTeams[index].team1_count}',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: AppConstant.SIZE_TITLE14,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: [
+                                                      Text(
+                                                        '${teamController.team2ShortName}',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: AppConstant.SIZE_TITLE14,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                      Text(
+                                                        '${con.userTeams[index].team2_count}',
+                                                        style: TextStyle(
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.bold,
+                                                          color: Colors.white,
+                                                          fontSize: AppConstant.SIZE_TITLE14,
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Stack(
+                                                    children: [
+                                                      Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          ClipOval(
+                                                              child: Image.network(
+                                                            'https://dream11.tennisworldxi.com/storage/app/${con.userTeams[index].captain_pic}',
+                                                            width: 60,
+                                                            height: 60,
+                                                            fit: BoxFit.cover,
+                                                          )),
+                                                          Container(
+                                                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(7)),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
+                                                              child: Text(
+                                                                '${con.userTeams[index].captain_name}',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Poppins',
+                                                                  color: Colors.white,
+                                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      CircleAvatar(
+                                                        radius: 12,
+                                                        backgroundColor: Colors.white,
+                                                        child: CircleAvatar(
+                                                          backgroundColor: Colors.grey[300],
+                                                          radius: 13,
                                                           child: Text(
-                                                            '${con.userTeams[index].captain_name}',
+                                                            'C',
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
                                                               color: Colors.white,
@@ -895,42 +924,42 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                       )
                                                     ],
                                                   ),
-                                                  CircleAvatar(
-                                                    radius: 12,
-                                                    backgroundColor: Colors.white,
-                                                    child: CircleAvatar(
-                                                      backgroundColor: Colors.grey[300],
-                                                      radius: 13,
-                                                      child: Text(
-                                                        'C',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: Colors.white,
-                                                          fontSize: AppConstant.SIZE_TITLE12,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                              Stack(
-                                                children: [
-                                                  Column(
-                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                  Stack(
                                                     children: [
-                                                      ClipOval(
-                                                          child: Image.network(
-                                                        'https://dream11.tennisworldxi.com/storage/app/${con.userTeams[index].vice_captain_pic}',
-                                                        width: 60,
-                                                        height: 60,
-                                                        fit: BoxFit.cover,
-                                                      )),
-                                                      Container(
-                                                        decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(7)),
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
+                                                      Column(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: [
+                                                          ClipOval(
+                                                              child: Image.network(
+                                                            'https://dream11.tennisworldxi.com/storage/app/${con.userTeams[index].vice_captain_pic}',
+                                                            width: 60,
+                                                            height: 60,
+                                                            fit: BoxFit.cover,
+                                                          )),
+                                                          Container(
+                                                            decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(7)),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.only(top: 4, bottom: 4, left: 8, right: 8),
+                                                              child: Text(
+                                                                '${con.userTeams[index].vice_captain_name}',
+                                                                style: TextStyle(
+                                                                  fontFamily: 'Poppins',
+                                                                  color: Colors.white,
+                                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                      CircleAvatar(
+                                                        radius: 12,
+                                                        backgroundColor: Colors.white,
+                                                        child: CircleAvatar(
+                                                          backgroundColor: Colors.grey[300],
+                                                          radius: 13,
                                                           child: Text(
-                                                            '${con.userTeams[index].vice_captain_name}',
+                                                            'VC',
                                                             style: TextStyle(
                                                               fontFamily: 'Poppins',
                                                               color: Colors.white,
@@ -941,139 +970,128 @@ class _ContestsScreenState extends State<ContestsScreen> {
                                                       )
                                                     ],
                                                   ),
-                                                  CircleAvatar(
-                                                    radius: 12,
-                                                    backgroundColor: Colors.white,
-                                                    child: CircleAvatar(
-                                                      backgroundColor: Colors.grey[300],
-                                                      radius: 13,
-                                                      child: Text(
-                                                        'VC',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: Colors.white,
-                                                          fontSize: AppConstant.SIZE_TITLE12,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  )
                                                 ],
                                               ),
                                             ],
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Wk',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                '${con.userTeams[index].wkeeper}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              Expanded(child: SizedBox()),
+                                              Text(
+                                                'BAT',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                '${con.userTeams[index].batters}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              Expanded(child: SizedBox()),
+                                              Text(
+                                                'AR',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                '${con.userTeams[index].allRounders}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              Expanded(child: SizedBox()),
+                                              Text(
+                                                'BOWEL',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 8,
+                                              ),
+                                              Text(
+                                                '${con.userTeams[index].bowlers}',
+                                                style: TextStyle(
+                                                  fontFamily: 'Poppins',
+                                                  fontWeight: FontWeight.bold,
+                                                  color: AllCoustomTheme.getTextThemeColors(),
+                                                  fontSize: AppConstant.SIZE_TITLE12,
+                                                ),
+                                              ),
+                                              Radio(
+                                                  value: teamController.radioBtnVal[index],
+                                                  groupValue: teamController.group_val,
+                                                  onChanged: (val) {
+                                                    teamController.group_val = teamController.radioBtnVal[index];
+                                                    teamController.team_id = con.userTeams[index].team_id;
+                                                    teamController.update();
+                                                    setState(() {
+                                                      isTeamSelect = true;
+                                                    });
+                                                  }),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'Wk',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '${con.userTeams[index].wkeeper}',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          Expanded(child: SizedBox()),
-                                          Text(
-                                            'BAT',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '${con.userTeams[index].batters}',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          Expanded(child: SizedBox()),
-                                          Text(
-                                            'AR',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '${con.userTeams[index].allRounders}',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          Expanded(child: SizedBox()),
-                                          Text(
-                                            'BOWEL',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 8,
-                                          ),
-                                          Text(
-                                            '${con.userTeams[index].bowlers}',
-                                            style: TextStyle(
-                                              fontFamily: 'Poppins',
-                                              fontWeight: FontWeight.bold,
-                                              color: AllCoustomTheme.getTextThemeColors(),
-                                              fontSize: AppConstant.SIZE_TITLE12,
-                                            ),
-                                          ),
-                                          Radio(
-                                              value: teamController.radioBtnVal[index],
-                                              groupValue: teamController.group_val,
-                                              onChanged: (val) {
-                                                teamController.group_val = teamController.radioBtnVal[index];
-                                                teamController.team_id = con.userTeams[index].team_id;
-                                                teamController.update();
-                                                setState(() {
-                                                  isTeamSelect = true;
-                                                });
-                                              }),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                                  ),
+                                  index + 1 == con.userTeams.length
+                                      ? SizedBox(
+                                          height: 50,
+                                        )
+                                      : SizedBox(),
+                                ],
                               );
                             }))),
       ],
@@ -1087,7 +1105,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
     String currentSpot,
     String winnerNo,
     double progress,
-    int contest_id,
+    var contest_id,
   ) {
     return InkWell(
       onTap: () => Navigator.push(
@@ -1134,29 +1152,24 @@ class _ContestsScreenState extends State<ContestsScreen> {
                       ),
                     ],
                   ),
-                  Column(
+                  Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Winners',
+                        '${teamController.team1ShortName}',
                         style: TextStyle(
-                          fontFamily: 'Poppins',
-                          color: AllCoustomTheme.getTextThemeColors(),
-                          fontSize: 14,
+                          fontSize: 18,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        winnerNo,
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                          color: AllCoustomTheme.getThemeData().primaryColor,
-                        ),
-                      ),
+                      Text(' vs ', style: TextStyle(fontSize: 18, color: Colors.grey)),
+                      Text('${teamController.team2ShortName}',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          )),
                     ],
                   ),
                   Column(
@@ -1245,7 +1258,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
               child: Row(
                 children: <Widget>[
                   Text(
-                    totalSpot + 'spot left',
+                    currentSpot + ' spot left',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
@@ -1256,7 +1269,7 @@ class _ContestsScreenState extends State<ContestsScreen> {
                     child: SizedBox(),
                   ),
                   Text(
-                    currentSpot,
+                    totalSpot + ' total spot',
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w500,
@@ -1934,32 +1947,35 @@ class _ContestsScreenState extends State<ContestsScreen> {
     );
   }
 
-  List<ContestListModel> contestListModel = [];
-  bool isLoading = true;
-  Future<void> _getContestList() async {
-    contestListModel.clear();
-    // if (teamController.userTeams.length != 0) {
-    var formData = {
-      'match_id': teamController.match_id,
-      'contest_id': teamController.contest_id,
-    };
-    var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/leaderboard', queryParameters: formData);
-    var data = response.data['data']['contest'];
-    for (int i = 0; i < {response.data['data']['contests']}.toList().length; i++) {
-      contestListModel.add(ContestListModel(
-        id: data['id'] ?? 0,
-        title: data['title'] ?? '',
-        prizePool: data['winning_prize'].toString(),
-        entryFee: data['entrance_amount'].toString(),
-        noOfWinner: data['no_of_winners'].toString(),
-        totalSpot: data['team_length'].toString(),
-        currentSpot: '2',
-      ));
-    }
-    // }
-    isLoading = false;
-    setState(() {});
-  }
+//   List<ContestListModel> contestListModel = [];
+//   Future<void> _getContestList() async {
+//     contestListModel.clear();
+//     // if (teamController.userTeams.length != 0) {
+//     var formData = {
+//       'match_id': teamController.match_id,
+//       'contest_id': teamController.contest_id,
+//       'user_id': userId,
+//     };
+//     var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/leaderboard', queryParameters: formData);
+//     var data = response.data['data']['contest'];
+//     print(data.length);
+//     if (data.length > 0) {
+//       contestListModel.add(ContestListModel(
+//         id: data['id'] ?? 0,
+//         title: data['title'] ?? '',
+//         prizePool: data['winning_prize'].toString(),
+//         entryFee: data['entrance_amount'].toString(),
+//         noOfWinner: data['no_of_winners'].toString(),
+//         totalSpot: data['spot'].toString(),
+//         currentSpot: data['current_spot'].toString(),
+//       ));
+//     }
+//     print('data ${contestListModel.length}');
+
+//     // }
+//     isLoading = false;
+//     setState(() {});
+//   }
 }
 
 class MatchHadder extends StatefulWidget {

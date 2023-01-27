@@ -208,7 +208,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                             //   pageTransitionAnimation: PageTransitionAnimation.scaleRotate,
                             // );
                             _bottomNavProvider.showTabBarStatus();
-
                             debugPrint("pickedImage:-> $result");
                             if (result != null) {
                               setState(() {
