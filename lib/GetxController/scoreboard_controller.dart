@@ -102,4 +102,34 @@ class ScoreboardController extends GetxController {
       getAllScoreboardData();
     }
   }
+
+  wideBallCalling() async {
+    var formData = {
+      'score_id': 8,
+      'bollwer_id': bowler_id,
+    };
+    var response = await Dio().post('https://dream11.tennisworldxi.com/api/score/wide-ball-run', queryParameters: formData);
+    if (response.statusCode == 200) {
+      getAllScoreboardData();
+    }
+  }
+
+  noBallCalling() async {
+    var formData = {
+      'score_id': 8,
+      'bollwer_id': bowler_id,
+    };
+    var response = await Dio().post('https://dream11.tennisworldxi.com/api/score/no-ball-run', queryParameters: formData);
+    if (response.statusCode == 200) {
+      getAllScoreboardData();
+    }
+  }
+
+  outPlayerCalling() async {
+    var formData = {"bowller_id": bowler_id, "player_id1": batsman1_id, "player_id2": batsman2_id, "type": 2};
+    var response = await Dio().post('https://dream11.tennisworldxi.com/api/score/out-player', queryParameters: formData);
+    if (response.statusCode == 200) {
+      getAllScoreboardData();
+    }
+  }
 }

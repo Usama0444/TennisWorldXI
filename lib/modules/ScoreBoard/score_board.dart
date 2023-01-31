@@ -857,7 +857,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  '${controller.scoreboardPlayers?.batsman1_runs + controller.scoreboardPlayers?.batsman2_runs}',
+                                                  '10',
+                                                  // '${controller.scoreboardPlayers?.batsman1_runs + controller.scoreboardPlayers?.batsman2_runs}',
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.normal,
@@ -868,7 +869,9 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  '${controller.scoreboardPlayers?.batsman1_bowls + controller.scoreboardPlayers?.batsman2_bowls}',
+                                                  '10',
+
+                                                  // '${controller.scoreboardPlayers?.batsman1_bowls + controller.scoreboardPlayers?.batsman2_bowls}',
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.normal,
@@ -879,7 +882,9 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  '${controller.scoreboardPlayers?.batsman1_four + controller.scoreboardPlayers?.batsman2_four}',
+                                                  '10',
+
+                                                  // '${controller.scoreboardPlayers?.batsman1_four + controller.scoreboardPlayers?.batsman2_four}',
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.normal,
@@ -890,7 +895,9 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                               Expanded(
                                                 flex: 1,
                                                 child: Text(
-                                                  '${controller.scoreboardPlayers?.batsman1_six + controller.scoreboardPlayers?.batsman2_six}',
+                                                  '10',
+
+                                                  // '${controller.scoreboardPlayers?.batsman1_six + controller.scoreboardPlayers?.batsman2_six}',
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     fontWeight: FontWeight.normal,
@@ -1030,7 +1037,8 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                             child: Row(
                                               children: [
                                                 Text(
-                                                  "${controller.scoreboardPlayers!.bolwer_name}",
+                                                  '10',
+                                                  // "${controller.scoreboardPlayers!.bolwer_name}",
                                                   style: TextStyle(
                                                     fontSize: 20,
                                                     color: Colors.white,
@@ -1428,7 +1436,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                 flex: 1,
                                 child: InkWell(
                                   onTap: () {
-                                    pressNonNumberBtns('Wide');
+                                    Get.dialog(WideBallBtnDialog());
                                   },
                                   child: Container(
                                     width: 60,
@@ -1450,7 +1458,7 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                 flex: 1,
                                 child: InkWell(
                                   onTap: () {
-                                    pressNonNumberBtns('No Ball');
+                                    Get.dialog(MyDialog());
                                   },
                                   child: Container(
                                     width: 60,
@@ -1516,7 +1524,9 @@ class _ScoreBoardState extends State<ScoreBoard> {
                                 flex: 1,
                                 child: InkWell(
                                   onTap: () {
-                                    pressNonNumberBtns('Wicket');
+                                    // pressNonNumberBtns('Wicket');
+
+                                    Get.dialog(MyDialog());
                                   },
                                   child: Container(
                                     width: 60,
@@ -1548,10 +1558,440 @@ class _ScoreBoardState extends State<ScoreBoard> {
   }
 }
 
-//when wicket button click below buttons will show
-// run out
-// stumping
-// catch
-// bold
-// hit wicket
-// retired hurt
+class MyDialog extends StatefulWidget {
+  MyDialog({super.key});
+
+  @override
+  State<MyDialog> createState() => _MyDialogState();
+}
+
+class _MyDialogState extends State<MyDialog> {
+  double opacity = 0.2;
+  int runs = 0;
+  int extra_runs = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        actions: [
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('Run Out'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('Stumping'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 0.1;
+                          runs = 0;
+                          extra_runs = 0;
+                        });
+                      },
+                      child: Text('Catch'),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 0.1;
+                          runs = 0;
+                          extra_runs = 0;
+                        });
+                      },
+                      child: Text('Bold'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 0.1;
+                          runs = 0;
+                          extra_runs = 0;
+                        });
+                      },
+                      child: Text('Hit Wicket'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 0.1;
+                          runs = 0;
+                          extra_runs = 0;
+                        });
+                      },
+                      child: Text('Retired Hurt'),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('Wide'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('No Ball'),
+                    ),
+                  ),
+                ],
+              ),
+              Opacity(
+                  opacity: opacity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (runs < 6 && opacity == 1.0) {
+                              runs++;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: AllCoustomTheme.getThemeData().primaryColor,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Player Runs : $runs',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (runs > 0 && opacity == 1.0) {
+                              runs--;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.red,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              SizedBox(
+                height: 10,
+              ),
+              Opacity(
+                  opacity: opacity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (extra_runs < 6 && opacity == 1.0) {
+                              extra_runs++;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: AllCoustomTheme.getThemeData().primaryColor,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Extra Runs : $extra_runs',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (extra_runs > 0 && opacity == 1.0) {
+                              extra_runs--;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.red,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+///////////
+
+class WideBallBtnDialog extends StatefulWidget {
+  WideBallBtnDialog({super.key});
+
+  @override
+  State<WideBallBtnDialog> createState() => _WideBallBtnDialogState();
+}
+
+class _WideBallBtnDialogState extends State<WideBallBtnDialog> {
+  double opacity = 0.2;
+  int runs = 0;
+  int extra_runs = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: AlertDialog(
+        actions: [
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('Wide'),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          opacity = 1.0;
+                        });
+                      },
+                      child: Text('Bye'),
+                    ),
+                  ),
+                ],
+              ),
+              Opacity(
+                  opacity: opacity,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (extra_runs < 6 && opacity == 1.0) {
+                              extra_runs++;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.add,
+                                color: AllCoustomTheme.getThemeData().primaryColor,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          'Extra Runs : $extra_runs',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          onTap: () {
+                            if (extra_runs > 0 && opacity == 1.0) {
+                              extra_runs--;
+                              setState(() {});
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.black),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.remove,
+                                color: Colors.red,
+                                size: 30,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}

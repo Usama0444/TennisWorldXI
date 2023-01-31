@@ -81,33 +81,42 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                 bottom: TabBar(
                   controller: _tabController,
                   tabs: [
-                    Tab(
-                      icon: Text(
-                        "Upcoming",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                    Expanded(
+                      flex: 1,
+                      child: Tab(
+                        icon: Text(
+                          "Upcoming",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
-                    Tab(
-                      icon: Text(
-                        "Live",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                    Expanded(
+                      flex: 1,
+                      child: Tab(
+                        icon: Text(
+                          "Live",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
-                    Tab(
-                      icon: Text(
-                        "Completed",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+                    Expanded(
+                      flex: 1,
+                      child: Tab(
+                        icon: Text(
+                          "Completed",
+                          style: TextStyle(
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
                         ),
                       ),
                     ),
