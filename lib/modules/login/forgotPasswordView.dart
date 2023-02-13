@@ -1,3 +1,4 @@
+import 'package:TennixWorldXI/GetxController/UserController.dart';
 import 'package:TennixWorldXI/modules/login/otpTimer.dart';
 import 'package:flutter/material.dart';
 import 'package:TennixWorldXI/constant/constants.dart';
@@ -11,8 +12,7 @@ class ForgotPasswordView extends StatefulWidget {
 }
 
 class _ForgotPasswordViewState extends State<ForgotPasswordView> {
-  TextEditingController phoneController = TextEditingController();
-
+  var forgotController = Get.put(UserController());
   FocusNode phoneFocusNode = FocusNode();
 
   final _formKey = GlobalKey<FormState>();
@@ -55,7 +55,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                                 setState(() {});
                               });
                             },
-                            controller: phoneController,
+                            controller: forgotController.phone,
                             focusNode: phoneFocusNode,
                             textAlignVertical: TextAlignVertical.center,
                             keyboardType: TextInputType.phone,
@@ -64,7 +64,7 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                               hintText: "Phone Number",
                               fillColor: Colors.black,
                               border: InputBorder.none,
-                              prefixText: phoneFocusNode.hasFocus || phoneController.text.isNotEmpty ? "+91 " : '',
+                              prefixText: phoneFocusNode.hasFocus || forgotController.phone.text.isNotEmpty ? "+91 " : '',
                               prefixStyle: TextStyle(
                                 fontFamily: 'Poppins',
                                 fontSize: AppConstant.SIZE_TITLE16,
@@ -99,12 +99,13 @@ class _ForgotPasswordViewState extends State<ForgotPasswordView> {
                 child: GestureDetector(
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
-                      if (sendBtnClick) {
-                        sendBtnClick = false;
-                      } else {
-                        sendBtnClick = true;
-                      }
-                      setState(() {});
+                      // if (sendBtnClick) {
+                      //   sendBtnClick = false;
+                      // } else {
+                      //   sendBtnClick = true;
+                      // }
+                      // setState(() {});
+                      forgotController.forgotPassword();
                     }
                   },
                   child: Container(

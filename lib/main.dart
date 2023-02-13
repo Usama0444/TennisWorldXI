@@ -13,7 +13,9 @@ import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_ite
 import 'package:TennixWorldXI/modules/home/tabScreen.dart';
 import 'package:TennixWorldXI/modules/login/loginScreen.dart';
 import 'package:TennixWorldXI/modules/login/otpValidationScreen.dart';
+import 'package:TennixWorldXI/modules/newMatchSetup/add_player.dart';
 import 'package:TennixWorldXI/modules/newMatchSetup/new_match_setup.dart';
+import 'package:TennixWorldXI/modules/newMatchSetup/tabbar_screen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/WinningScreenTabViews/Contest.dart';
 import 'package:TennixWorldXI/modules/splash/SplashScreen.dart';
 import 'package:bloc/bloc.dart';
@@ -113,8 +115,8 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: AppConstant.AppName,
           theme: AllCoustomTheme.getThemeData(),
-          // routes: routes,
-          home: NewMatchSetup(),
+          routes: routes,
+          // home: NewMatchSetup(),
         ),
       ),
     );
