@@ -13,9 +13,6 @@ import 'package:TennixWorldXI/modules/createTeam/CreateTeamViews/player_view_ite
 import 'package:TennixWorldXI/modules/home/tabScreen.dart';
 import 'package:TennixWorldXI/modules/login/loginScreen.dart';
 import 'package:TennixWorldXI/modules/login/otpValidationScreen.dart';
-import 'package:TennixWorldXI/modules/newMatchSetup/add_player.dart';
-import 'package:TennixWorldXI/modules/newMatchSetup/new_match_setup.dart';
-import 'package:TennixWorldXI/modules/newMatchSetup/tabbar_screen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/WinningScreenTabViews/Contest.dart';
 import 'package:TennixWorldXI/modules/splash/SplashScreen.dart';
 import 'package:bloc/bloc.dart';
@@ -27,6 +24,8 @@ import 'constant/constants.dart';
 import 'modules/ScoreBoard/Player_all_record.dart';
 
 int userId = 2;
+var userToken =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDViODlmZGMxMmE3NjU4Yjk0Nzg2MGNjMzY1NGFjODQ5YzgxZmE2ZjUyMGQ2ZWYwMzQxOTI4N2NlNWM1N2NjZGFjYzM0MjFkOGMyOWVkYjAiLCJpYXQiOjE2NzQ3NDU0MjQsIm5iZiI6MTY3NDc0NTQyNCwiZXhwIjoxNzA2MjgxNDI0LCJzdWIiOiIxMyIsInNjb3BlcyI6W119.ahijn0D37cmTKtlSsDon3Rds7czxnSZGBIHRsbo05AmkcrbUUxrtVOatIaG7SRKIZyc87FuQC6PmdeUR9GEcCZSWC5780O-cTvq8MQyXXNinRjRPcT1uxteFb0Cq0lzDe8kVEr4fo1DKD9X6AvCAjjSRY0RytLQu5J996s0PxP6YUexXi2xubomXzQc3dmcO9Q8qqgBMqExPs_lV79bY07C25ZsdHzMz7zfTUPmKttPWQUWZ_9ApluFC7oMFVIUsbLc9wNcXx6lEUCou5jAztfClZShZ6Y1ELjcgnQHL_7R-vU2gKSp3xki0qHkcJRYxn3EVleXnUJThN69ss_w3JhlXI-4eqX9SnVSkwjXvjINtfugP0rqJp-NfxykdWQ3uaAi-deAJAJ753K20Z1hgVle1t-jTua1AVmyjyk8xuZK42Rnvho8CsdeOTTyfY13JAXZ5YmExPabbWVyQaauU-BOkeb4POl2sS91wOxOKGtbopGOdwzKAyS7EUvjqamH-qiUtd60alqgi9Tzc8elBfvbrZu6WHQgBugOoDhSm--iZAhRsEggObJC_HaQhhjlh8qKlhkgG7Sip09bojBmGcOehH_Hw3t4s_Nx4yMJxZ4hxb215qXxfDcPNBBs5DThnN1cJwXg6-SuaPi9bOoHX1DPwVcembTiOCRKCM1LaJBY';
 
 class SimpleBlocDelegate extends BlocObserver {
   @override

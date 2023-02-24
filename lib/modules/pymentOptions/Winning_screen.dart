@@ -40,79 +40,34 @@ class _WinningScreenState extends State<WinningScreen> with SingleTickerProvider
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Stack(
-        children: <Widget>[
-          Container(
-            color: AllCoustomTheme.getThemeData().primaryColor,
-          ),
-          SafeArea(
-            child: Scaffold(
-              drawer: AppDrawer(
-                mySettingClick: () {},
-                referralClick: () {},
-              ),
-              appBar: AppBar(
-                elevation: 0,
-                backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
-                title: Text(
-                  'Winning',
-                  style: TextStyle(
-                    fontFamily: 'Poppins',
-                    fontSize: 24,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white,
-                  ),
-                ),
-                bottom: TabBar(
-                  controller: _tabController,
-                  tabs: [
-                    Tab(
-                      icon: Text(
-                        "Contest",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      icon: Text(
-                        "Deposits",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Tab(
-                      icon: Text(
-                        "WithDrawals",
-                        style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              body: Container(
-                color: AllCoustomTheme.getThemeData().backgroundColor,
-                child: TabBarView(
-                  controller: _tabController,
-                  children: <Widget>[
-                    Contest(),
-                    Deposit(),
-                    WithDraw(),
-                  ],
+    return Stack(
+      children: <Widget>[
+        Container(
+          color: AllCoustomTheme.getThemeData().primaryColor,
+        ),
+        SafeArea(
+          child: Scaffold(
+            drawer: AppDrawer(
+              mySettingClick: () {},
+              referralClick: () {},
+            ),
+            appBar: AppBar(
+              elevation: 0,
+              backgroundColor: AllCoustomTheme.getThemeData().primaryColor,
+              title: Text(
+                'Winning Contest',
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                  fontSize: 24,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white,
                 ),
               ),
             ),
+            body: Contest(),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

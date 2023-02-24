@@ -1,4 +1,6 @@
+import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:TennixWorldXI/models/matches_short_info.dart';
+import 'package:TennixWorldXI/modules/contests/contestsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:TennixWorldXI/constant/constants.dart';
 import 'package:TennixWorldXI/constant/sharedPreferences.dart';
@@ -10,6 +12,7 @@ import 'package:TennixWorldXI/modules/result/standingResult.dart';
 import 'package:TennixWorldXI/utils/avatarImage.dart';
 import 'package:TennixWorldXI/validator/validator.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 
 import '../../api/Api_Handler/api_call_Structure.dart';
 import '../../api/Api_Handler/api_constants.dart';
@@ -81,42 +84,33 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                 bottom: TabBar(
                   controller: _tabController,
                   tabs: [
-                    Expanded(
-                      flex: 1,
-                      child: Tab(
-                        icon: Text(
-                          "Upcoming",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
+                    Tab(
+                      icon: Text(
+                        "Upcoming",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Tab(
-                        icon: Text(
-                          "Live",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
+                    Tab(
+                      icon: Text(
+                        "Live",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Tab(
-                        icon: Text(
-                          "Completed",
-                          style: TextStyle(
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                          ),
+                    Tab(
+                      icon: Text(
+                        "Completed",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
                         ),
                       ),
                     ),
@@ -129,8 +123,217 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
                   controller: _tabController,
                   children: <Widget>[
                     isDataFetched
-                        ? Fixtures(
-                            upComingMatches: _upComingMatches,
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.52,
+                            width: MediaQuery.of(context).size.width,
+                            child: ListView.builder(
+                                itemCount: _upComingMatches.length,
+                                itemBuilder: (context, int) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      var teamCont = Get.put(TeamController(), permanent: true);
+                                      teamCont.match_id = _upComingMatches[int].id;
+                                      teamCont.team1Flag = _upComingMatches[int].country1Flag;
+                                      teamCont.team2Flag = _upComingMatches[int].country2Flag;
+                                      teamCont.team1Name = _upComingMatches[int].country1Name;
+                                      teamCont.team2Name = _upComingMatches[int].country2Name;
+                                      teamCont.team1ShortName = _upComingMatches[int].country1ShortName;
+                                      teamCont.team2ShortName = _upComingMatches[int].country2ShortName;
+                                      teamCont.contest_id = _upComingMatches[int].contest_id;
+                                      teamCont.update();
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => ContestsScreen(
+                                                    matchID: _upComingMatches[int].id,
+                                                    country1Flag: 'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country1Flag}',
+                                                    country1Name: _upComingMatches[int].country1ShortName.toString(),
+                                                    country2Flag: 'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country2Flag}',
+                                                    country2Name: _upComingMatches[int].country2ShortName.toString(),
+                                                    price: '123',
+                                                    time: '1h 46m',
+                                                    titel: _upComingMatches[int].title.toString(),
+                                                    country1FullName: _upComingMatches[int].country1Name.toString(),
+                                                    country2FullName: _upComingMatches[int].country2Name.toString(),
+                                                  )));
+                                    },
+                                    child: Card(
+                                      elevation: 5,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      child: Column(children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(_upComingMatches[int].title.toString()),
+                                              Icon(
+                                                FontAwesomeIcons.bell,
+                                                size: 20,
+                                                color: Colors.black,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        Divider(
+                                          height: 1,
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(_upComingMatches[int].country1Name.toString()),
+                                              Text(_upComingMatches[int].country2Name.toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: EdgeInsets.symmetric(horizontal: 10),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: ClipOval(
+                                                          child: Image.network(
+                                                        'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country1Flag}',
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    _upComingMatches[int].country1ShortName.toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w800,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                              Text(
+                                                '1h 46m',
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.w800,
+                                                  color: Colors.red,
+                                                ),
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Text(
+                                                    _upComingMatches[int].country2ShortName.toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight: FontWeight.w800,
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {},
+                                                    child: SizedBox(
+                                                      width: 50,
+                                                      height: 50,
+                                                      child: ClipOval(
+                                                          child: Image.network(
+                                                        'https://dream11.tennisworldxi.com/storage/app/${_upComingMatches[int].country2Flag}',
+                                                        fit: BoxFit.cover,
+                                                      )),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                      width: 50,
+                                                      margin: EdgeInsets.all(5),
+                                                      decoration: BoxDecoration(
+                                                          color: Color.fromARGB(255, 156, 235, 159).withOpacity(0.2),
+                                                          border: Border.all(
+                                                            color: Colors.green,
+                                                          )),
+                                                      child: Center(
+                                                        child: Text(
+                                                          'Mega'.toUpperCase(),
+                                                          style: TextStyle(
+                                                            color: Color.fromARGB(255, 6, 95, 9),
+                                                            fontSize: 14,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '20 Lakhs',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+                                                  children: [
+                                                    Icon(
+                                                      FontAwesomeIcons.gift,
+                                                      color: Colors.grey,
+                                                      size: 20,
+                                                    ),
+                                                    SizedBox(
+                                                      width: 10,
+                                                    ),
+                                                    Icon(
+                                                      FontAwesomeIcons.rainbow,
+                                                      color: Colors.grey,
+                                                      size: 20,
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ]),
+                                    ),
+                                  );
+                                }),
                           )
                         : Center(child: CircularProgressIndicator()),
                     isDataFetched
@@ -212,57 +415,61 @@ class _StandingScreeState extends State<StandingScree> with SingleTickerProvider
     isCallingApi = true;
     API_STRUCTURE apiObject = API_STRUCTURE(
       context: context,
-      apiName: ApiConstant.standingMatches,
+      apiName: ApiConstant.homeFeedMatches,
       apiRequestMethod: API_REQUEST_METHOD.GET,
       isWantSuccessMessage: false,
     );
     Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: false);
     if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
+      debugPrint("_result:-> $_result");
       for (var data in _result['upcomingMatches']) {
         _upComingMatches.add(MatchShortInfo(
-          contest_id: 1,
-          country1ShortName: '',
-          country2ShortName: '',
           id: data['id'],
           title: data['title'],
           country1Name: data['team_1_title'],
           country2Name: data['team_2_title'],
           time: data['match_date_time'],
-          country1Flag: 'assets/19.png',
-          country2Flag: 'assets/25.png',
+          country1Flag: data['team_1_thumbnail'],
+          country2Flag: data['team_2_thumbnail'],
+          country1ShortName: data['team_1_short_name'],
+          country2ShortName: data['team_2_short_name'],
+          contest_id: data['contest_category_id'],
         ));
       }
-      for (var data in _result['liveMatches']) {
-        _liveMatches.add(MatchShortInfo(
-          contest_id: 1,
-          id: data['id'],
-          title: data['title'],
-          country1Name: data['team_1_title'],
-          country2Name: data['team_2_title'],
-          time: 'Live',
-          country1Flag: 'assets/19.png',
-          country2Flag: 'assets/25.png',
-          country1ShortName: '',
-          country2ShortName: '',
-        ));
-      }
-      for (var data in _result['completedMatches']) {
-        _completedMatches.add(MatchShortInfo(
-          contest_id: 1,
-          country1ShortName: '',
-          country2ShortName: '',
-          id: data['id'],
-          title: data['title'],
-          country1Name: data['team_1_title'],
-          country2Name: data['team_2_title'],
-          time: 'Completed',
-          country1Flag: 'assets/19.png',
-          country2Flag: 'assets/25.png',
-        ));
-      }
+      isCallingApi = false;
       isDataFetched = true;
+      print('data fetch');
       setState(() {});
+      // for (var data in _result['liveMatches']) {
+      //   _liveMatches.add(MatchShortInfo(
+      //     contest_id: 1,
+      //     id: data['id'],
+      //     title: data['title'],
+      //     country1Name: data['team_1_title'],
+      //     country2Name: data['team_2_title'],
+      //     time: 'Live',
+      //     country1Flag: 'assets/19.png',
+      //     country2Flag: 'assets/25.png',
+      //     country1ShortName: '',
+      //     country2ShortName: '',
+      //   ));
+      // }
+      // for (var data in _result['completedMatches']) {
+      //   _completedMatches.add(MatchShortInfo(
+      //     contest_id: 1,
+      //     country1ShortName: '',
+      //     country2ShortName: '',
+      //     id: data['id'],
+      //     title: data['title'],
+      //     country1Name: data['team_1_title'],
+      //     country2Name: data['team_2_title'],
+      //     time: 'Completed',
+      //     country1Flag: 'assets/19.png',
+      //     country2Flag: 'assets/25.png',
+      //   ));
+      // }
+      // setState(() {});
     }
     isCallingApi = false;
   }

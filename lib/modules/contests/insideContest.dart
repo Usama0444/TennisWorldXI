@@ -480,10 +480,12 @@ class _InsideContestState extends State<InsideContest> with SingleTickerProvider
                           width: 50,
                           height: 50,
                           child: ClipOval(
-                              child: Image.network(
-                            'https://dream11.tennisworldxi.com/storage/app/${controller.leaderModel[index].userimg}',
-                            fit: BoxFit.cover,
-                          ))),
+                              child: controller.leaderModel[index].userimg == null
+                                  ? Icon(Icons.person)
+                                  : Image.network(
+                                      'https://dream11.tennisworldxi.com/storage/app/${controller.leaderModel[index].userimg}',
+                                      fit: BoxFit.cover,
+                                    ))),
                       title: Row(
                         children: [
                           Row(

@@ -2,6 +2,8 @@
 
 import 'package:TennixWorldXI/modules/pymentOptions/Winning_screen.dart';
 import 'package:TennixWorldXI/modules/pymentOptions/manage_payment.dart';
+import 'package:TennixWorldXI/modules/pymentOptions/withdraw.dart';
+import 'package:TennixWorldXI/modules/pymentOptions/withdrawScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -304,29 +306,34 @@ class _AllTransactionsState extends State<AllTransactions> {
                                               )),
                                         ),
                                       ),
-                                      Container(
-                                        width: double.infinity,
-                                        height: 60,
-                                        margin: EdgeInsets.all(5),
-                                        child: Card(
-                                            elevation: 5,
-                                            borderOnForeground: true,
-                                            child: Padding(
-                                              padding: EdgeInsets.all(10),
-                                              child: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    'Withdraw',
-                                                    style: TextStyle(fontSize: 18),
-                                                  ),
-                                                  Icon(
-                                                    Icons.arrow_forward_ios,
-                                                    size: 20,
-                                                  ),
-                                                ],
-                                              ),
-                                            )),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(WithdrawContestRecord());
+                                        },
+                                        child: Container(
+                                          width: double.infinity,
+                                          height: 60,
+                                          margin: EdgeInsets.all(5),
+                                          child: Card(
+                                              elevation: 5,
+                                              borderOnForeground: true,
+                                              child: Padding(
+                                                padding: EdgeInsets.all(10),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      'Withdraw',
+                                                      style: TextStyle(fontSize: 18),
+                                                    ),
+                                                    Icon(
+                                                      Icons.arrow_forward_ios,
+                                                      size: 20,
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ),
                                       ),
                                       Container(
                                         width: double.infinity,

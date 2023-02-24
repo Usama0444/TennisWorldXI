@@ -1,9 +1,11 @@
 // ignore_for_file: unused_field
 
 import 'dart:io';
+import 'package:TennixWorldXI/GetxController/VerificationController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -22,6 +24,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
   bool isProsses = false;
   bool isFirstTime = true;
   bool approved = false;
+  var controller = Get.put(VerificationController());
   File? _image;
   var date = DateTime.now();
 
@@ -59,16 +62,16 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Colors.white,
-            Colors.white,
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
+      // decoration: BoxDecoration(
+      //   gradient: LinearGradient(
+      //     colors: [
+      //       Colors.white,
+      //       Colors.white,
+      //     ],
+      //     begin: Alignment.topCenter,
+      //     end: Alignment.bottomCenter,
+      //   ),
+      // ),
       child: Stack(
         children: <Widget>[
           SafeArea(
@@ -109,7 +112,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                                     ),
                                   ),
                                 )
-                              : SizedBox(),
+                              : SizedBox()
                         ],
                       ),
               ),
@@ -177,7 +180,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: new Container(
                     child: new TextField(
-                      controller: adharNameController,
+                      controller: controller.adharcardtitle,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: AppConstant.SIZE_TITLE16,
@@ -197,7 +200,8 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: new Container(
                     child: new TextField(
-                      controller: adharCardController,
+                      controller: controller.adharcardNo,
+                      keyboardType: TextInputType.number,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: AppConstant.SIZE_TITLE16,
@@ -224,7 +228,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: new Container(
                     child: new TextField(
-                      controller: panNameController,
+                      controller: controller.pancardtitle,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: AppConstant.SIZE_TITLE16,
@@ -244,7 +248,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                   padding: EdgeInsets.only(left: 16, right: 16),
                   child: new Container(
                     child: new TextField(
-                      controller: panNoController,
+                      controller: controller.pancardNo,
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontSize: AppConstant.SIZE_TITLE16,
@@ -265,12 +269,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (builder) => const CustomImagePickerScreen(),
-                ),
-              );
+              controller.pickFrontPanCardImg();
             },
             child: Container(
               padding: EdgeInsets.only(top: 38, left: 16, right: 16, bottom: 8),
@@ -293,7 +292,7 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
                       color: Colors.white,
                     ),
                     Text(
-                      'Upload proof(Font & Back Both)',
+                      'Upload proof(Font Side)',
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         color: AllCoustomTheme.getThemeData().backgroundColor,
@@ -305,8 +304,84 @@ class _PancardVerificationScreenState extends State<PancardVerificationScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 80,
+          GestureDetector(
+            onTap: () {
+              controller.pickBackPanCardImg();
+            },
+            child: Container(
+              padding: EdgeInsets.only(top: 38, left: 16, right: 16, bottom: 8),
+              child: Container(
+                padding: EdgeInsets.all(8),
+                decoration: new BoxDecoration(
+                  color: AllCoustomTheme.getThemeData().primaryColor,
+                  borderRadius: new BorderRadius.circular(4.0),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.attach_file,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      'Upload proof(Back Side)',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: AllCoustomTheme.getThemeData().backgroundColor,
+                        fontSize: AppConstant.SIZE_TITLE16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () {
+              if (adharCard) {
+                controller.adharCardVerification();
+              } else {
+                controller.pancardVerification();
+              }
+            },
+            child: Padding(
+              padding: EdgeInsets.only(top: 40),
+              child: Container(
+                width: 200,
+                height: 50,
+                decoration: new BoxDecoration(
+                  color: AllCoustomTheme.getThemeData().primaryColor,
+                  borderRadius: new BorderRadius.circular(4.0),
+                  boxShadow: <BoxShadow>[
+                    BoxShadow(color: Colors.black.withOpacity(0.5), offset: Offset(0, 1), blurRadius: 5.0),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(
+                      Icons.verified,
+                      color: Colors.white,
+                    ),
+                    Text(
+                      'Submit',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        color: AllCoustomTheme.getThemeData().backgroundColor,
+                        fontSize: AppConstant.SIZE_TITLE16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ),
         ],
       ),

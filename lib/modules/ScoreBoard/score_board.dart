@@ -1569,6 +1569,7 @@ class _MyDialogState extends State<MyDialog> {
   double opacity = 0.2;
   int runs = 0;
   int extra_runs = 0;
+  ScoreboardController controller = Get.put(ScoreboardController());
 
   @override
   Widget build(BuildContext context) {
@@ -1871,7 +1872,7 @@ class _WideBallBtnDialogState extends State<WideBallBtnDialog> {
   double opacity = 0.2;
   int runs = 0;
   int extra_runs = 0;
-
+  var controller = Get.put(ScoreboardController());
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -1981,6 +1982,7 @@ class _WideBallBtnDialogState extends State<WideBallBtnDialog> {
                     flex: 1,
                     child: ElevatedButton(
                       onPressed: () {
+                        controller.wideBallCalling();
                         Get.back();
                       },
                       child: Text('Submit'),

@@ -74,7 +74,7 @@ class _LoginViewState extends State<LoginView> {
         ),
         body: Container(
           padding: EdgeInsets.only(left: 16, top: 8, bottom: 4, right: 16),
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Form(
                 key: _formKey,
@@ -220,6 +220,56 @@ class _LoginViewState extends State<LoginView> {
                       )),
                     ),
                   )),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'or'.toUpperCase(),
+                    style: TextStyle(fontSize: 30),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/google.jpg',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/facebook.jpg',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: ClipOval(
+                      child: Image.asset(
+                        'assets/inst.jpg',
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )
+                ],
+              )
             ],
           ),
         ),
@@ -253,15 +303,17 @@ class _LoginViewState extends State<LoginView> {
     debugPrint("login apiResponse:-> $apiResponse");
     if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
       Map<String, dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
-      Utils.userToken = _result['access_token'];
+      Utils.userToken = _result['token']['accessToken'];
+      userToken = _result['token']['accessToken'];
+      // print('user token ${apiResponse['data']['result']['token']['access_token']}');
       Utils.userData = UserData.fromServerJson(_result['user']);
       userId = _result['user']['id'];
       print('user id getted $userId');
+      print('user token getted $userToken');
 
       if (Utils.userData != null) {
         MySharedPreferences().setUserDataString(Utils.userData!);
       }
-      // Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -269,5 +321,27 @@ class _LoginViewState extends State<LoginView> {
         ),
       );
     }
+    ////////////////////////////
+    // var formData = {
+    //   "phone": phoneController.text.trim(),
+    //   "password": passwordController.text.trim(),
+    // };
+    // var apiResponse = await Dio().post('https://dream11.tennisworldxi.com/api/auth/login', queryParameters: formData);
+    // if (apiResponse.statusCode == 200) {
+    //   Map<String, dynamic> _result = apiResponse.data['data']['result'];
+    //   Utils.userToken = _result['token']['access_token'];
+    //   Utils.userData = UserData.fromServerJson(_result['user']);
+    //   userId = _result['user']['id'];
+    //   if (Utils.userData != null) {
+    //     MySharedPreferences().setUserDataString(Utils.userData!);
+    //   }
+    //   print('user token ${apiResponse.data['data']['result']['token']}');
+    // Navigator.pushReplacement(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => TabScreen(),
+    //   ),
+    // );
+    // }
   }
 }

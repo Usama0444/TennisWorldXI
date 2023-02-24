@@ -1,8 +1,10 @@
 // ignore_for_file: unused_field, unnecessary_null_comparison, deprecated_member_use
 
+import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import '../../../utils/toast.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
@@ -33,14 +35,14 @@ class _PymentScreenState extends State<PymentScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   var cashBonus = '';
   late Razorpay _razorpay;
-
+  var controller = Get.find<TeamController>();
   @override
   void initState() {
     if (widget.paymetMoney != null) {
       paymet = '${double.tryParse(widget.paymetMoney!)!.toInt()}';
     }
     paymentController.text = paymet;
-    getUserData();
+    // getUserData();
     super.initState();
 
     _razorpay = Razorpay();
@@ -73,25 +75,25 @@ class _PymentScreenState extends State<PymentScreen> {
 
   static final String tokenizationKey = 'sandbox_8hxpnkht_kzdtzv2btm4p7s5j';
 
-  void getUserData() async {
-    setState(() {
-      isProsses = true;
-    });
-    var responseData = await ApiProvider().drawerInfoList();
-    if (responseData != null) {
-      userData = responseData.data!;
-    }
-    if (!widget.isOnlyAddMoney!) {
-      if ((double.tryParse(widget.entryFees)! * 0.20) < double.tryParse(userData.cashBonus!)!) {
-        cashBonus = '${double.tryParse(widget.entryFees)! * 0.20}';
-      } else {
-        cashBonus = '${double.tryParse(userData.cashBonus!)}';
-      }
-    }
-    setState(() {
-      isProsses = false;
-    });
-  }
+  // void getUserData() async {
+  //   setState(() {
+  //     isProsses = true;
+  //   });
+  //   var responseData = await ApiProvider().drawerInfoList();
+  //   if (responseData != null) {
+  //     userData = responseData.data!;
+  //   }
+  //   if (!widget.isOnlyAddMoney!) {
+  //     if ((double.tryParse(widget.entryFees)! * 0.20) < double.tryParse(userData.cashBonus!)!) {
+  //       cashBonus = '${double.tryParse(widget.entryFees)! * 0.20}';
+  //     } else {
+  //       cashBonus = '${double.tryParse(userData.cashBonus!)}';
+  //     }
+  //   }
+  //   setState(() {
+  //     isProsses = false;
+  //   });
+  // }
 
   void openPaymentOption() async {
     var options = {
@@ -217,14 +219,16 @@ class _PymentScreenState extends State<PymentScreen> {
                                                   child: SizedBox(),
                                                 ),
                                                 userData != null
-                                                    ? Text(
-                                                        '₹720',
-                                                        style: TextStyle(
-                                                          fontFamily: 'Poppins',
-                                                          color: AllCoustomTheme.getThemeData().primaryColor,
-                                                          fontSize: AppConstant.SIZE_TITLE18,
-                                                        ),
-                                                      )
+                                                    ? GetBuilder<TeamController>(builder: (controller) {
+                                                        return Text(
+                                                          '₹${controller.userCurrentBalance}',
+                                                          style: TextStyle(
+                                                            fontFamily: 'Poppins',
+                                                            color: AllCoustomTheme.getThemeData().primaryColor,
+                                                            fontSize: AppConstant.SIZE_TITLE18,
+                                                          ),
+                                                        );
+                                                      })
                                                     : Container(
                                                         width: 12,
                                                         height: 12,
@@ -267,7 +271,7 @@ class _PymentScreenState extends State<PymentScreen> {
                                             ),
                                           ),
                                           child: TextFormField(
-                                            controller: paymentController,
+                                            controller: controller.addAmount,
                                             style: TextStyle(
                                               fontFamily: 'Poppins',
                                               fontSize: AppConstant.SIZE_TITLE16,
@@ -307,9 +311,8 @@ class _PymentScreenState extends State<PymentScreen> {
                                                 padding: EdgeInsets.all(8.0),
                                                 child: InkWell(
                                                   onTap: () {
-                                                    setState(() {
-                                                      paymentController.text = '50';
-                                                    });
+                                                    controller.addAmount.text = '50';
+                                                    controller.update();
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -345,9 +348,8 @@ class _PymentScreenState extends State<PymentScreen> {
                                                 padding: EdgeInsets.all(8.0),
                                                 child: InkWell(
                                                   onTap: () {
-                                                    setState(() {
-                                                      paymentController.text = '100';
-                                                    });
+                                                    controller.addAmount.text = '100';
+                                                    controller.update();
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.only(top: 8, bottom: 8),
@@ -383,9 +385,8 @@ class _PymentScreenState extends State<PymentScreen> {
                                                 padding: EdgeInsets.all(8.0),
                                                 child: InkWell(
                                                   onTap: () {
-                                                    setState(() {
-                                                      paymentController.text = '200';
-                                                    });
+                                                    controller.addAmount.text = '200';
+                                                    controller.update();
                                                   },
                                                   child: Container(
                                                     padding: EdgeInsets.only(top: 8, bottom: 8),

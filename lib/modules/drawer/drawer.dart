@@ -1,4 +1,5 @@
 import 'package:TennixWorldXI/GetxController/scoreboard_controller.dart';
+import 'package:TennixWorldXI/GetxController/teamController.dart';
 import 'package:TennixWorldXI/modules/ScoreBoard/Player_all_record.dart';
 import 'package:TennixWorldXI/modules/ScoreBoard/score_board.dart';
 import 'package:TennixWorldXI/modules/ScoreBoard/score_view.dart';
@@ -36,13 +37,13 @@ class AppDrawer extends StatefulWidget {
 class _AppDrawerState extends State<AppDrawer> {
   var appVerison = '1.1.1';
   bool isLoginProsses = false;
-  var scoreboardController = Get.put(ScoreboardController());
+  var controller = Get.put(TeamController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    scoreboardController.getAllScoreboardData();
+    controller.getUserCurrentBalance();
   }
 
   @override
@@ -77,19 +78,7 @@ class _AppDrawerState extends State<AppDrawer> {
                     Divider(
                       height: 1,
                     ),
-                    score(),
-                    Divider(
-                      height: 1,
-                    ),
-                    // liveScore(),
-                    // Divider(
-                    //   height: 1,
-                    // ),
-                    playerRecord(),
-                    Divider(
-                      height: 1,
-                    ),
-                    playerCurrentRecord(),
+                    referalCode(),
                     Divider(
                       height: 1,
                     ),
@@ -153,45 +142,6 @@ class _AppDrawerState extends State<AppDrawer> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
-                // Container(
-                //   child: Padding(
-                //     padding: const EdgeInsets.only(top: 30),
-                //     child: Column(
-                //       children: <Widget>[
-                //         Row(
-                //           children: <Widget>[
-                //             new Text(
-                //               'Enric',
-                //               style: TextStyle(
-                //                 fontFamily: 'Poppins',
-                //                 fontSize: AppConstant.SIZE_TITLE22,
-                //                 color: Colors.white,
-                //                 fontWeight: FontWeight.w500,
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //         Row(
-                //           children: <Widget>[
-                //             Icon(
-                //               Icons.location_on,
-                //               size: 10,
-                //               color: AllCoustomTheme.getThemeData().backgroundColor.withOpacity(0.5),
-                //             ),
-                //             new Text(
-                //               ' ' + 'Texas',
-                //               style: TextStyle(
-                //                 fontFamily: 'Poppins',
-                //                 fontSize: AppConstant.SIZE_TITLE14,
-                //                 color: AllCoustomTheme.getThemeData().backgroundColor.withOpacity(0.5),
-                //               ),
-                //             ),
-                //           ],
-                //         ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
                 SizedBox(
                   height: 40,
                   child: InkWell(
@@ -611,10 +561,10 @@ class _AppDrawerState extends State<AppDrawer> {
     );
   }
 
-  Widget score() {
+  Widget referalCode() {
     return InkWell(
       onTap: () {
-        scoreboardController.loginStatus == 1 ? Get.to(ScoreBoard()) : Get.to(ScoreboardLoginView());
+        // scoreboardController.loginStatus == 1 ? Get.to(ScoreBoard()) : Get.to(ScoreboardLoginView());
       },
       child: Container(
         height: 54,
@@ -635,7 +585,7 @@ class _AppDrawerState extends State<AppDrawer> {
               Expanded(
                 child: Container(
                   child: Text(
-                    'ScoreBoard',
+                    'Referral Code',
                     textAlign: TextAlign.start,
                     style: TextStyle(
                       fontFamily: 'Poppins',

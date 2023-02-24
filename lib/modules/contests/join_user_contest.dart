@@ -109,7 +109,7 @@ class _JoinUserContestState extends State<JoinUserContest> {
                             ],
                           ),
                         ),
-                        Flexible(
+                        SizedBox(
                           child: Container(
                             child: Column(
                               children: <Widget>[
@@ -144,20 +144,6 @@ class _JoinUserContestState extends State<JoinUserContest> {
                                                                     fontSize: AppConstant.SIZE_TITLE14,
                                                                   ),
                                                                 ),
-                                                                // Expanded(child: SizedBox()),
-                                                                // Icon(
-                                                                //   Icons.edit,
-                                                                //   color: Colors.white,
-                                                                //   size: 16,
-                                                                // ),
-                                                                // SizedBox(
-                                                                //   width: 8,
-                                                                // ),
-                                                                // Icon(
-                                                                //   Icons.copy_all,
-                                                                //   color: Colors.white,
-                                                                //   size: 16,
-                                                                // ),
                                                               ],
                                                             ),
                                                           ),
@@ -345,7 +331,7 @@ class _JoinUserContestState extends State<JoinUserContest> {
                                                               fontSize: AppConstant.SIZE_TITLE12,
                                                             ),
                                                           ),
-                                                          Expanded(child: SizedBox()),
+                                                          // Expanded(child: SizedBox()),
                                                           Text(
                                                             'BAT',
                                                             style: TextStyle(
@@ -367,7 +353,7 @@ class _JoinUserContestState extends State<JoinUserContest> {
                                                               fontSize: AppConstant.SIZE_TITLE12,
                                                             ),
                                                           ),
-                                                          Expanded(child: SizedBox()),
+                                                          // Expanded(child: SizedBox()),
                                                           Text(
                                                             'AR',
                                                             style: TextStyle(
@@ -389,7 +375,7 @@ class _JoinUserContestState extends State<JoinUserContest> {
                                                               fontSize: AppConstant.SIZE_TITLE12,
                                                             ),
                                                           ),
-                                                          Expanded(child: SizedBox()),
+                                                          // Expanded(child: SizedBox()),
                                                           Text(
                                                             'BOWEL',
                                                             style: TextStyle(

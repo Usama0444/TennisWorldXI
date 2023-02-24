@@ -1,14 +1,17 @@
 import 'dart:convert';
 
+import 'package:TennixWorldXI/constant/global.dart';
 import 'package:TennixWorldXI/main.dart';
 import 'package:TennixWorldXI/models/MyModels/leaderboardModel.dart';
 import 'package:TennixWorldXI/models/MyModels/player_model.dart';
 import 'package:TennixWorldXI/models/MyModels/team_model.dart';
+import 'package:TennixWorldXI/modules/pymentOptions/pymentOptionsScreen.dart';
 import 'package:TennixWorldXI/utils/toast.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:http/http.dart' as http;
 import '../models/contest_list_model.dart';
 
 class TeamController extends GetxController {
@@ -46,7 +49,8 @@ class TeamController extends GetxController {
   var current_date = DateFormat.yMMMMd().format(DateTime.now());
   var rank_list = [];
   var prize_list = [];
-
+  var userCurrentBalance;
+  TextEditingController addAmount = TextEditingController();
 //////User teams variables
   List<TeamModel> userTeams = [];
 
@@ -173,11 +177,11 @@ class TeamController extends GetxController {
       if (response.statusCode == 200) {
         CustomToast.showToast(message: 'Team Added');
       } else {
-        CustomToast.showToast(message: 'Something went wrong');
+        // CustomToast.showToast(message: 'Something went wrong');
       }
     } catch (e) {
       print(e);
-      CustomToast.showToast(message: 'Something went wrong');
+      // CustomToast.showToast(message: 'Something went wrong');
     }
   }
 
@@ -218,6 +222,7 @@ class TeamController extends GetxController {
       userTeams.clear();
       radioBtnVal.clear();
       selectteamForContest.clear();
+      print('user id ini team $userId');
       var resp = await Dio().get('https://dream11.tennisworldxi.com/api/team/user-team/$userId/$match_id');
       if (resp.data['status']) {
         var data = resp.data['data']['result']['userTeams'];
@@ -249,12 +254,12 @@ class TeamController extends GetxController {
       }
     } catch (e) {
       print('Something went wrong in team $e');
-      CustomToast.showToast(message: 'Something went wrong!');
+      // CustomToast.showToast(message: 'Something went wrong!');
     }
   }
 
   //User Join Contest
-  joinUserContest() async {
+  joinUserContest(BuildContext context) async {
     try {
       var formData = {
         'match_id': match_id,
@@ -264,17 +269,37 @@ class TeamController extends GetxController {
       };
 
       var response = await Dio().post('https://dream11.tennisworldxi.com/api/contest/userjoin-contest', queryParameters: formData);
-      if (response.statusCode == 200) {
-        CustomToast.showToast(message: response.data['data']);
+      print('response ${response.data}');
+      if (response.data['success'] != 'empty') {
+        if (response.statusCode == 200) {
+          CustomToast.showToast(message: response.data['data']);
+          getUserCurrentBalance();
+        }
+        getContestList();
+      } else {
+        print('checking');
+        addAmount.text = response.data['new_amount'].toString();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PymentScreen(
+              isOnlyAddMoney: true,
+              isTruePayment: () {},
+            ),
+            fullscreenDialog: true,
+          ),
+        );
+        // Get.to(PymentScreen());
       }
-      getContestList();
     } catch (e) {
+      print('error');
       print(e.toString());
-      CustomToast.showToast(message: 'something went wrong');
+      // CustomToast.showToast(message: 'something went wrong');
     }
   }
 
   Future<void> getContestList() async {
+    getUserCurrentBalance();
     contestListModel.clear();
     rank_list.clear();
     prize_list.clear();
@@ -288,7 +313,7 @@ class TeamController extends GetxController {
     var data = response.data['data']['contests'];
     var myleaderboardData = response.data['data']['current_team_users'];
     var othersleaderboardData = response.data['data']['team_users'];
-
+    var isMatchStart = response.data['data']['match_start'];
     if (data.length > 0) {
       var rank = [];
       var prize = [];
@@ -302,8 +327,11 @@ class TeamController extends GetxController {
           totalSpot: data[i]['spot'].toString(),
           currentSpot: data[i]['current_spot'].toString(),
         ));
-        rank = data[i]['rank_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').split(',');
-        prize = data[i]['prize_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').split(',');
+        if (isMatchStart == 1) {
+          //when match start
+          rank = data[i]['rank_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').replaceAll('}', '').replaceAll('{', '').split(',');
+          prize = data[i]['prize_list'].toString().replaceAll('[', '').replaceAll(']', '').replaceAll('"', '').replaceAll('}', '').replaceAll('{', '').split(',');
+        }
       }
       for (var v in rank) {
         if (v != 'null') {
@@ -335,6 +363,44 @@ class TeamController extends GetxController {
         ));
         update();
       }
+    }
+  }
+
+  getUserCurrentBalance() async {
+    try {
+      // print('token $userToken');
+
+      final response = await http.get(
+        Uri.parse('https://dream11.tennisworldxi.com/api/get/user-current-balance/$userId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken',
+        },
+      );
+      if (response.statusCode == 200) {
+        var v = jsonDecode(response.body);
+        userCurrentBalance = v['data']['balance'];
+        print('user current balance $userCurrentBalance');
+      }
+    } catch (e) {
+      print('error $e');
+      // CustomToast.showToast(message: 'something went wrong!');
+    }
+  }
+
+  withdrawRequest() async {
+    try {
+      var formData = {
+        'user_id': userId,
+        'withdraw_amount': 220,
+      };
+      var response = await Dio().post('https://dream11.tennisworldxi.com/api/get/withdraw_request', queryParameters: formData);
+      if (response.statusCode == 200) {
+        CustomToast.showToast(message: response.data['data']['message']);
+      }
+    } catch (e) {
+      print('Error $e');
     }
   }
 }

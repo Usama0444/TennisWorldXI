@@ -567,38 +567,61 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future<void> _registerUser() async {
-    API_STRUCTURE apiObject = API_STRUCTURE(
-        context: context,
-        apiName: ApiConstant.registerUser,
-        apiRequestMethod: API_REQUEST_METHOD.POST,
-        isWantSuccessMessage: false,
-        body: FormData.fromMap({
-          "user_name": userNameController.text.trim(),
-          "email": emailController.text.trim(),
-          "phone": phoneController.text.trim(),
-          "dial_code": '+91',
-          "password": passwordController.text.trim(),
-          "password_confirmation": confirmPasswordController.text.trim(),
-          "image": _image != null
-              ? await MultipartFile.fromFile(
-                  _image!.path,
-                  filename: _image == null ? "" : _image!.path.split('/').last,
-                )
-              : null
-        }));
-    Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: true);
-    debugPrint("Register apiResponse:-> $apiResponse");
-    if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
-      CustomToast.showToast(message: "Registration successful", isShowSingle: false);
-      CustomToast.showToast(message: "Login to continue");
-      Navigator.pop(context);
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => TabScreen(),
-      //   ),
-      // );
-      // Map<String,dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
+    // API_STRUCTURE apiObject = API_STRUCTURE(
+    //     context: context,
+    //     apiName: ApiConstant.registerUser,
+    //     apiRequestMethod: API_REQUEST_METHOD.POST,
+    //     isWantSuccessMessage: false,
+    //     body: FormData.fromMap({
+    // "user_name": userNameController.text.trim(),
+    // "email": emailController.text.trim(),
+    // "phone": phoneController.text.trim(),
+    // "dial_code": '+91',
+    // "password": passwordController.text.trim(),
+    // "password_confirmation": confirmPasswordController.text.trim(),
+    // "image": _image != null
+    //     ? await MultipartFile.fromFile(
+    //         _image!.path,
+    //         filename: _image == null ? "" : _image!.path.split('/').last,
+    //       )
+    //     : null
+    //     }));
+    // Map<dynamic, dynamic> apiResponse = await apiObject.requestAPI(isShowLoading: true);
+    // debugPrint("Register apiResponse:-> $apiResponse");
+    // if (apiResponse.containsKey(API_RESPONSE.SUCCESS)) {
+    //   CustomToast.showToast(message: "Registration successful", isShowSingle: false);
+    //   CustomToast.showToast(message: "Login to continue");
+    //   Navigator.pop(context);
+    //   // Navigator.push(
+    //   //   context,
+    //   //   MaterialPageRoute(
+    //   //     builder: (context) => TabScreen(),
+    //   //   ),
+    //   // );
+    //   // Map<String,dynamic> _result = apiResponse[API_RESPONSE.SUCCESS]['data']['result'];
+    // }
+    try {
+      var formData = {
+        "user_name": userNameController.text.trim(),
+        "email": emailController.text.trim(),
+        "phone": phoneController.text.trim(),
+        "dial_code": '+91',
+        "password": passwordController.text.trim(),
+        "password_confirmation": confirmPasswordController.text.trim(),
+        "image": _image != null
+            ? await MultipartFile.fromFile(
+                _image!.path,
+                filename: _image == null ? "" : _image!.path.split('/').last,
+              )
+            : null
+      };
+      var response = await Dio().post('https://dream11.tennisworldxi.com/api/auth/signup', queryParameters: formData);
+      if (response.statusCode == 200) {
+        CustomToast.showToast(message: response.data['message'][0]);
+      }
+    } catch (e) {
+      print('e');
+      CustomToast.showToast(message: 'something went wrong!');
     }
   }
 

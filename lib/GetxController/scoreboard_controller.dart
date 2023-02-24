@@ -24,7 +24,7 @@ class ScoreboardController extends GetxController {
         var isLogin = response.data['score']['board_login_status'];
         loginStatus = isLogin;
         update();
-        // print('loginstatus $loginStatus');
+        // print('scoreboard Data ${response.data['score']['batsman1']}');
         scoreboardTeam = response.data['team1']['is_inning'] == 'bating'
             ? ScoreboardTeamModel(
                 team1ExtraScore: response.data['team1']['total_extras'],
@@ -75,6 +75,7 @@ class ScoreboardController extends GetxController {
         update();
       }
     } catch (e) {
+      print('error $e');
       CustomToast.showToast(message: 'Something went wrong!');
     }
   }
@@ -108,6 +109,7 @@ class ScoreboardController extends GetxController {
       'score_id': 8,
       'bollwer_id': bowler_id,
     };
+    print('wide');
     var response = await Dio().post('https://dream11.tennisworldxi.com/api/score/wide-ball-run', queryParameters: formData);
     if (response.statusCode == 200) {
       getAllScoreboardData();
